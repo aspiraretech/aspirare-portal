@@ -1,0 +1,56 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-desktop text-primary"></i>Online Class
+                </div>
+                <div class="card-body">
+                    <div class="row" style="margin-bottom: 15px;">
+                        <div class="col-md-3">
+                            <select class="form-control" ng-model="selected.courseId" ng-options="course.Id as course.Name for course in courses" ng-change="courseSelected(selected.courseId)">
+                                <option value="">Choose a {{keywords.CourseKeyword}}</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <select class="form-control" ng-model="selected.branchId" ng-options="branch.Id as branch.Name for branch in branches" ng-change="branchSelected(selected.branchId)">
+                                <option value="">Choose a {{keywords.BranchKeyword}}</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <select class="form-control" ng-model="selected.semesterId" ng-options="semester.Id as semester.SemesterNumber for semester in semesters" ng-change="semesterSelected(selected.semesterId)">
+                                <option value="">Choose a {{keywords.SemesterKeyword}}</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <select class="form-control" ng-model="selected.class" ng-options="class.Name for class in classes">
+                                <option value="">Choose a {{keywords.ClassKeyword}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-8">
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label">Meeting URL</label>
+                                <div class="col-md-9">
+                                    <input type="text" ng-model="selected.class.MeetingURL" class="form-control" placeholder="Meeting URL">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label">Meeting Password (if any)</label>
+                                <div class="col-md-9">
+                                    <input type="text" ng-model="selected.class.MeetingCredentials" class="form-control" placeholder="Meeting Password (if any)">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button class="btn btn-primary pull-right" ng-click="updateMeetingURL()">
+                        Update
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

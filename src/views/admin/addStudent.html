@@ -1,0 +1,367 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-user-plus text-primary"></i>Admission - Add or Update
+                </div>
+                <div class="card-body">
+                    <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label">Student Name*</label>
+                                    <div class="col-md-9">
+                                        <input type="text" ng-model="newAdmission.Name" class="form-control" placeholder="Student Name">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label">Register Number(USN)</label>
+                                    <div class="col-md-9">
+                                        <input type="text" ng-model="newAdmission.RollNumber" class="form-control" placeholder="Register Number(USN)">
+                                    </div>
+                                </div>
+                                <div class="form-group row" ng-if="!isEdit && (loggedInUser.PackageCode != 'LM' && loggedInUser.Type != 'LM')">
+                                    <label class="col-md-3 col-form-label">Student Type*</label>
+                                    <div class="col-md-9">
+                                        <label ng-repeat="type in studentTypes" style="margin:10px 0 0 10px;">
+                                            <input type="radio" name="studentTypes" ng-model="newAdmission.StudentType" ng-value="type.Id" /> {{type.Name}}
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group row" ng-if="loggedInUser.Type == 'SCHOOL'">
+                                    <label class="col-md-3 col-form-label">Is RTE?*</label>
+                                    <div class="col-md-9">
+                                        <label style="margin:10px 0 0 10px;">
+                                            <input type="radio" name="rte" ng-model="newAdmission.IsRTE" ng-value="1" ng-disabled="isEdit"/> Yes
+                                        </label>
+                                        <label style="margin:10px 0 0 10px;">
+                                            <input type="radio" name="rte" ng-model="newAdmission.IsRTE" ng-value="0" ng-disabled="isEdit"/> No
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label">Gender*</label>
+                                    <div class="col-md-9">
+                                        <label ng-repeat="gender in genders" style="margin:10px 0 0 10px;">
+                                            <input type="radio" name="genders" ng-model="newAdmission.GenderId" ng-value="gender.Id" /> {{gender.Name}}
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label">{{keywords.CourseKeyword}}*</label>
+                                    <div class="col-md-9">
+                                        <select class="form-control" ng-model="newAdmission.CourseId" ng-options="course.Id as course.Name for course in courses" ng-change="courseSelected(newAdmission.CourseId)">
+                                            <option value="">Choose a {{keywords.CourseKeyword}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label">{{keywords.BranchKeyword}}*</label>
+                                    <div class="col-md-9">
+                                        <select class="form-control" ng-model="newAdmission.BranchId" ng-options="branch.Id as branch.Name for branch in branches" ng-change="branchSelected(newAdmission.BranchId)">
+                                            <option value="">Choose a {{keywords.BranchKeyword}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label">{{keywords.SemesterKeyword}}/Year*</label>
+                                    <div class="col-md-9">
+                                        <select class="form-control" ng-model="newAdmission.SemesterId" ng-options="semester.Id as semester.SemesterNumber for semester in semesters" ng-change="semesterSelected(newAdmission.SemesterId)">
+                                            <option value="">Choose a {{keywords.SemesterKeyword}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label">{{keywords.ClassKeyword}}/Year*</label>
+                                    <div class="col-md-9">
+                                        <select class="form-control" ng-model="newAdmission.ClassId" ng-options="class.Id as class.Name for class in classes">
+                                            <option value="">Choose a {{keywords.ClassKeyword}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label">Date Of Birth*</label>
+                                    <div class="col-md-9">
+                                        <input type="date" class="form-control" ng-model="newAdmission.DateOfBirth" min="{{dateInput.min}}" max="{{dateInput.max}}" />
+                                    </div>
+                                </div>
+                                <div class="form-group row" ng-if="loggedInUser.PackageCode != 'LM' && loggedInUser.Type != 'LM'">
+                                    <label class="col-md-3 col-form-label">Aadhaar Number</label>
+                                    <div class="col-md-9">
+                                        <input type="number" name="aadhaarNumber" ng-model="newAdmission.AadhaarNumber" class="form-control" placeholder="Aadhaar Number">
+                                    </div>
+                                </div>
+                                <div class="form-group row" ng-if="loggedInUser.PackageCode != 'LM' && loggedInUser.Type != 'LM'">
+                                    <label class="col-md-3 col-form-label">Student's Phone Number(if any)</label>
+                                    <div class="col-md-9">
+                                        <input type="number" ng-model="newAdmission.PhoneNumber" class="form-control" placeholder="Student Phone Number">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label">Blood Group</label>
+                                    <div class="col-md-9">
+                                        <select class="form-control" ng-model="newAdmission.BloodGroup" ng-options="bg.Name as bg.Name for bg in bloodGroups">
+                                            <option value="">Choose a Blood Group</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label">Father's Name*</label>
+                                    <div class="col-md-9">
+                                        <input type="text" ng-model="newAdmission.FatherName" class="form-control" placeholder="Father/Guardian Name">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label">Father's Phone Number</label>
+                                    <div class="col-md-9">
+                                        <input type="number" ng-model="newAdmission.FatherPhoneNumber" class="form-control" placeholder="Father/Guardian Phone Number">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label">Father's Occupation</label>
+                                    <div class="col-md-9">
+                                        <input type="text" ng-model="newAdmission.FatherOccupation" class="form-control" placeholder="Father's Occupation">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label">Mother's Name</label>
+                                    <div class="col-md-9">
+                                        <input type="text" ng-model="newAdmission.MotherName" class="form-control" placeholder="Mother Name">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label">Mother's Phone Number</label>
+                                    <div class="col-md-9">
+                                        <input type="number" ng-model="newAdmission.MotherPhoneNumber" class="form-control" placeholder="Mother Phone Number">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label">Mother's Occupation</label>
+                                    <div class="col-md-9">
+                                        <input type="text" ng-model="newAdmission.MotherOccupation" class="form-control" placeholder="Mother's Occupation">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label">Email-Id</label>
+                                    <div class="col-md-9">
+                                        <input type="email" ng-model="newAdmission.Email" class="form-control" placeholder="Father/Mother/Student Email-ID">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label">Address</label>
+                                    <div class="col-md-9">
+                                        <textarea rows="4" ng-model="newAdmission.Address" class="form-control" placeholder="Address"></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label">Mother Tongue</label>
+                                    <div class="col-md-9">
+                                        <select class="form-control" ng-model="newAdmission.MotherTongue" ng-options="mt.Name as mt.Name for mt in motherTongues">
+                                            <option value="">Choose a Mother Tongue</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row" ng-if="loggedInUser.PackageCode != 'LM' && loggedInUser.Type != 'LM'">
+                                    <label class="col-md-3 col-form-label">Social Category</label>
+                                    <div class="col-md-9">
+                                        <select class="form-control" ng-model="newAdmission.SocialCategory" ng-options="sc.Name as sc.Name for sc in socialCategories">
+                                            <option value="">Choose a Social Category</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label">Nationality</label>
+                                    <div class="col-md-9">
+                                        <select class="form-control" ng-model="newAdmission.Nationality" ng-options="na.Name as na.Name for na in nationalities">
+                                            <option value="">Choose a Nationality</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label">Religion</label>
+                                    <div class="col-md-9">
+                                        <input type="text" ng-model="newAdmission.Religion" class="form-control" placeholder="Religion">
+                                        <!-- <select class="form-control" ng-model="newAdmission.Religion" ng-options="re.Name as re.Name for re in religions">
+                                            <option value="">Choose a Religion</option>
+                                        </select> -->
+                                    </div>
+                                </div>
+                                <div class="form-group row" ng-if="loggedInUser.PackageCode != 'LM' && loggedInUser.Type != 'LM'">
+                                    <label class="col-md-3 col-form-label">Caste</label>
+                                    <div class="col-md-9">
+                                        <input type="text" ng-model="newAdmission.Caste" class="form-control" placeholder="Caste">
+                                        <!-- <select class="form-control" ng-model="newAdmission.Caste" ng-options="ca.Name as ca.Name for ca in castes">
+                                            <option value="">Choose a Caste</option>
+                                        </select> -->
+                                    </div>
+                                </div>
+                                <div class="form-group row" ng-if="loggedInUser.PackageCode != 'LM' && loggedInUser.Type != 'LM'">
+                                    <label class="col-md-3 col-form-label">Sub Caste</label>
+                                    <div class="col-md-9">
+                                        <input type="text" ng-model="newAdmission.SubCaste" class="form-control" placeholder="Sub Caste">
+                                    </div>
+                                </div>
+                                <div class="form-group row" ng-if="loggedInUser.PackageCode != 'LM' && loggedInUser.Type != 'LM'">
+                                    <label class="col-md-3 col-form-label">Caste Certificate Number</label>
+                                    <div class="col-md-9">
+                                        <input type="text" ng-model="newAdmission.CasteCertificateNumber" class="form-control" placeholder="Caste Certificate Number">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label">Previous School/College Name</label>
+                                    <div class="col-md-9">
+                                        <input type="text" ng-model="newAdmission.PreviousSchoolName" class="form-control" placeholder="Previous School Name">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label" ng-if="loggedInUser.Type != 'COLLEGE'">Previous Class</label>
+                                    <label class="col-md-3 col-form-label" ng-if="loggedInUser.Type == 'COLLEGE'">Previous Board</label>
+                                    <div class="col-md-9">
+                                        <input type="text" ng-model="newAdmission.PreviousClass" class="form-control" placeholder="Previous Class">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label" ng-if="loggedInUser.Type != 'COLLEGE'">Previous Medium of Instructions</label>
+                                    <label class="col-md-3 col-form-label" ng-if="loggedInUser.Type == 'COLLEGE'">Previous School/College Reg No</label>
+                                    <div class="col-md-9">
+                                        <input type="text" ng-model="newAdmission.PreviousMediumOfInstruction" class="form-control" placeholder="Previous Medium of Instruction">
+                                    </div>
+                                </div>
+                                <div class="form-group row" ng-if="loggedInUser.PackageCode != 'LM' && loggedInUser.Type != 'LM' && loggedInUser.Type != 'COLLEGE'">
+                                    <label class="col-md-3 col-form-label">Transfer Certificate Number</label>
+                                    <div class="col-md-9">
+                                        <input type="text" ng-model="newAdmission.TransferCertificateNumber" class="form-control" placeholder="Transfer Certificate Number">
+                                    </div>
+                                </div>
+                                <div class="form-group row" ng-if="loggedInUser.PackageCode != 'LM' && loggedInUser.Type != 'LM' && loggedInUser.Type != 'COLLEGE'">
+                                    <label class="col-md-3 col-form-label">S.A.T.S Number</label>
+                                    <div class="col-md-9">
+                                        <input type="text" ng-model="newAdmission.SATSNumber" class="form-control" placeholder="S.A.T.S Number">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row justify-content-center" ng-if="isEdit && loggedInUser.Type == 'COLLEGE'" style="margin:15px 0px;">
+                            <div class="col-md-6">
+                                <table class="table table-responsive-sm table-outline mb-0">
+                                    <thead>
+                                        <th>University/Subject</th>
+                                        <th>Max Marks</th>
+                                        <th>Marks Obtained</th>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="pm in previousMarks | orderBy: '-CreatedAt'">
+                                            <td>{{pm.UniversityName}}</td>
+                                            <td>{{pm.MaxMarks}}</td>
+                                            <td>{{pm.MarksObtained}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <input type="text" ng-model="newPreviousMarks.UniversityName" class="form-control" placeholder="University/Subject Name">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <input type="text" ng-model="newPreviousMarks.MaxMarks" class="form-control" placeholder="Max Marks">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="text" ng-model="newPreviousMarks.MarksObtained" class="form-control" placeholder="Marks Obtained">
+                                    </div>
+                                    <div class="col-md-1" style="padding: 0;line-height: 29px;">
+                                        <button type="button" class="btn btn-sm btn-primary" ng-click="addPreviousMarks()">
+                                            Add
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" ng-if="isEdit && loggedInUser.Role != 'FACULTY'" style="margin-bottom:15px;">
+                            <div class="col-md-12">
+                                <h4 style="display:inline">Receipts (Total: {{totalInvoiceValue}})</h4>
+                                <select style="width: 300px;margin-bottom: 10px; margin-left: 15px;" class="form-control pull-right" ng-model="selected.academicYear" ng-options="ay.year as ay.year for ay in years" ng-change="getAllReceiptsForStudent()">
+                                    <option value="">Choose an Academic Year</option> 
+                                </select>
+                                <select style="width: 300px;margin-bottom: 10px;" class="form-control pull-right" ng-model="selected.receiptType" ng-options="receipt.SearchTerm as receipt.Type for receipt in receiptTypes" ng-change="receiptTypeChanged()">
+                                    <!-- <option value="">All</option> -->
+                                </select>
+                                <!-- <button class="btn btn-primary" type="button" ng-click="collectApplicationFees()" ng-if="isEdit && showApplicationFeesButton">Collect Application Form Fees</button> -->
+                                <table class="table table-responsive-sm table-outline mb-0" ng-if="receipts.length > 0">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th>Receipt Number</th>
+                                            <th>Months</th>
+                                            <th>Amount Paid</th>
+                                            <th>Payment Date</th>
+                                            <th>Discount</th>
+                                            <th>Fees Type</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="receipt in receiptsToShow | orderBy: '-PaymentDate'">
+                                            <td>{{receipt.Id}}</td>
+                                            <td>{{receipt.Months || 'N/A'}}</td>
+                                            <td>{{receipt.InvoiceValue}}</td>
+                                            <td>{{receipt.PaymentDate | date: 'dd/MM/yyyy'}}</td>
+                                            <td>{{receipt.Discount}}</td>
+                                            <td>
+                                                <div ng-if="receipt.FeesType == 'Type1'">Tuition & Other Fees</div>
+                                                <div ng-if="receipt.FeesType == 'Type3'">Transport Fees</div>
+                                                <div ng-if="receipt.FeesType == 'Type4'">
+                                                    <span ng-if="loggedInUser.Type != 'LM'">Development Fees</span>
+                                                    <span ng-if="loggedInUser.Type == 'LM'">Annual Fees</span>
+                                                </div>
+                                                <div ng-if="receipt.FeesType == 'Type5'">Application Fees</div>
+                                            </td>
+                                            <td>
+                                                <button type="button" class="btn btn-primary btn-sm" ng-click="printReceipt(receipt)">
+                                                    <i class="fa fa-print"></i>&nbsp;Print
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div class="row" ng-if="receipts.length == 0" style="width:100%">
+                                    <div class="col text-center">
+                                        There are no receipts found
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" ng-if="isEdit && documents.length > 0">
+                            <div class="col-md-6">
+                                <h4>Documents</h4>
+                                <div ng-repeat="document in documents">
+                                    <label class="toggle toggle-assertive">
+                                        <input type="checkbox" class="switch-input" ng-model="document.isChecked" ng-change="documentChecked(document)"> {{document.Name}}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer text-right">
+                    <button class="btn btn-danger" ng-click="discardAdmission()">
+                        <i class="fa fa-arrow-left"></i> Go Back
+                    </button>
+                    <!-- add student -->
+                    <button class="btn btn-primary" ng-click="addStudentAndGoBack()" ng-if="!isEdit && newAdmission.IsRTE">
+                        Admit Student
+                    </button>
+                    <button class="btn btn-primary" ng-click="addStudent()" ng-if="!isEdit && !newAdmission.IsRTE">
+                        Update Fees <i class="fa fa-arrow-right"></i> 
+                    </button>
+                    <!-- update student -->
+                    <button class="btn btn-primary" ng-click="updateAndGoBack()" ng-if="isEdit">
+                        <i class="fa fa-arrow-left"></i> Update & Go Back
+                    </button>
+                    <button class="btn btn-primary" ng-click="updateStudent()" ng-if="isEdit">
+                        Update Fees <i class="fa fa-arrow-right"></i> 
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>

@@ -1,0 +1,67 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-check text-primary"></i>Manage {{keywords.ClassKeyword}}
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-8" style="border-right: 1px solid gray;">
+                            <div class="row justify-content-center">
+                                <div class="col-md-3">
+                                    <select class="form-control" ng-model="selected.course" ng-options="course.Name for course in courses" ng-change="courseSelected(selected.course)">
+                                        <option value="">Choose a {{keywords.CourseKeyword}}</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <select class="form-control" ng-model="selected.branch" ng-options="branch.Name for branch in branches" ng-change="branchSelected(selected.branch)">
+                                        <option value="">Choose a {{keywords.BranchKeyword}}</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <select class="form-control" ng-model="selected.semester" ng-options="semester.SemesterNumber for semester in semesters" ng-change="semesterSelected(selected.semester)">
+                                        <option value="">Choose a {{keywords.SemesterKeyword}}</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <select class="form-control" ng-model="selected.class" ng-options="class.Name for class in classes" ng-change="classSelected(selected.class)">
+                                        <option value="">Choose a {{keywords.ClassKeyword}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <h5 style="margin-top: 20px; display: inline-block; margin-right: 15px;" ng-if="students.length > 0">
+                                Students in {{selected.class.Name}}
+                            </h5>
+                            <div class="row" ng-if="students.length > 0">
+                                <div class="col-md-4">
+                                    <div ng-repeat="student in students">
+                                        <label>
+                                            <input type="checkbox" ng-model="student.isSelected" ng-true-value="'true'" ng-false-value="'false'" style="margin:0px;"> 
+                                            {{student.Name}}
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group row">
+                                <label class="col-md-6 col-form-label">Choose a new {{keywords.ClassKeyword}}</label>
+                                <div class="col-md-6">
+                                    <select class="form-control" ng-model="selected.destination" ng-options="class.Name for class in classes">
+                                        <option value="">Choose a {{keywords.ClassKeyword}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <button class="btn btn-primary btn-sm pull-right" ng-click="changeSection()" ng-if="selected.destination != null">Move Students</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

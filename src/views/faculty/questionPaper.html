@@ -1,0 +1,67 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-calendar text-primary"></i>Question Paper
+                </div>
+                <div class="card-body">
+                    <div class="list-group" ng-if="questions.length > 0">
+                        <div class="list-group-item list-group-item-action custom-list-group-item" ng-repeat="question in questions">
+                            <span class="item-text-icon">{{question.LevelName}}</span>
+                            <b>{{question.Name}}({{question.MaxScore}})</b>
+                            <p ng-if="question.COName != null">{{question.COName}}</p>
+                            <button class="btn btn-danger btn-sm item-btn-right" ng-click="removeQuestionFromTest(question)">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row" ng-if="questions.length == 0">
+                        <div class="col text-center">
+                            There are no questions under this question paper
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-plus text-primary"></i>Add Question
+                </div>
+                <div class="card-body">
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label" for="textarea-input">Chapter</label>
+                        <div class="col-md-9">
+                            <select class="form-control" ng-model="selected.chapter" ng-options="chapter.Name for chapter in chapters">
+                                <option value="">Select Chapter</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label" for="textarea-input">Topic</label>
+                        <div class="col-md-9">
+                            <select class="form-control" ng-model="selected.topic" ng-options="topic.Name for topic in selected.chapter.Topics" ng-change="getAllCriteria()">
+                                <option value="">Select Topic</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="list-group" ng-if="questions.length > 0">
+                        <div class="list-group-item list-group-item-action custom-list-group-item" ng-repeat="criteria in criterias">
+                            <span class="item-text-icon">{{criteria.LevelName}}</span>
+                            <b>{{criteria.Name}}</b>
+                            <button ng-if="!criteria.isAlreadyPresent" class="btn btn-primary btn-sm item-btn-right" ng-click="openModal(criteria)">
+                                <i class="fa fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row" ng-if="criterias.length == 0">
+                        <div class="col text-center">
+                            There are no questions under this topic
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,91 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-star text-primary"></i>Add Program Specific Outcomes
+                </div>
+                <div class="card-body">
+                    <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label">Course</label>
+                                    <div class="col-md-9">
+                                        <select class="form-control" ng-model="newPO.CourseId" ng-options="course.Id as course.Name for course in courses" ng-change="courseSelected(selected.courseId)">
+                                            <option value="">Choose a {{keywords.CourseKeyword}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label">Branch</label>
+                                    <div class="col-md-9">
+                                        <select class="form-control" ng-model="newPO.BranchId" ng-options="branch.Id as branch.Name for branch in branches" ng-change="branchSelected(selected.branchId)">
+                                            <option value="">Choose a {{keywords.BranchKeyword}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label">PSO</label>
+                                    <div class="col-md-9">
+                                        <select class="form-control" ng-model="newPO.Name" ng-options="po.Name as po.Name for po in pos">
+                                            <option value="">Choose a PSO</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label">Description</label>
+                                    <div class="col-md-9">
+                                        <textarea ng-model="newPO.Description" rows="4" class="form-control" placeholder="Describe PSO"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer">
+                    <button class="btn pull-right btn-primary" ng-click="createPO()">
+                        <i class="fa fa-plus"></i> Add PSO
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6" ng-if="programOutcomes.length > 0">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-list-ul text-primary"></i>Program Outcomes
+                </div>
+                <div class="card-body">
+                    <table class="table table-responsive-sm table-outline mb-0">
+                        <thead class="thead-light">
+                            <tr class="text-center">
+                                <th>No.</th>
+                                <th>PO</th>
+                                <th>Description</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-center">
+                            <tr ng-repeat="po in programOutcomes">
+                                <td>
+                                    {{($index+1)}}
+                                </td>
+                                <td>
+                                    {{po.Name}}
+                                </td>
+                                <td>
+                                    {{po.Description}}
+                                </td>
+                                <td>
+                                    <button class="btn btn-sm btn-danger" ng-click="deletePO(po)">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,332 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-edit text-primary"></i>Subjects Taught
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="row" ng-if="newUser.Subjects.length == 0" style="margin-bottom: 15px;">
+                                <div class="col-md-12 text-center">
+                                    User has not been assigned any subject yet!
+                                </div>
+                            </div>
+                            <table class="table table-responsive-sm table-outline" ng-if="newUser.Subjects.length > 0" style="margin-bottom: 15px;">
+                                <thead class="thead-light">
+                                    <tr class="text-center">
+                                        <th>{{keywords.BranchKeyword}}</th>
+                                        <th>{{keywords.SemesterKeyword}}</th>
+                                        <th>{{keywords.ClassKeyword}}</th>
+                                        <th>{{keywords.SubjectKeyword}}</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="sub in newUser.Subjects" class="text-center">
+                                        <td>{{sub.BranchName}}</td>
+                                        <td>{{sub.SemesterName}}</td>
+                                        <td>{{sub.ClassName}}</td>
+                                        <td>{{sub.Name}}</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-danger" ng-click="deleteSubject($index)">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label">{{keywords.CourseKeyword}}</label>
+                                <div class="col-md-9">
+                                    <select class="form-control" ng-model="selected.Course" ng-options="course.Name for course in courses" ng-change="courseSelected(selected.Course,1)">
+                                        <option value="">Choose a {{keywords.CourseKeyword}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label">{{keywords.BranchKeyword}}</label>
+                                <div class="col-md-9">
+                                    <select class="form-control" ng-model="selected.Branch" ng-options="branch.Name for branch in branches" ng-change="branchSelected(selected.Branch,1)">
+                                        <option value="">Choose a {{keywords.BranchKeyword}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label">{{keywords.SemesterKeyword}}</label>
+                                <div class="col-md-9">
+                                    <select class="form-control" ng-model="selected.Semester" ng-options="semester.SemesterNumber for semester in semesters" ng-change="semesterSelected(selected.Semester,1)">
+                                        <option value="">Choose a {{keywords.SemesterKeyword}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label">{{keywords.ClassKeyword}}</label>
+                                <div class="col-md-9">
+                                    <select class="form-control" ng-model="selected.Class" ng-options="class.Name for class in classes">
+                                        <option value="">Choose a {{keywords.ClassKeyword}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div ng-if="subjects.length > 0">
+                                <h5>Choose Subjects</h5>
+                                <div class="form-check checkbox" ng-repeat="subject in subjects">
+                                    <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" ng-true-value="true" ng-false-value="false" ng-model="subject.isSelected">
+                                    {{subject.Name}}
+                                </label>
+                                </div>
+                                <button class="btn btn-primary btn-sm" ng-click="addSubjects()" style="margin-top:15px;">
+                                    Add
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-edit text-primary"></i> Profile
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label">Name*</label>
+                                <div class="col-md-9">
+                                    <input type="text" ng-model="newUser.Name" class="form-control" placeholder="Name">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label">Role*</label>
+                                <div class="col-md-9">
+                                    <select class="form-control" ng-model="newUser.Role" ng-options="role.RoleCode as role.Name for role in roles">
+                                        <option value="">Choose a Role</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label">Phone Number*</label>
+                                <div class="col-md-9">
+                                    <input type="tel" ng-model="newUser.PhoneNumber" class="form-control" placeholder="Phone Number">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label">Email</label>
+                                <div class="col-md-9">
+                                    <input type="email" ng-model="newUser.Email" class="form-control" placeholder="Email">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label">Address</label>
+                                <div class="col-md-9">
+                                    <textarea ng-model="newUser.Address" class="form-control" placeholder="Address" rows="3"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label">Designation</label>
+                                <div class="col-md-9">
+                                    <input type="text" ng-model="newUser.Designation" class="form-control" placeholder="Designation">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-right">
+                    <button class="btn btn-primary" ng-click="updateUser()">
+                        <i class="fa fa-check"></i> Update
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6" ng-if="loggedInUser.PackageCode != 'LM' && loggedInUser.Type != 'LM'">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-edit text-primary"></i> Special Subjects Taught
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="row" ng-if="newUser.SpecialSubjects.length == 0" style="margin-bottom: 15px;">
+                                <div class="col-md-12 text-center">
+                                    User has not been assigned any special subject yet!
+                                </div>
+                            </div>
+                            <table class="table table-responsive-sm table-outline" ng-if="newUser.SpecialSubjects.length > 0" style="margin-bottom: 15px;">
+                                <thead class="thead-light">
+                                    <tr class="text-center">
+                                        <th>{{keywords.SemesterKeyword}}</th>
+                                        <th>{{keywords.SubjectKeyword}}</th>
+                                        <th>{{keywords.ClassKeyword}}</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="ssub in newUser.SpecialSubjects" class="text-center">
+                                        <td>{{ssub.SemesterNumber}}</td>
+                                        <td>{{ssub.Name}}</td>
+                                        <td>{{ssub.ClassName}}</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-danger" ng-click="deleteSpecialSubject($index)">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label">{{keywords.CourseKeyword}}</label>
+                                <div class="col-md-9">
+                                    <select class="form-control" ng-model="specialSelected.Course" ng-options="course.Name for course in specialCourses" ng-change="courseSelected(specialSelected.Course,0)">
+                                        <option value="">Choose a {{keywords.CourseKeyword}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label">{{keywords.BranchKeyword}}</label>
+                                <div class="col-md-9">
+                                    <select class="form-control" ng-model="specialSelected.Branch" ng-options="branch.Name for branch in specialBranches" ng-change="branchSelected(specialSelected.Branch,0)">
+                                        <option value="">Choose a {{keywords.BranchKeyword}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label">{{keywords.SemesterKeyword}}</label>
+                                <div class="col-md-9">
+                                    <select class="form-control" ng-model="specialSelected.Semester" ng-options="semester.SemesterNumber for semester in specialSemesters" ng-change="semesterSelected(specialSelected.Semester,0)">
+                                        <option value="">Choose a {{keywords.SemesterKeyword}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label">{{keywords.SubjectKeyword}}</label>
+                                <div class="col-md-9">
+                                    <select class="form-control" ng-model="specialSelected.SpecialSubject" ng-options="ssub.Name for ssub in specialSubjects" ng-change="getAllSpecialClasses(specialSelected.SpecialSubject)">
+                                        <option value="">Choose a {{keywords.SubjectKeyword}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label">{{keywords.ClassKeyword}}</label>
+                                <div class="col-md-9">
+                                    <select class="form-control" ng-model="specialSelected.SpecialClass" ng-options="sclass.Name for sclass in specialClasses">
+                                        <option value="">Choose a {{keywords.ClassKeyword}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button class="btn btn-primary btn-sm pull-right" ng-click="addSpecialSubject()" style="margin-top:15px;" ng-if="specialSelected.SpecialClass != null">
+                                Add
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-edit text-primary"></i> Educational Background
+                </div>
+                <div class="card-body">
+                    <div class="row" ng-if="newUser.UserEducation.length == 0" style="margin-bottom: 15px;">
+                        <div class="col-md-12 text-center">
+                            No educational details have been entered yet!
+                        </div>
+                    </div>
+                    <table class="table table-responsive-sm table-outline" ng-if="newUser.UserEducation.length > 0" style="margin-bottom: 15px;">
+                        <thead class="thead-light">
+                            <tr class="text-center">
+                                <th>University</th>
+                                <th>Degree</th>
+                                <th>Year of Passing</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="ed in newUser.UserEducation" class="text-center">
+                                <td>{{ed.University}}</td>
+                                <td>{{ed.Degree}}</td>
+                                <td>{{ed.YearOfPassing}}</td>
+                                <td>
+                                    <button class="btn btn-sm btn-danger" ng-click="deleteEducation($index)">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <input type="text" ng-model="UserEducationTemplate.University" class="form-control" placeholder="University">
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" ng-model="UserEducationTemplate.Degree" class="form-control" placeholder="Degree">
+                        </div>
+                        <div class="col-md-3">
+                            <input type="text" ng-model="UserEducationTemplate.YearOfPassing" class="form-control" placeholder="Year of Passing">
+                        </div>
+                        <div class="col-md-1" style="padding: 0;line-height: 29px;">
+                            <button class="btn btn-sm btn-primary" ng-click="addEducation()">
+                                Add
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-edit text-primary"></i> Experience
+                </div>
+                <div class="card-body">
+                    <div class="row" ng-if="newUser.UserExperience.length == 0" style="margin-bottom: 15px;">
+                        <div class="col-md-12 text-center">
+                            No experience details have been entered yet!
+                        </div>
+                    </div>
+                    <table class="table table-responsive-sm table-outline" ng-if="newUser.UserExperience.length > 0" style="margin-bottom: 15px;">
+                        <thead class="thead-light">
+                            <tr class="text-center">
+                                <th>Institution</th>
+                                <th>Designation</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="ex in newUser.UserExperience" class="text-center">
+                                <td>{{ex.CollegeName}}</td>
+                                <td>{{ex.Designation}}</td>
+                                <td>
+                                    <button class="btn btn-sm btn-danger" ng-click="deleteExperience($index)">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="row justify-content-center">
+                        <div class="col-md-4">
+                            <input type="text" ng-model="UserExperienceTemplate.CollegeName" class="form-control" placeholder="Institution">
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" ng-model="UserExperienceTemplate.Designation" class="form-control" placeholder="Designation">
+                        </div>
+                        <div class="col-md-1" style="padding: 0;line-height: 29px;">
+                            <button class="btn btn-sm btn-primary" ng-click="addExperience()">
+                                Add
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

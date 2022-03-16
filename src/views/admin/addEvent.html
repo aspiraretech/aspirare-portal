@@ -1,0 +1,51 @@
+<div class="animated fadeIn">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <i class="fa fa-ticket text-primary"></i>Add News or Events
+            </div>
+            <div class="card-body">
+                <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label" for="text-input">Title</label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" placeholder="Title" ng-model="newEvent.Name">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label" for="textarea-input">Description</label>
+                        <div class="col-md-9">
+                            <textarea rows="5" class="form-control" placeholder="Write Description, Add Links etc." ng-model="newEvent.Description"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label" for="text-input">Add Video</label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" placeholder="Video URL" ng-model="newEvent.VideoURL">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label" for="text-input">Date</label>
+                        <div class="col-md-9">
+                            <input type="date" class="form-control" ng-model="newEvent.EventDate" min="{{dateInput.min}}" max="{{dateInput.max}}">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label" for="file-multiple-input">Add Photos</label>
+                        <div class="col-md-9">
+                            <input type="file" multiple="">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer text-right">
+                <button class="btn btn-danger" ng-click="discardCreation()">
+                        <i class="fa fa-trash"></i> Discard
+                    </button>
+                <button class="btn btn-primary" ng-click="create()">
+                    <i class="fa fa-check"></i> Create Event
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

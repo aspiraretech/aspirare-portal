@@ -1,0 +1,198 @@
+<div class="animated fadeIn">
+    <div class="card">
+        <div class="card-header">
+            <i class="fa fa-pie-chart text-primary"></i>{{student.Name}}
+        </div>
+        <div class="card-body">
+            <div ng-if="loggedInUser.PackageCode != 'LM' && loggedInUser.Type != 'LM'">
+                <ul class="nav nav-pills" role="tablist">
+                    <li class="nav-item" ng-click="slideChanged(0)">
+                        <a class="nav-link active subject-nav-item" id="sub0" role="tab">Overall</a>
+                    </li>
+                    <li class="nav-item" ng-repeat="subject in subjects" role="tab" ng-click="slideChanged($index+1)">
+                        <a class="nav-link subject-nav-item" id="sub{{subject.Id}}">{{subject.Nickname}}</a>
+                    </li>
+                </ul>
+                <div class="tab-content" style="padding: 15px;">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card" style="margin-bottom: 0px">
+                                <div class="card-header">
+                                    <i class="fa fa-bar-chart text-primary"></i>Academic Performance
+                                </div>
+                                <div class="card-body text-center">
+                                    <span class="current" ng-style="{'color':graph.color}" style="position:relative; top: 145px; bottom: auto; transform: translateY(-50%) translateX(-50%);font-size: 35px;">{{average | number: 1}}%</span>
+                                    <round-progress max="100" current="average" color="{{graph.color}}" bgcolor="#eaeaea" radius="135" stroke="50" semi="false" rounded="false" clockwise="true" responsive="false" duration="1000" animation="easeInOutCirc" animation-delay="2">
+                                    </round-progress>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6" ng-if="currentSlide != 0 && (loggedInUser.PackageCode == 'SMART' && loggedInUser.Type !='LM')">
+                            <div class="card" style="margin-bottom: 0px">
+                                <div class="card-header">
+                                    <i class="fa fa-bar-chart text-primary"></i>Learning Outcome
+                                </div>
+                                <div class="card-body text-center" style="height: 366px;overflow: auto;">
+                                    <div ng-if="chapters.length > 0" ng-repeat="chapter in chapters | orderBy: 'DisplayOrder'">
+                                        <div class="accordion-header" ng-click="toggleChapter(chapter)">
+                                            <div class="row">
+                                                <div class="col-10 text-left">
+                                                    <i class="fa accordion-expander" ng-class="isChapterShown(chapter) ? 'fa-minus' : 'fa-plus'"></i> &nbsp;&nbsp;{{chapter.Name}}
+                                                </div>
+                                                <span class="col-2 text-center" ng-if="chapter.ChapterAverage != null" ng-class="{'google-green':chapter.ChapterAverage>=75, 'google-yellow' :(chapter.ChapterAverage<75 && chapter.ChapterAverage>=50), 'google-red': chapter.ChapterAverage<50}">
+                                                {{chapter.ChapterAverage | number: 1}} %
+                                            </span>
+                                            </div>
+                                        </div>
+                                        <div class="accordion-description" ng-show="isChapterShown(chapter)" ng-repeat="topic in chapter.Topics">
+                                            <div class="row">
+                                                <div class="col-10 text-left" style="white-space: normal;">
+                                                    {{topic.Name}}
+                                                </div>
+                                                <div class="col-2 text-center" ng-if="topic.IsCompleted" ng-if="loggedInUser.Type == 'OBE'">
+                                                    <span class="item-note scorecard-note" ng-class="{'google-green':topic.TopicAverage>=75, 'google-yellow' :(topic.TopicAverage<75 && topic.TopicAverage>=50), 'google-red': topic.TopicAverage<50}">
+                                                    {{topic.TopicAverage | number: 1}} %
+                                                </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div ng-if="chapters.length == 0" class="row">
+                                        <div class="col-md-12 text-center">
+                                            No lesson plan available!
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" ng-if="currentSlide != 0" style="margin-top: 15px;">
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <i class="fa fa-pie-chart text-primary"></i>Scorecard
+                                </div>
+                                <div class="card-body">
+                                    <div class="row" ng-if="tests.length == 0">
+                                        <div class="col-md-12">
+                                            No assessments have been entered yet!
+                                        </div>
+                                    </div>
+                                    <table class="table table-responsive-sm table-outline mb-0" ng-if="tests.length > 0">
+                                        <thead class="thead-light">
+                                            <tr class="text-center">
+                                                <th>Assessment</th>
+                                                <th>Marks</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="text-center" ng-repeat="test in tests">
+                                                <td>
+                                                    {{test.Name}}
+                                                </td>
+                                                <td>
+                                                    <span ng-if="test.Marks != 'Ab'" ng-class="{'google-green':(test.Marks/test.MaxMarks)>=0.75, 'google-yellow' :((test.Marks/test.MaxMarks)<0.75 && (test.Marks/test.MaxMarks)>=0.5), 'google-red': (test.Marks/test.MaxMarks)<0.5}">
+                                                    {{test.Marks | number: 1}}<span>/</span>{{test.MaxMarks | number: 1}}
+                                                    </span>
+                                                    <span ng-if="test.Marks == 'Ab'" class="google-red">
+                                                    {{test.Marks}}
+                                                </span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card" style="margin-bottom: 0px">
+                                <div class="card-header">
+                                    <i class="fa fa-check text-primary"></i>Attendance
+                                    <a class="pull-right" style="margin-left:10px;" href ng-click="addDaysAttendanceToStudent()" ng-if="loggedInUser.Role == 'ADMIN'">
+                                        Add
+                                    </a>
+                                    <a class="pull-right" href ng-click="studentAttendance(null)">
+                                        View
+                                    </a>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row" ng-if="attendanceStatistics.TotalClasses == 0">
+                                        <div class="col-md-12">
+                                            No attendance has been marked yet!
+                                        </div>
+                                    </div>
+                                    <table class="table table-responsive-sm table-outline mb-0" ng-if="attendanceStatistics.TotalClasses > 0">
+                                        <thead class="thead-light">
+                                            <tr class="text-center">
+                                                <th>Total Taken</th>
+                                                <th>Attended</th>
+                                                <th>Percentage</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="text-center">
+                                                <td>
+                                                    {{attendanceStatistics.TotalClasses}}
+                                                </td>
+                                                <td>
+                                                    {{attendanceStatistics.TotalPresent}}
+                                                </td>
+                                                <td>
+                                                    <span ng-class="{'google-green':(attendanceStatistics.TotalPresent / attendanceStatistics.TotalClasses)>=0.75, 'google-yellow' :((attendanceStatistics.TotalPresent / attendanceStatistics.TotalClasses)<0.75 && (attendanceStatistics.TotalPresent / attendanceStatistics.TotalClasses)>=0.5), 'google-red': (attendanceStatistics.TotalPresent / attendanceStatistics.TotalClasses)<0.5}">
+                                                    {{(attendanceStatistics.TotalPresent / attendanceStatistics.TotalClasses) * 100 | number: 1}}%
+                                                </span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div ng-if="loggedInUser.PackageCode == 'LM' || loggedInUser.Type == 'LM'">
+                <div class="row" ng-repeat="rows in chunkedSubjects" style="margin-bottom: 10px;">
+                    <div class="col-md-4" ng-repeat="subject in rows">
+                        <div class="card" style="margin-bottom: 0px">
+                            <div class="card-header">
+                                <i class="fa fa-check text-primary"></i>{{subject.Name}}
+                            </div>
+                            <div class="card-body">
+                                <div class="row" ng-if="subject.AttendanceStatistics.TotalClasses == 0">
+                                    <div class="col-md-12">
+                                        No attendance has been marked yet!
+                                    </div>
+                                </div>
+                                <table class="table table-responsive-sm table-outline mb-0" ng-if="subject.AttendanceStatistics.TotalClasses > 0">
+                                    <thead class="thead-light">
+                                        <tr class="text-center">
+                                            <th>Total Taken</th>
+                                            <th>Attended</th>
+                                            <th>Percentage</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="text-center">
+                                            <td>
+                                                {{subject.AttendanceStatistics.TotalClasses}}
+                                            </td>
+                                            <td>
+                                                {{subject.AttendanceStatistics.TotalPresent}}
+                                            </td>
+                                            <td>
+                                                <span ng-class="{'google-green':(subject.AttendanceStatistics.TotalPresent / subject.AttendanceStatistics.TotalClasses)>=0.75, 'google-yellow' :((subject.AttendanceStatistics.TotalPresent / subject.AttendanceStatistics.TotalClasses)<0.75 && (subject.AttendanceStatistics.TotalPresent / subject.AttendanceStatistics.TotalClasses)>=0.5), 'google-red': (subject.AttendanceStatistics.TotalPresent / subject.AttendanceStatistics.TotalClasses)<0.5}">
+                                                    {{(subject.AttendanceStatistics.TotalPresent / subject.AttendanceStatistics.TotalClasses) * 100 | number: 1}}%
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

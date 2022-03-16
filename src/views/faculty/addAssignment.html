@@ -1,0 +1,51 @@
+<div class="animated fadeIn">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <i class="fa fa-share-alt text-primary"></i>Create a new Share
+            </div>
+            <div class="card-body">
+                <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label" for="text-input">Title</label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" placeholder="Title" ng-model="newAssignment.Name">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label" for="textarea-input">Description</label>
+                        <div class="col-md-9">
+                            <textarea rows="5" class="form-control" placeholder="Write Description, Add Links etc." ng-model="newAssignment.Description"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label" for="text-input">Add Video</label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" placeholder="Video URL" ng-model="newAssignment.VideoURL">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label" for="text-input">Add Document</label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" placeholder="Document URL" ng-model="newAssignment.DocumentURL">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label" for="file-multiple-input">Add Photos</label>
+                        <div class="col-md-9">
+                            <input type="file" id="file-multiple-input" multiple="">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer text-right">
+                <button class="btn btn-danger" ng-click="discard()">
+                    <i class="fa fa-trash"></i> Discard
+                </button>
+                <button class="btn btn-primary" ng-click="publish()">
+                    <i class="fa fa-check"></i> Create Share
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

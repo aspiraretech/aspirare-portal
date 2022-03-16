@@ -1,0 +1,180 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-star text-primary"></i>CO Attainment
+                </div>
+                <div class="card-body">
+                    <div class="row" ng-if="cos.length > 0 && tests.length > 0">
+                        <div class="col-md-1" style="padding-right:0px">
+                            <table class="table table-responsive-sm table-outline mb-0" style="width:100%">
+                                <thead class="thead-light">
+                                    <tr class="text-center">
+                                        <th>CO</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="co in cos" class="text-center">
+                                        <td style="overflow: hidden;white-space: nowrap;text-overflow: ellipsis;max-width: 200px;">
+                                            {{co.Name}}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-md-11" style="padding-left:0px; overflow:auto">
+                            <table class="table table-responsive-sm table-bordered mb-0 attendance-table" style="width:auto">
+                                <thead class="thead-light">
+                                    <tr class="text-center">
+                                        <th ng-repeat="test in tests" class="test-name-th" title="{{test.Name}}">
+                                            {{test.Name}}
+                                        </th>
+                                        <th ng-repeat="chapter in chapters" class="test-name-th" title="{{chapter.Name}}">
+                                            {{chapter.Name}}
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="co in cos" class="text-center">
+                                        <td ng-repeat="test in co.Tests" style="height: 45.6px;">
+                                            {{test.Attainment | number: 2}}
+                                        </td>
+                                        <td ng-repeat="chapter in co.Chapters" style="height: 45.6px;">
+                                            {{chapter.Attainment | number: 2}}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row" ng-if="tests.length == 0;">
+                        <div class="col-md-12 text-center">
+                            No assessments have been created yet!
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" style="margin-top: 15px;">
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fa fa-star text-primary"></i>Total CO Attainment
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-responsive-sm table-bordered mb-0">
+                                <tbody>
+                                    <tr>
+                                        <th>Overall CO Attainment through IA</th>
+                                        <td>{{totalCoAttainmentFromIA | number: 2}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Overall CO Attainment through SEE</th>
+                                        <td>{{totalCoAttainmentFromSEE | number: 2}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Direct Attainment</th>
+                                        <td>{{directAttainment | number: 2}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Indirect Attainment</th>
+                                        <td>{{totalCoAttainmentFromSmartTest || 0 | number: 2}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Total CO Attainment</th>
+                                        <td><strong>{{totalCOAttainment | number: 2}}</strong></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="row" style="margin-top: 15px;">
+                                <div class="col-md-12 text-center">
+                                    <div class="form-group row">
+                                        <div class="col-md-12">
+                                            <textarea rows="4" ng-model="actionPlan" class="form-control" placeholder="Action Plan"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button class="btn btn-primary pull-right">Submit Action Plan</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fa fa-star text-primary"></i>PO Attainment
+                        </div>
+                        <div class="card-body">
+                            <div class="row" ng-if="tests.length > 0">
+                                <div class="col-md-2" style="padding-right:0px">
+                                    <table class="table table-responsive-sm table-outline mb-0" style="width:100%">
+                                        <thead class="thead-light">
+                                            <tr class="text-center">
+                                                <th>CO</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="co in cos" class="text-center">
+                                                <td style="overflow: hidden;white-space: nowrap;text-overflow: ellipsis;max-width: 200px;">
+                                                    {{co.Name}}
+                                                </td>
+                                            </tr>
+                                            <tr class="text-center">
+                                                <td>Average</td>
+                                            </tr>
+                                            <tr class="text-center">
+                                                <td>PO Attainment</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-md-10" style="padding-left:0px; overflow:auto">
+                                    <table class="table table-responsive-sm table-bordered mb-0 attendance-table" style="width:auto">
+                                        <thead class="thead-light">
+                                            <tr class="text-center">
+                                                <th ng-repeat="po in pos" class="test-name-th" title="{{po.Name}}">
+                                                    {{po.Name}}
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="co in cos" class="text-center">
+                                                <td ng-repeat="po in co.POs">
+                                                    {{po.Descriptor}}
+                                                </td>
+                                            </tr>
+                                            <tr class="text-center">
+                                                <td ng-repeat="po in pos">
+                                                    <span ng-if="po.TotalCOPOEntries > 0">
+                                                        {{(po.TotalDescriptorValue / po.TotalCOPOEntries) | number: 2}}
+                                                    </span>
+                                                    <span ng-if="po.TotalCOPOEntries == 0">
+                                                        -
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                            <tr class="text-center">
+                                                <td ng-repeat="po in pos">
+                                                    <span ng-if="po.TotalCOPOEntries > 0">
+                                                        {{(((po.TotalDescriptorValue / po.TotalCOPOEntries) / 3) * totalCOAttainment) | number: 2}}
+                                                    </span>
+                                                    <span ng-if="po.TotalCOPOEntries == 0">
+                                                        -
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

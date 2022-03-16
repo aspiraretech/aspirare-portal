@@ -1,0 +1,34 @@
+<header class="app-header navbar" ng-controller="MainController">
+    <button class="navbar-toggler mobile-sidebar-toggler d-lg-none" type="button">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <a class="navbar-brand" ui-sref="app.main" ng-style="{'background-image': 'url(' + loggedInUser.LogoImageURL + ')'}"></a>
+    <ul class="nav navbar-nav d-md-down-none">
+        <li class="nav-item">
+            <a class="nav-link navbar-toggler sidebar-toggler" href="#">
+                <span class="navbar-toggler-icon"></span>
+            </a>
+        </li>
+    </ul>
+    <h4 class="logged-in-name">Welcome, {{loggedInUser.Name}}</h4>
+    <ul class="nav navbar-nav ml-auto d-md-down-none-inst" style="margin-right: 15px;">
+        <li class="nav-item" style="margin-right: 15px !important;" ng-if="loggedInUser.Role == 'ADMIN' && colleges.length > 1">
+            <select class="form-control" ng-model="selected.college" ng-options="college.CollegeName for college in colleges" ng-change="collegeSelected(selected.college)">
+                <option value="">Choose an Institution</option>
+            </select>
+        </li>
+        <li class="nav-item" style="margin-right: 15px !important;" ng-if="loggedInUser.Role == 'FACULTY'">
+            <select class="form-control" ng-model="selected.subject" ng-options="subject.Name for subject in subjects" ng-change="subjectSelected(selected.subject)">
+                <option value="">Choose a {{keywords.SubjectKeyword}}</option>
+            </select>
+        </li>
+        <li class="nav-item" style="margin-right: 15px !important;" ng-if="loggedInUser.Role == 'FACULTY'">
+            <select class="form-control" ng-model="selected.class" ng-options="class.Name for class in classes" ng-change="getAllStudentsInClass()">
+                <option value="">Choose a {{keywords.ClassKeyword}}</option>
+            </select>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href ng-click="logout()" title="Logout"><i class="icon-logout text-danger"></i></a>
+        </li>
+    </ul>
+</header>

@@ -1,0 +1,86 @@
+<div class="row">
+    <div class="col-md-6" ng-if="loggedInUser.PackageCode != 'LM'">
+        <div class="card">
+            <div class="card-header">
+                <i class="fa fa-pie-chart text-primary"></i>Academic Performance
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12 text-center" ng-if="average != undefined">
+                        <div class="current" ng-style="{'color':graph.color}" style="position:relative; top: 170px; bottom: auto; left: 50%; transform: translateY(-50%) translateX(-50%);font-size: 35px;">{{average | number: 1}}%</div>
+                        <round-progress max="100" current="average" color="{{graph.color}}" bgcolor="#eaeaea" radius="135" stroke="50" semi="false" rounded="false" clockwise="true" responsive="false" duration="1000" animation="easeInOutCirc" animation-delay="2">
+                        </round-progress>
+                    </div>
+                    <div class="col-md-12" ng-if="average == undefined">
+                        <div class="col-md-12 text-center">
+                            No assessments has been given yet!
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card" ng-if="loggedInUser.PackageCode != 'LM'">
+            <div class="card-header">
+                <i class="fa fa-pie-chart text-primary"></i>Scorecard
+            </div>
+            <div class="card-body">
+                <div class="row" ng-if="tests.length == 0">
+                    <div class="col-md-12 text-center">
+                        No assessments has been given yet!
+                    </div>
+                </div>
+                <table class="table table-responsive-sm table-outline mb-0" ng-if="tests.length > 0">
+                    <thead class="thead-light">
+                        <tr class="text-center">
+                            <th>Assessment</th>
+                            <th>{{keywords.ClassKeyword}} Average</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="text-center" ng-repeat="test in tests">
+                            <td>
+                                {{test.Name}}
+                            </td>
+                            <td>
+                                <span ng-class="{'google-green':(test.AverageMarks/test.MaxMarks)>=0.75, 'google-yellow' :((test.AverageMarks/test.MaxMarks)<0.75 && (test.AverageMarks/test.MaxMarks)>=0.5), 'google-red': (test.AverageMarks/test.MaxMarks)<0.5}">
+                                    {{test.AverageMarks | number: 1}}<span>/</span>{{test.MaxMarks | number: 1}}
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card" style="margin-top: 15px;">
+            <div class="card-header">
+                <i class="fa fa-line-chart text-primary"></i>Attendance
+            </div>
+            <div class="card-body">
+                <div class="row" ng-if="attendanceStatistics.TotalClassesTaken == undefined">
+                    <div class="col-md-12 text-center">
+                        No attendance has been marked yet!
+                    </div>
+                </div>
+                <table class="table table-responsive-sm table-outline mb-0" ng-if="attendanceStatistics.TotalClassesTaken != undefined">
+                    <thead class="thead-light">
+                        <tr class="text-center">
+                            <th>Classes Taken</th>
+                            <th>Percentage</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="text-center">
+                            <td>{{attendanceStatistics.TotalClassesTaken}}</td>
+                            <td>
+                                <span ng-class="{'google-green':(attendanceStatistics.TotalPresent/attendanceStatistics.TotalEntries)>=0.75, 'google-yellow' :((attendanceStatistics.TotalPresent/attendanceStatistics.TotalEntries)<0.75 && (attendanceStatistics.TotalPresent/attendanceStatistics.TotalEntries)>=0.5), 'google-red': (attendanceStatistics.TotalPresent/attendanceStatistics.TotalEntries)<0.5}">
+                                    {{(attendanceStatistics.TotalPresent/attendanceStatistics.TotalEntries)*100 | number: 1}}%
+                                </span>
+                            </td>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

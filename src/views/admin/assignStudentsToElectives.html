@@ -1,0 +1,59 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-check text-primary"></i>Select a Special Subject
+                </div>
+                <div class="card-body">
+                    <div class="row justify-content-center">
+                        <div class="col-md-2">
+                            <select class="form-control" ng-model="selected.course" ng-options="course.Name for course in courses" ng-change="courseSelected(selected.course)">
+                                <option value="">Choose a {{keywords.CourseKeyword}}</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <select class="form-control" ng-model="selected.branch" ng-options="branch.Name for branch in branches" ng-change="branchSelected(selected.branch)">
+                                <option value="">Choose a {{keywords.BranchKeyword}}</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <select class="form-control" ng-model="selected.semester" ng-options="semester.SemesterNumber for semester in semesters" ng-change="semesterSelected(selected.semester)">
+                                <option value="">Choose a {{keywords.SemesterKeyword}}</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <select class="form-control" ng-model="selected.specialSubject" ng-options="subject.Name for subject in specialSubjects" ng-change="specialSubjectSelected(selected.specialSubject)">
+                                <option value="">Choose a {{keywords.SubjectKeyword}}</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <select class="form-control" ng-model="selected.specialClass" ng-options="class.Name for class in specialClasses" ng-change="specialClassSelected()">
+                                <option value="">Choose a {{keywords.ClassKeyword}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top:15px;">
+                        <div class="col-md-12" ng-if="studentsInThisSemester.length > 0">
+                            <div class="row" ng-repeat="rows in chunkedBranches">
+                                <div class="col" ng-repeat="branch in rows">
+                                    <h5>{{branch.Name}}</h5>
+                                    <input type="search" ng-model="search" class="form-control" placeholder="Search Student" style="margin-bottom: 10px;">
+                                    <div ng-repeat="student in branch.Students | filter: search">
+                                        <label>
+                                            <input type="checkbox" ng-model="student.isSelected" ng-true-value="'true'" ng-false-value="'false'" style="margin:0px;" ng-change="studentSelectionChanged(student)"> 
+                                            {{student.Name}}
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 text-center" ng-if="studentsInThisSemester.length == 0">
+                            There are no students in this selection!
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

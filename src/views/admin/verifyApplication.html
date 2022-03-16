@@ -1,0 +1,224 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-user-plus text-primary"></i>Verify Application
+                </div>
+                <div class="card-body">
+                    <form role="form" name="applicationForm" novalidate>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label">Student's Name*</label>
+                                    <div class="col-md-9">
+                                        <input type="text" ng-model="newApplication.Name" class="form-control" placeholder="Student's Name">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label">Student Type*</label>
+                                    <div class="col-md-9">
+                                        <label ng-repeat="type in studentTypes" style="margin:10px 0 0 10px;">
+                                            <input type="radio" name="studentTypes" ng-model="newApplication.StudentType" ng-value="type.Id" /> {{type.Name}}
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group row" ng-if="!isEdit && loggedInUser.Type == 'SCHOOL'">
+                                    <label class="col-md-3 col-form-label">Is RTE?*</label>
+                                    <div class="col-md-9">
+                                        <label style="margin:10px 0 0 10px;">
+                                            <input type="radio" name="rte" ng-model="newApplication.IsRTE" ng-value="1" /> Yes
+                                        </label>
+                                        <label style="margin:10px 0 0 10px;">
+                                            <input type="radio" name="rte" ng-model="newApplication.IsRTE" ng-value="0" /> No
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label">Gender*</label>
+                                    <div class="col-md-9">
+                                        <label ng-repeat="gender in genders" style="margin:10px 0 0 10px;">
+                                                <input type="radio" name="genders" ng-model="newApplication.GenderId" ng-value="gender.Id" /> {{gender.Name}}
+                                            </label>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label">Date Of Birth*</label>
+                                    <div class="col-md-9">
+                                        <input type="date" class="form-control" ng-model="newApplication.DateOfBirth" min="{{dateInput.min}}" max="{{dateInput.max}}" />
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label">Aadhaar Number</label>
+                                    <div class="col-md-9">
+                                        <input type="number" name="aadhaarNumber" ng-model="newApplication.AadhaarNumber" class="form-control" ng-pattern="aadhaarRegEx" placeholder="Aadhaar Number">
+                                        <span class="text-danger" ng-show="applicationForm.aadhaarNumber.$error.pattern">Please enter a 12 digit number</span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label">Student's Phone Number(if any)</label>
+                                    <div class="col-md-9">
+                                        <input type="number" name="phoneNumber" class="form-control" ng-model="newApplication.PhoneNumber" ng-pattern="phoneRegEx" placeholder="Student's Phone Number" />
+                                        <span class="text-danger" ng-show="applicationForm.phoneNumber.$error.pattern">Please enter a 10 digit number</span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label">Father's Name*</label>
+                                    <div class="col-md-9">
+                                        <input type="text" ng-model="newApplication.FatherName" class="form-control" placeholder="Father/Guardian's Name">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label">Father's Phone Number*</label>
+                                    <div class="col-md-9">
+                                        <input type="number" name="fatherPhoneNumber" ng-model="newApplication.FatherPhoneNumber" class="form-control" ng-pattern="phoneRegEx" placeholder="Father/Guardian's Phone Number">
+                                        <span class="text-danger" ng-show="applicationForm.fatherPhoneNumber.$error.pattern">Please enter a 10 digit number</span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label">Father's Occupation</label>
+                                    <div class="col-md-9">
+                                        <input type="text" ng-model="newApplication.FatherOccupation" class="form-control" placeholder="Father's Occupation">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label">Mother's Name</label>
+                                    <div class="col-md-9">
+                                        <input type="text" ng-model="newApplication.MotherName" class="form-control" placeholder="Mother's Name">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label">Mother's Phone Number</label>
+                                    <div class="col-md-9">
+                                        <input type="number" name="motherPhoneNumber" ng-model="newApplication.MotherPhoneNumber" class="form-control" ng-pattern="phoneRegEx" placeholder="Mother's Phone Number">
+                                        <span class="text-danger" ng-show="applicationForm.motherPhoneNumber.$error.pattern">Please enter a 10 digit number</span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label">Mother's Occupation</label>
+                                    <div class="col-md-9">
+                                        <input type="text" ng-model="newApplication.MotherOccupation" class="form-control" placeholder="Mother's Occupation">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label">Blood Group</label>
+                                    <div class="col-md-9">
+                                        <select class="form-control" ng-model="newApplication.BloodGroup" ng-options="bg.Name as bg.Name for bg in bloodGroups">
+                                            <option value="">Choose a Blood Group</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label">Email-Id</label>
+                                    <div class="col-md-9">
+                                        <input type="email" ng-model="newApplication.Email" class="form-control" placeholder="Father/Mother/Student Email-ID">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label">Address</label>
+                                    <div class="col-md-9">
+                                        <textarea rows="4" ng-model="newApplication.Address" class="form-control" placeholder="Address"></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label">Mother Tongue</label>
+                                    <div class="col-md-9">
+                                        <select class="form-control" ng-model="newApplication.MotherTongue" ng-options="mt.Name as mt.Name for mt in motherTongues">
+                                            <option value="">Choose a Mother Tongue</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label">Social Category</label>
+                                    <div class="col-md-9">
+                                        <select class="form-control" ng-model="newApplication.SocialCategory" ng-options="sc.Name as sc.Name for sc in socialCategories">
+                                            <option value="">Choose a Social Category</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label">Nationality</label>
+                                    <div class="col-md-9">
+                                        <select class="form-control" ng-model="newApplication.Nationality" ng-options="na.Name as na.Name for na in nationalities">
+                                            <option value="">Choose a Nationality</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label">Religion</label>
+                                    <div class="col-md-9">
+                                        <select class="form-control" ng-model="newApplication.Religion" ng-options="re.Name as re.Name for re in religions">
+                                            <option value="">Choose a Religion</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label">Caste</label>
+                                    <div class="col-md-9">
+                                        <select class="form-control" ng-model="newApplication.Caste" ng-options="ca.Name as ca.Name for ca in castes">
+                                            <option value="">Choose a Caste</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label">Sub Caste</label>
+                                    <div class="col-md-9">
+                                        <input type="text" ng-model="newApplication.SubCaste" class="form-control" placeholder="Sub Caste">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label">Caste Certificate Number</label>
+                                    <div class="col-md-9">
+                                        <input type="text" ng-model="newApplication.CasteCertificateNumber" class="form-control" placeholder="Caste Certificate Number">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label">Previous School Name</label>
+                                    <div class="col-md-9">
+                                        <input type="text" ng-model="newApplication.PreviousSchoolName" class="form-control" placeholder="Previous School Name">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label">Previous Class</label>
+                                    <div class="col-md-9">
+                                        <input type="text" ng-model="newApplication.PreviousClass" class="form-control" placeholder="Previous Class">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label">Previous Medium of Instruction</label>
+                                    <div class="col-md-9">
+                                        <input type="text" ng-model="newApplication.PreviousMediumOfInstruction" class="form-control" placeholder="Previous Medium of Instruction">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label">Transfer Certificate Number</label>
+                                    <div class="col-md-9">
+                                        <input type="text" ng-model="newApplication.TransferCertificateNumber" class="form-control" placeholder="Transfer Certificate Number">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label">S.A.T.S Number</label>
+                                    <div class="col-md-9">
+                                        <input type="text" ng-model="newApplication.SATSNumber" class="form-control" placeholder="S.A.T.S Number">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer text-right">
+                    <button class="btn btn-danger" ng-click="discard()">
+                        <i class="fa fa-trash"></i> Discard
+                    </button>
+                    <button class="btn btn-primary" ng-click="updateAndExit()">
+                        <i class="fa fa-arrow-left"></i> Update & Exit
+                    </button>
+                    <button class="btn btn-primary" ng-click="proceed()" ng-if="!newApplication.IsRTE">
+                        <i class="fa fa-arrow-right"></i> Proceed to Fees
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>

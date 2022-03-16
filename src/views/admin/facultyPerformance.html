@@ -1,0 +1,54 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-user text-primary"></i>{{user.Name}}'s Performance
+                </div>
+                <div class="card-body">
+                    <div class="row justify-content-end" style="margin-bottom: 15px;">
+                        <div class="col-md-4">
+                            <select class="form-control" ng-model="selected.subject" ng-options="subject.Name for subject in subjects" ng-change="subjectSelected()">
+                                <option value="">Choose a {{keywords.SubjectKeyword}}</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <select class="form-control" ng-model="selected.class" ng-options="class.Name for class in classes" ng-change="classSelected()">
+                                <option value="">Choose a {{keywords.ClassKeyword}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div ng-if="chapters.length > 0" ng-repeat="chapter in chapters | orderBy: 'DisplayOrder'">
+                        <div class="accordion-header" ng-click="toggleChapter(chapter)">
+                            <div class="row">
+                                <div class="col-10 text-left">
+                                    <i class="fa accordion-expander" ng-class="isChapterShown(chapter) ? 'fa-minus' : 'fa-plus'"></i> &nbsp;&nbsp;{{chapter.Name}}
+                                </div>
+                                <span class="col-2 text-center">
+                                    {{chapter.ChapterAttendance}}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="accordion-description" ng-show="isChapterShown(chapter)" ng-repeat="topic in chapter.Topics">
+                            <div class="row">
+                                <div class="col-10 text-left" style="white-space: normal;">
+                                    {{topic.Name}}
+                                </div>
+                                <div class="col-2 text-center">
+                                    <span class="item-note scorecard-note">
+                                        {{topic.TopicAttendance}}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-if="chapters.length == 0" class="row">
+                        <div class="col-md-12 text-center">
+                            No lesson plan available!
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

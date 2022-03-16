@@ -1,0 +1,48 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-user-plus text-primary"></i>Add a User
+                </div>
+                <div class="card-body">
+                    <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">Name*</label>
+                            <div class="col-md-9">
+                                <input type="text" ng-model="newUser.Name" class="form-control" placeholder="Name">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">Role*</label>
+                            <div class="col-md-9">
+                                <select class="form-control" ng-model="newUser.Role" ng-options="role.RoleCode as role.Name for role in roles">
+                                    <option value="">Choose a Role</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">Phone Number*</label>
+                            <div class="col-md-9">
+                                <input type="tel" ng-model="newUser.PhoneNumber" class="form-control" placeholder="Phone Number">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">Designation</label>
+                            <div class="col-md-9">
+                                <input type="text" ng-model="newUser.Designation" class="form-control" placeholder="Designation">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer text-right">
+                    <button class="btn btn-danger" ng-click="discard()">
+                        <i class="fa fa-trash"></i> Discard
+                    </button>
+                    <button class="btn btn-primary" ng-click="addUser()">
+                        <i class="fa fa-user-plus"></i> Add User
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>

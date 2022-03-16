@@ -1,0 +1,88 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-md-7">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-money text-primary"></i> Transport Fees
+                </div>
+                <div class="card-body">
+                    <div class="col-md-8">
+                        <table class="table table-responsive-sm table-bordered mb-0 attendance-table" style="width:auto">
+                            <thead class="thead-light">
+                                <tr class="text-center">
+                                    <th>Start (kms)</th>
+                                    <th>End (kms)</th>
+                                    <th>Transport Type</th>
+                                    <th>Fees</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="text-center" ng-repeat="fee in transportFeesArray">
+                                    <td>{{fee.StartKM}}</td>
+                                    <td>{{fee.EndKM}}</td>
+                                    <td>{{fee.Name}}</td>
+                                    <td>{{fee.Fees}}</td>
+                                    <td>
+                                        <button class="btn btn-primary btn-sm" ng-click="editFees(fee)">
+                                            <i class="fa fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-danger btn-sm" ng-click="deleteTransportFees(fee)">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-5">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-edit text-primary"></i> Create/Edit
+                </div>
+                <div class="card-body">
+                    <div class="form-group row">
+                        <label class="col-md-4 col-form-label" for="text-input">Start (kms)</label>
+                        <div class="col-md-8">
+                            <input type="text" class="form-control" ng-model="transportFees.StartKM" placeholder="Start (kms)">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-4 col-form-label" for="text-input">End (kms)</label>
+                        <div class="col-md-8">
+                            <input type="text" class="form-control" ng-model="transportFees.EndKM" placeholder="End (kms)">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-4 col-form-label">Transport Type</label>
+                        <div class="col-md-8">
+                            <select class="form-control" ng-model="transportFees.Name" ng-options="tf.Name as tf.Name for tf in tfs">
+                                <option value="">Choose a type</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-4 col-form-label" for="text-input">Fees</label>
+                        <div class="col-md-8">
+                            <input type="text" class="form-control" ng-model="transportFees.Fees" placeholder="Fees">
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-right">
+                    <button class="btn btn-danger" ng-click="discard()">
+                        <i class="fa fa-trash"></i> Discard
+                    </button>
+                    <button class="btn btn-primary" ng-click="setTransportFees()" ng-if="transportFees.Id == null">
+                        <i class="fa fa-check"></i> Set
+                    </button>
+                    <button class="btn btn-primary" ng-click="updateTransportFees()" ng-if="transportFees.Id != null">
+                            <i class="fa fa-check"></i> Update
+                        </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

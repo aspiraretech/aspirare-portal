@@ -1,0 +1,81 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-filter text-primary"></i> Manage Attendance
+                </div>
+                <div class="card-body">
+                    <div class="row justify-content-end">
+                        <div class="col-md-2">
+                            <select class="form-control" ng-model="selected.user" ng-options="user.Name for user in usersToShow" ng-change="userSelected(selected.user)">
+                                <option value="">Choose a Faculty</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <select class="form-control" ng-model="selected.subject" ng-options="subject.Name for subject in subjects" ng-change="subjectSelected(selected.subject)">
+                                <option value="">Choose a {{keywords.SubjectKeyword}}</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <select class="form-control" ng-model="selected.class" ng-options="class.Name for class in classes">
+                                <option value="">Choose a {{keywords.ClassKeyword}}</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <input date-range-picker class="form-control date-picker" type="text" ng-model="selected.DateRange" placeholder="Select Date Range" options="options" style="margin-bottom: 10px;" />
+                        </div>
+                        <div class="col-md-3">
+                            <button class="btn btn-primary btn-block" ng-click="getAttendance()">
+                                Get Attendance
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top:15px;">
+                        <div class="col-md-2" style="padding-right:0px">
+                            <table class="table table-responsive-sm table-outline mb-0" ng-show="Students.length > 0" style="width:100%">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th>Student</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="student in Students">
+                                        <td style="overflow: hidden;white-space: nowrap;text-overflow: ellipsis;max-width: 200px;">
+                                            {{student.Name}}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-md-10" style="padding-left:0px; overflow:auto">
+                            <table class="table table-responsive-sm table-bordered mb-0 attendance-table" ng-show="Students.length > 0" style="width:auto">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th ng-repeat="dat in uniqueDates">
+                                            {{dat.AttendanceDate | date:'dd/MMM/yyyy'}}
+                                            <a href ng-click="deleteDaysAttendance(dat)">
+                                                <i class="fa fa-trash-o text-danger"></i>
+                                            </a>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="student in Students">
+                                        <td ng-repeat="att in student.Attendance">
+                                            <label style="margin:0px;">
+                                                <input type="checkbox" ng-model="att.IsPresent" ng-checked="att.IsPresent == 'true'" ng-true-value="'true'" ng-false-value="'false'" style="margin:0px;" ng-change="updateAttendance(att)"> 
+                                                <span ng-if="att.IsPresent == 'true'" class="google-green">Present</span>
+                                                <span ng-if="att.IsPresent == 'false'" class="google-red">Absent</span>
+                                            </label>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,99 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card" style="margin-bottom: 0px">
+                <div class="card-header">
+                    <i class="fa fa-bar-chart text-primary"></i>Students
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="row justify-content-end" style="margin-bottom: 15px;">
+                                <div class="col">
+                                    <rzslider class="custom-slider" rz-slider-model="sliderOptions.minValue" rz-slider-high="sliderOptions.maxValue" rz-slider-options="sliderOptions.options" onChange="marksRangeChanged()"></rzslider>
+                                </div>
+                                <!-- <div class="col-md-4" ng-if="items.length > 1" style="top:12px;">
+                                    <select class="form-control" ng-model="selected.item" ng-options="item.Name for item in items" ng-change="coSelected(selected.item)">
+                                        <option value="">Choose a CO</option>
+                                    </select>
+                                </div> -->
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 text-center" ng-if="studentsToShow.length == 0">
+                                    There are no results available!
+                                </div>
+                            </div>
+                            <div id="co-list">
+                                <table class="table table-responsive-sm table-outline mb-0" ng-if="studentsToShow.length > 0">
+                                    <thead class="thead-light">
+                                        <tr class="text-center">
+                                            <th>Aspirare Id</th>
+                                            <th>Student Name</th>
+                                            <th>Course Outcome</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="text-center">
+                                        <tr ng-repeat="student in studentsToShow">
+                                            <td>
+                                                {{student.FindInboxId}}
+                                            </td>
+                                            <td>
+                                                {{student.Name}}
+                                            </td>
+                                            <td>
+                                                <span ng-if="student.Marks != 'Ab'" ng-class="{'google-green':(student.Marks)>=75, 'google-yellow' :((student.Marks)<75 && (student.Marks)>=50), 'google-red': (student.Marks)<50}">
+                                                {{student.Marks | number: 1}}%
+                                            </span>
+                                                <span class="google-red" ng-if="student.Marks == 'Ab'">
+                                                {{student.Marks}}
+                                            </span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6" ng-if="loggedInUser.PackageCode != 'BASIC'">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-pie-chart text-primary"></i>Class
+                </div>
+                <div class="card-body">
+                    <div ng-if="chapters.length > 0" ng-repeat="chapter in chapters | orderBy: 'DisplayOrder'">
+                        <div class="accordion-header" ng-click="toggleChapter(chapter)">
+                            <div class="row">
+                                <div class="col-10 text-left">
+                                    <i class="fa accordion-expander" ng-class="isChapterShown(chapter) ? 'fa-minus' : 'fa-plus'"></i> &nbsp;&nbsp;{{chapter.Name}}
+                                </div>
+                                <span class="col-2 text-center" ng-if="chapter.ChapterAverage != null" ng-class="{'google-green':chapter.ChapterAverage>=75, 'google-yellow' :(chapter.ChapterAverage<75 && chapter.ChapterAverage>=50), 'google-red': chapter.ChapterAverage<50}">
+                                    {{chapter.ChapterAverage | number: 1}} %
+                                </span>
+                            </div>
+                        </div>
+                        <div class="accordion-description" ng-show="isChapterShown(chapter)" ng-repeat="topic in chapter.Topics">
+                            <div class="row">
+                                <div class="col-10 text-left" style="white-space: normal;">
+                                    {{topic.Name}}
+                                </div>
+                                <div class="col-2 text-center" ng-if="topic.IsCompleted" ng-if="loggedInUser.Type == 'OBE'">
+                                    <span class="item-note scorecard-note" ng-class="{'google-green':topic.TopicAverage>=75, 'google-yellow' :(topic.TopicAverage<75 && topic.TopicAverage>=50), 'google-red': topic.TopicAverage<50}">
+                                        {{topic.TopicAverage | number: 1}} %
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-if="chapters.length == 0" class="row">
+                        <div class="col-md-12 text-center">
+                            No lesson plan available!
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

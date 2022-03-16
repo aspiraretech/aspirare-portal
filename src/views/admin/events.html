@@ -1,0 +1,53 @@
+<div class="animated fadeIn">
+    <div class="card">
+        <div class="card-header">
+            <i class="fa fa-ticket text-primary"></i>News & Events
+        </div>
+        <div class="card-body">
+            <div class="row justify-content-end" style="margin-bottom: 15px;">
+                <div class="col-md-2">
+                    <select class="form-control" ng-model="selected.year" ng-options="year as year for year in years" ng-change="yearSelected(selected.year)">
+                        <option value="">Select Year</option>
+                    </select>
+                </div>
+                <div class="col-md-2" ng-if="loggedInUser.Role == 'ADMIN'">
+                    <button class="btn btn-md btn-block btn-primary" ng-click="addEvent()">
+                        <i class="fa fa-plus"></i> Add Event
+                    </button>
+                </div>
+            </div>
+            <div class="row" ng-if="events.length == 0">
+                <div class="col-md-12 text-center">
+                    Nothing has been shared yet!
+                </div>
+            </div>
+            <div class="row" ng-if="events.length > 0">
+                <div class="col-md-4 list-items">
+                    <div class="list-group">
+                        <a class="list-group-item list-group-item-action" ng-class="{'item-selected': event.Id == selectedEvent.Id}" ng-repeat="event in events" ng-click="eventSelected(event)">
+                            <b>{{event.Name}}</b><br> {{event.EventDate | date: 'dd/MMM'}}
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-8" ng-if="selectedEvent != null">
+                    <div class="row">
+                        <div class="col-md-12 detail-part">
+                            <button class="btn btn-sm btn-danger pull-right" ng-click="deleteEvent()" ng-if="loggedInUser.Role == 'ADMIN'">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                            <b>{{selectedEvent.Name}}</b><br>
+                            <small>{{selectedEvent.EventDate | date: 'dd/MMM'}}</small>
+                            <div class="description" ng-bind-html="descriptionToShow.text" ng-if="selectedEvent.Description != null && selectedEvent.Description != ''"></div>
+                            <iframe class="video-iframe" ng-if="selectedEvent.VideoURL" width="60%" height="300px" src="{{selectedEvent.VideoURL}}" frameborder="0" allowfullscreen></iframe>
+                            <div class="row" ng-if="selectedEvent.Images.length > 0" style="margin-top: 15px;">
+                                <div class="col-md-2" ng-repeat="image in selectedEvent.Images">
+                                    <img class="image-in-gallery" ng-src="{{image.ImageURL}}" alt="browser does not support images" width="100%;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

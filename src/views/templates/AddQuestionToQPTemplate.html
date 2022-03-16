@@ -1,0 +1,43 @@
+<div class="modal-header">
+    <h3 class="modal-title">Add Question</h3>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-md-12">
+            <div ng-if="currentCriteria.ImageURL != null">
+                <img class="criteria-image" ng-src="{{currentCriteria.ImageURL}}" alt="Browser doesnt support images">
+            </div>
+            <div ng-if="currentCriteria.Name != null" class="row">
+                <div class="col" style="font-weight: 500; margin-bottom: 20px;">
+                    {{currentCriteria.Name}}
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-3 col-form-label">Max Score*</label>
+                <div class="col-md-9">
+                    <input type="number" ng-model="newQuestion.MaxScore" class="form-control" placeholder="Max Score">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-3 col-form-label">Level*</label>
+                <div class="col-md-9">
+                    <select class="form-control" ng-model="newQuestion.BTId" ng-options="bt.Id as bt.Name for bt in bts">
+                        <option value="">Choose a Blooms level</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row" ng-if="loggedInUser.Type == 'OBE'">
+                <label class="col-md-3 col-form-label">CO</label>
+                <div class="col-md-9">
+                    <select class="form-control" ng-model="newQuestion.COId" ng-options="co.Id as co.Name for co in cos">
+                        <option value="">Choose a Course Outcome</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" type="button" ng-click="ok()">Add</button>
+    <button class="btn btn-default" type="button" ng-click="cancel()">Cancel</button>
+</div>

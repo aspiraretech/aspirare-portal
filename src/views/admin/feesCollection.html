@@ -1,0 +1,271 @@
+<div class="animated fadeIn">
+    <div class="row" style="margin-bottom:15px;">
+        <div class="col-md-6">
+            <h3>{{student.Name}}</h3>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group row">
+                <div class="col-md-9">
+                    <select class="form-control" ng-model="academicYear" ng-options="ay.year as ay.year for ay in years" ng-change="getFeesStructures()">
+                        <option value="">Choose an Academic Year</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <button class="btn btn-primary pull-right" ng-click="submitFees()">
+                        <i class="fa fa-check"></i> Submit Fees
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card" ng-disabled="hideRegularFees">
+                <div class="card-header">
+                    <i class="fa fa-usd text-primary"></i> Regular Fees
+                </div>
+                <div class="card-body">
+                    <table class="table table-responsive-sm table-bordered mb-0">
+                        <tr ng-if="feesStructure.RegularComponent1 != 0">
+                            <td>{{feesKeywords.RegularComponent1}}</td>
+                            <td class="text-center">{{feesStructure.RegularComponent1 | number:2}}</td>
+                        </tr>
+                        <tr ng-if="feesStructure.RegularComponent2 != 0">
+                            <td>{{feesKeywords.RegularComponent2}}</td>
+                            <td class="text-center">{{feesStructure.RegularComponent2 | number:2}}</td>
+                        </tr>
+                        <tr ng-if="feesStructure.RegularComponent3 != 0">
+                            <td>{{feesKeywords.RegularComponent3}}</td>
+                            <td class="text-center">{{feesStructure.RegularComponent3 | number:2}}</td>
+                        </tr>
+                        <tr ng-if="feesStructure.RegularComponent4 != 0">
+                            <td>{{feesKeywords.RegularComponent4}}</td>
+                            <td class="text-center">{{feesStructure.RegularComponent4 | number:2}}</td>
+                        </tr>
+                        <tr ng-if="feesStructure.RegularComponent5 != 0">
+                            <td>{{feesKeywords.RegularComponent5}}</td>
+                            <td class="text-center">{{feesStructure.RegularComponent5 | number:2}}</td>
+                        </tr>
+                        <tr ng-if="feesStructure.RegularComponent6 != 0">
+                            <td>{{feesKeywords.RegularComponent6}}</td>
+                            <td class="text-center">{{feesStructure.RegularComponent6 | number:2}}</td>
+                        </tr>
+                        <tr ng-if="feesStructure.RegularComponent7 != 0">
+                            <td>{{feesKeywords.RegularComponent7}}</td>
+                            <td class="text-center">{{feesStructure.RegularComponent7 | number:2}}</td>
+                        </tr>
+                        <tr ng-if="feesStructure.RegularComponent8 != 0">
+                            <td>{{feesKeywords.RegularComponent8}}</td>
+                            <td class="text-center">{{feesStructure.RegularComponent8 | number:2}}</td>
+                        </tr>
+                        <tr ng-if="feesStructure.RegularComponent9 != 0">
+                            <td>{{feesKeywords.RegularComponent9}}</td>
+                            <td class="text-center">{{feesStructure.RegularComponent9 | number:2}}</td>
+                        </tr>
+                        <tr ng-if="feesStructure.RegularComponent10 != 0">
+                            <td>{{feesKeywords.RegularComponent10}}</td>
+                            <td class="text-center">{{feesStructure.RegularComponent10 | number:2}}</td>
+                        </tr>
+                        <tr ng-if="feesStructure.RegularComponent11 != 0 && loggedInUser.Type != 'LM'">
+                            <td>{{feesKeywords.RegularComponent11}}</td>
+                            <td class="text-center">{{feesStructure.RegularComponent11 | number:2}}</td>
+                        </tr>
+                        <tr>
+                            <th>Minimim Payable</th>
+                            <th class="text-center">
+                                {{totalRegularFees | number:2}}
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>Tuition Fees</th>
+                            <th class="text-center">{{feesStructure.TuitionFees * 12 | number:2}}</th>
+                        </tr>
+                        <!-- <tr>
+                            <th>Total Fees (Annual)</th>
+                            <th class="text-center">
+                                {{totalFeesToBePaid | number:2}}
+                            </th>
+                        </tr> -->
+                        <tr>
+                            <td>Payment Date*</td>
+                            <th class="text-center">
+                                <input type="date" class="form-control" ng-model="regularFees.PaymentDate" min="{{dateInput.min}}" max="{{dateInput.max}}">
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>Payment Mode*</td>
+                            <th class="text-center">
+                                <input type="text" class="form-control" ng-model="regularFees.PaymentMode" placeholder="Cash/Cheque/DD">
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>Notes</td>
+                            <th class="text-center">
+                                <input type="text" class="form-control" ng-model="regularFees.Note" placeholder="Notes">
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>Invoice Value</th>
+                            <th class="text-center">
+                                {{invoiceValue | number:2}}
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>Discount</th>
+                            <th class="text-center">
+                                <input type="number" class="form-control text-center" ng-model="discount.TuitionFees" ng-change="tuitionDiscountEntered()">
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>Payable</th>
+                            <th class="text-center">
+                                {{currentPayment | number:2}}
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>Balance</th>
+                            <th class="text-center">
+                                {{balancePayable | number:2}}
+                            </th>
+                        </tr>
+                    </table>
+                    <div class="row" style="margin-top:10px;">
+                        <div class="col-md-12">
+                            <div style="font-size:1.2rem;font-weight: 500;">
+                                Select Months
+                                <button class="btn btn-sm btn-primary" style="margin-left:15px;" ng-click="selectAllMonthsForRegularFees()">Select All</button>
+                                <button class="btn btn-sm btn-primary" ng-click="unselectAllMonthsForRegularFees()">Unselect All</button>
+                            </div>
+                            <label class="toggle toggle-assertive" ng-repeat="month in monthsForRegularFees" style="display:block;">
+                                <input type="checkbox" class="switch-input" ng-model="month.isChecked" ng-change="monthSelectedForRegularFees(month)"> {{month.Name}}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-usd text-primary"></i>&nbsp;
+                    <span ng-if="loggedInUser.Type != 'LM'">Development Fees</span>
+                    <span ng-if="loggedInUser.Type == 'LM'">Annual Fees</span>
+                </div>
+                <div class="card-body">
+                    <table class="table table-responsive-sm table-bordered mb-0">
+                        <tr>
+                            <td>Student Type</td>
+                            <th class="text-center">
+                                <span ng-if="developmentFees.studentType == 1">New</span>
+                                <span ng-if="developmentFees.studentType == 2">Old</span>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>Payment Date*</td>
+                            <th class="text-center">
+                                <input type="date" class="form-control" ng-model="developmentFees.PaymentDate" min="{{dateInput.min}}" max="{{dateInput.max}}">
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>Payment Mode*</td>
+                            <th class="text-center">
+                                <input type="text" class="form-control" ng-model="developmentFees.PaymentMode" placeholder="Cash/Cheque/DD">
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>Notes</td>
+                            <th class="text-center">
+                                <input type="text" class="form-control" ng-model="developmentFees.Note" placeholder="Notes">
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>Add On Fees</th>
+                            <td class="text-center">
+                                <input type="number" class="form-control" ng-model="addOn.DevelopmentFees" ng-change="developmentFeesDownPaymentEntered()">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Discount</th>
+                            <td class="text-center">
+                                <input type="number" class="form-control" ng-model="discount.DevelopmentFees" ng-change="developmentFeesDownPaymentEntered()">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Payable</th>
+                            <td class="text-center">
+                                <input type="number" class="form-control" ng-model="developmentFees.downPayment" ng-change="developmentFeesDownPaymentEntered()">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Balance</th>
+                            <td class="text-center">
+                                {{balanceDevelopmentFees}}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-usd text-primary"></i> Transport Fees
+                </div>
+                <div class="card-body">
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label">Distance</label>
+                        <div class="col-md-9">
+                            <select class="form-control" ng-model="transportFees.selectedFees" ng-options="tf.Fees as tf.StartKM + ' - ' + tf.EndKM + 'kms' + tf.Name for tf in transportFeesArray" ng-change="calculateTransportFees()">
+                                <option value="">Choose a variant</option>
+                            </select>
+                        </div>
+                    </div>
+                    <table class="table table-responsive-sm table-bordered mb-0">
+                        <tr>
+                            <th>Transport Fees</th>
+                            <th class="text-center">
+                                {{transportFees.selectedFees}} / month
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>Payment Date*</td>
+                            <th class="text-center">
+                                <input type="date" class="form-control" ng-model="transportFees.PaymentDate" min="{{dateInput.min}}" max="{{dateInput.max}}">
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>Payment Mode*</td>
+                            <th class="text-center">
+                                <input type="text" class="form-control" ng-model="transportFees.PaymentMode" placeholder="Cash/Cheque/DD">
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>Notes</td>
+                            <th class="text-center">
+                                <input type="text" class="form-control" ng-model="transportFees.Note" placeholder="Notes">
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>Payable</th>
+                            <td class="text-center">
+                                {{totalTransportFees}}
+                            </td>
+                        </tr>
+                    </table>
+                    <div class="row" style="margin-top:10px;">
+                        <div class="col-md-12">
+                            <div style="font-size:1.2rem;font-weight: 500;">
+                                Select Months
+                                <button class="btn btn-sm btn-primary" style="margin-left:15px;" ng-click="selectAllMonthsForTransportFees()">Select All</button>
+                                <button class="btn btn-sm btn-primary" ng-click="unselectAllMonthsForTransportFees()">Unselect All</button>
+                            </div>
+                            <label class="toggle toggle-assertive" ng-repeat="month in monthsForTransportFees" style="display:block;">
+                                <input type="checkbox" class="switch-input" ng-model="month.isChecked" ng-change="calculateTransportFees()"> {{month.Name}}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

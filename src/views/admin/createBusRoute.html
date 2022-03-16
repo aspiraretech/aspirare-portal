@@ -1,0 +1,47 @@
+<div class="animated fadeIn">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <i class="fa fa-ticket text-primary"></i>Create Bus Route
+            </div>
+            <div class="card-body">
+                <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label" for="text-input">Route Number</label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" placeholder="Route Number" ng-model="newRoute.RouteNumber">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label" for="text-input">Vehicle Registration Number</label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" placeholder="Vehicle Registration Number" ng-model="newRoute.VehicleRegNumber">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label" for="textarea-input">Areas Covered</label>
+                        <div class="col-md-9">
+                            <textarea rows="5" class="form-control" placeholder="Areas covered separated by comma" ng-model="newRoute.AreasCovered"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label">Staff</label>
+                        <div class="col-md-9">
+                            <select class="form-control" ng-model="newRoute.UserId" ng-options="user.Id as user.Name for user in users">
+                                <option value="">Choose a Staff</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer text-right">
+                <button class="btn btn-danger" ng-click="discard()">
+                        <i class="fa fa-trash"></i> Discard
+                    </button>
+                <button class="btn btn-primary" ng-click="create()">
+                    <i class="fa fa-check"></i> Create Route
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
