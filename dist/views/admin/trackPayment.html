@@ -1,0 +1,59 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-money text-primary"></i>Track Payments
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <select class="form-control" ng-model="selected.course" ng-options="course.Name for course in courses" ng-change="courseSelected(selected.course)">
+                                <option value="">Choose a {{keywords.CourseKeyword}}</option>
+                            </select>
+                        </div>
+                        <div class="col">
+                            <select class="form-control" ng-model="selected.branch" ng-options="branch.Name for branch in branches" ng-change="getFeesInfo()">
+                                <option value="">Choose a {{keywords.BranchKeyword}}</option>
+                            </select>
+                        </div>
+                        <div class="col">
+                            <select class="form-control" ng-model="academicYear" ng-options="ay.year as ay.year for ay in years" ng-change="getFeesInfo()">
+                                <option value="">Choose an Academic Year</option>
+                            </select>
+                        </div>
+                        <div class="col">
+                            <input type="search" ng-model="search" class="form-control" placeholder="Search Student">
+                        </div>
+                        <div class="col">
+                            <button class="btn btn-primary" style="width:100%" type="button" ng-click="sendNotification()">
+                                Send Notification
+                            </button>
+                        </div>
+                    </div>
+
+                    <table ng-show="students.length > 0" class="table table-responsive-sm table-outline mb-0" style="margin-top:20px;">
+                        <thead class="thead-light">
+                            <tr>
+                                <th></th>
+                                <th>Student Name</th>
+                                <th>Balance Tuition Fees</th>
+                                <th>Balance Development Fees</th>
+                                <th>Total Fee Balance</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="student in studentsToShow | filter: search" ng-if="student.BalanceTuitionFees + student.BalanceDevelopmentFees != 0">
+                                <th><input type="checkbox" ng-model="student.IsSelected"></th>
+                                <td>{{student.Name}}</td>
+                                <td>{{student.BalanceTuitionFees | number: 2}}</td>
+                                <td>{{student.BalanceDevelopmentFees | number: 2}}</td>
+                                <td>{{student.BalanceTuitionFees + student.BalanceDevelopmentFees | number: 2}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,156 @@
+<div class="sidebar" ng-controller="MainController">
+    <nav class="sidebar-nav">
+        <ul class="nav">
+            <li class="nav-item" ng-if="loggedInUser.Role == 'ADMIN' || loggedInUser.Role == 'FACULTY'">
+                <a class="nav-link" ui-sref-active="active" ui-sref="app.main"><i class="fa fa-pie-chart"></i> Dashboard </a>
+            </li>
+            <li class="nav-item nav-dropdown" ng-class="{open: $state.includes('app.feesStructure')}" ng-if="loggedInUser.Role == 'ADMIN'">
+                <a class="nav-link nav-dropdown-toggle" ng-class="{active: $state.includes('app.feesStructure')}" href><i class="fa fa-usd"></i> Fees Structure</a>
+                <ul class="nav-dropdown-items">
+                    <li class="nav-item">
+                        <a class="nav-link" ui-sref-active="active" ui-sref="app.feesStructure.setFeesStructure"><i class="fa fa-money"></i> Set Fees Structure</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" ui-sref-active="active" ui-sref="app.feesStructure.setTransportFees"><i class="fa fa-bus"></i> Set Transport Fees</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item" ng-if="loggedInUser.Role == 'ADMIN'">
+                <a class="nav-link" ui-sref-active="active" ui-sref="app.users"><i class="fa fa-users"></i> Users </a>
+            </li>
+            <li class="nav-item" ng-if="loggedInUser.Role == 'ADMIN'">
+                <a class="nav-link" ui-sref-active="active" ui-sref="app.onlineClass"><i class="fa fa-desktop"></i> Online Class </a>
+            </li>
+            <li class="nav-item" ng-if="loggedInUser.Role == 'FACULTY' || loggedInUser.Role == 'STAFF'">
+                <a class="nav-link" ui-sref-active="active" ui-sref="app.students.viewStudents"><i class="fa fa-user"></i> View Students </a>
+            </li>
+            <li class="nav-item" ng-if="loggedInUser.Role == 'STAFF'">
+                <a class="nav-link" ui-sref-active="active" ui-sref="app.students.enquiry"><i class="fa fa-list-alt"></i> Enquiries/Application </a>
+            </li>
+            <li class="nav-item nav-dropdown" ng-class="{open: $state.includes('app.library')}" ng-if="loggedInUser.PackageCode != 'LM' && loggedInUser.Role == 'LIBRARIAN'">
+                <a class="nav-link nav-dropdown-toggle" ng-class="{active: $state.includes('app.library')}" href><i class="fa fa-mortar-board"></i> Library</a>
+                <ul class="nav-dropdown-items">
+                    <li class="nav-item">
+                        <a class="nav-link" ui-sref-active="active" ui-sref="app.library.bookList"><i class="fa fa-list"></i> Issue Book</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" ui-sref-active="active" ui-sref="app.library.returnBook"><i class="fa fa-user"></i> Return Book </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" ui-sref-active="active" ui-sref="app.library.bookHistory"><i class="fa fa-clock-o"></i> Borrow History </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" ui-sref-active="active" ui-sref="app.library.addBook({isEdit: false})"><i class="fa fa-plus"></i> Add Book</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item nav-dropdown" ng-class="{open: $state.includes('app.students')}" ng-if="loggedInUser.Role == 'ADMIN'">
+                <a class="nav-link nav-dropdown-toggle" ng-class="{active: $state.includes('app.students')}" href><i class="fa fa-mortar-board"></i> Students</a>
+                <ul class="nav-dropdown-items">
+                    <li class="nav-item">
+                        <a class="nav-link" ui-sref-active="active" ui-sref="app.students.viewStudents"><i class="fa fa-user"></i> View Students </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" ui-sref-active="active" ui-sref="app.students.enquiry"><i class="fa fa-list-alt"></i> Enquiries/Application </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" ui-sref-active="active" ui-sref="app.students.activateStudents"><i class="fa fa-check"></i> Activate Student</a>
+                    </li>
+                    <li class="nav-item" ng-if="loggedInUser.Type != 'LM'">
+                        <a class="nav-link" ui-sref-active="active" ui-sref="app.students.assignStudentsToElectives"><i class="fa fa-link"></i> Manage Electives </a>
+                    </li>
+                    <li class="nav-item" ng-if="loggedInUser.Type != 'LM'">
+                        <a class="nav-link" ui-sref-active="active" ui-sref="app.students.assignStudentsToSections"><i class="fa fa-link"></i> Manage Sections</a>
+                    </li>
+                    <li class="nav-item" ng-if="loggedInUser.Role == 'ADMIN'">
+                        <a class="nav-link" ui-sref-active="active" ui-sref="app.students.trackPayment"><i class="fa fa-money"></i> Track Payments </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item nav-dropdown" ng-class="{open: $state.includes('app.attendance')}" ng-if="loggedInUser.Role == 'ADMIN' || loggedInUser.Role == 'FACULTY'">
+                <a class="nav-link nav-dropdown-toggle" ng-class="{active: $state.includes('app.attendance')}" href><i class="fa fa-check-square-o"></i> Attendance</a>
+                <ul class="nav-dropdown-items">
+                    <li class="nav-item">
+                        <a class="nav-link" ui-sref-active="active" ui-sref="app.attendance.takeAttendance"><i class="fa fa-check"></i> Take Attendance </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" ui-sref-active="active" ui-sref="app.attendance.viewAttendance"><i class="fa fa-list-ul"></i> View Attendance </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" ui-sref-active="active" ui-sref="app.attendance.consolidatedAttendance"><i class="fa fa-list-ul"></i> Consolidated </a>
+                    </li>
+                    <li class="nav-item" ng-if="loggedInUser.Role == 'ADMIN'">
+                        <a class="nav-link" ui-sref-active="active" ui-sref="app.attendance.manageAttendance"><i class="fa fa-pencil"></i> Manage Attendance </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item" ng-if="loggedInUser.Role == 'ADMIN' && loggedInUser.Type == 'SCHOOL'">
+                <a class="nav-link" ui-sref-active="active" ui-sref="app.timeTable"><i class="fa fa-table"></i> Time Table </a>
+            </li>
+            <li class="nav-item" ng-if="loggedInUser.Role == 'ADMIN' && loggedInUser.Type == 'LM'">
+                <a class="nav-link" ui-sref-active="active" ui-sref="app.assignment"><i class="fa fa-share-alt"></i> Shared with Class </a>
+            </li>
+            <li class="nav-item" ng-if="loggedInUser.Role == 'FACULTY'">
+                <a class="nav-link" ui-sref-active="active" ui-sref="app.assignment"><i class="fa fa-share-alt"></i> Share to Class </a>
+            </li>
+            <li class="nav-item" ng-if="loggedInUser.Role == 'FACULTY' && loggedInUser.PackageCode != 'LM'">
+                <a class="nav-link" ui-sref-active="active" ui-sref="app.tests"><i class="fa fa-clipboard"></i> Assessment </a>
+            </li>
+            <li class="nav-item nav-dropdown" ng-class="{open: $state.includes('app.nba')}" ng-if="loggedInUser.Type == 'OBE'">
+                <a class="nav-link nav-dropdown-toggle" ng-class="{active: $state.includes('app.nba')}" href><i class="fa fa-star"></i> NBA</a>
+                <ul class="nav-dropdown-items">
+                    <li class="nav-item" ng-if="loggedInUser.Role == 'ADMIN'">
+                        <a class="nav-link" ui-sref-active="active" ui-sref="app.nba.programOutcome"><i class="fa fa-star"></i> PSO & PEO </a>
+                    </li>
+                    <li class="nav-item" ng-if="loggedInUser.Role == 'ADMIN'">
+                        <a class="nav-link" ui-sref-active="active" ui-sref="app.nba.setWeightage"><i class="fa fa-star"></i> Set Weightages </a>
+                    </li>
+                    <li class="nav-item" ng-if="loggedInUser.Role == 'FACULTY'">
+                        <a class="nav-link" ui-sref-active="active" ui-sref="app.nba.courseOutcome"><i class="fa fa-star"></i> Course Outcome </a>
+                    </li>
+                    <li class="nav-item" ng-if="loggedInUser.Role == 'FACULTY'">
+                        <a class="nav-link" ui-sref-active="active" ui-sref="app.nba.coAttainment"><i class="fa fa-star"></i> CO Attainment </a>
+                    </li>
+                    <li class="nav-item" ng-if="loggedInUser.Role == 'ADMIN'">
+                        <a class="nav-link" ui-sref-active="active" ui-sref="app.nba.poAttainment"><i class="fa fa-star"></i> PO Attainment </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item" ng-if="loggedInUser.Role == 'FACULTY' && loggedInUser.PackageCode == 'SMART' && loggedInUser.Type != 'LM'">
+                <a class="nav-link" ui-sref-active="active" ui-sref="app.assignDocuments"><i class="fa fa-link"></i> Syllabus </a>
+            </li>
+            <li class="nav-item" ng-if="loggedInUser.Role == 'FACULTY' && loggedInUser.PackageCode != 'LM'">
+                <a class="nav-link" ui-sref-active="active" ui-sref="app.learningOutcome"><i class="fa fa-bar-chart"></i> Learning Outcome </a>
+            </li>
+            <li class="nav-item" ng-if="loggedInUser.Role == 'ADMIN' || loggedInUser.Role == 'FACULTY'">
+                <a class="nav-link" ui-sref-active="active" ui-sref="app.events"><i class="fa fa-ticket"></i> News & Events </a>
+            </li>
+            <li class="nav-item" ng-if="loggedInUser.Role == 'ADMIN' || loggedInUser.Role == 'FACULTY'">
+                <a class="nav-link" ui-sref-active="active" ui-sref="app.calendar"><i class="fa fa-calendar"></i> Calendar </a>
+            </li>
+            <li class="nav-item" ng-if="loggedInUser.Role == 'ADMIN'">
+                <a class="nav-link" ui-sref-active="active" ui-sref="app.notifications"><i class="fa fa-paper-plane-o"></i> Notifications </a>
+            </li>
+            <li class="nav-item" ng-if="loggedInUser.Role == 'ADMIN' || loggedInUser.Role == 'STAFF'">
+                <a class="nav-link" ui-sref-active="active" ui-sref="app.expense"><i class="fa fa-money"></i> Expenses </a>
+            </li>
+            <li class="nav-item nav-dropdown" ng-class="{open: $state.includes('app.reports')}" ng-if="loggedInUser.Role == 'ADMIN' && loggedInUser.PackageCode == 'SMART' && loggedInUser.Type == 'LM'">
+                <a class="nav-link nav-dropdown-toggle" ng-class="{active: $state.includes('app.reports')}" href><i class="fa fa-star"></i> Reports</a>
+                <ul class="nav-dropdown-items">
+                    <li class="nav-item">
+                        <a class="nav-link" ui-sref-active="active" ui-sref="app.reports.evaluationRegister"><i class="fa fa-table"></i> Evaluation Register </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" ui-sref-active="active" ui-sref="app.reports.finalReport"><i class="fa fa-table"></i> Final Report </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" ui-sref-active="active" ui-sref="app.changePassword"><i class="fa fa-key"></i> Change Password </a>
+            </li>
+            <!-- <li class="nav-item" ng-if="loggedInUser.Role == 'ADMIN' && loggedInUser.PackageCode != 'BASIC'">
+                <a class="nav-link" ui-sref-active="active" ui-sref="app.busRoute"><i class="fa fa-bus"></i> Routes </a>
+            </li> -->
+        </ul>
+    </nav>
+</div>

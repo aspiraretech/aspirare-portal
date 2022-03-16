@@ -1,0 +1,111 @@
+<div class="animated fadeIn">
+    <div class="card">
+        <div class="card-header">
+            <i class="fa fa-share-alt text-primary"></i>Shared with class
+        </div>
+        <div class="card-body">
+            <div class="row justify-content-end" ng-if="loggedInUser.Role == 'FACULTY' && selected.class != null">
+                <div class="col-md-2">
+                    <select class="form-control" ng-model="selected.year" ng-options="year as year for year in years" ng-change="yearSelected(selected.year)">
+                        <option value="">Select Year</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <button class="btn btn-primary pull-right" ng-click="createAssignment()">
+                        <i class="fa fa-plus"></i> Create a Share
+                    </button>
+                </div>
+            </div>
+            <div class="row" ng-if="assignments.length == 0" style="margin-top: 15px;">
+                <div class="col-md-12 text-center">
+                    Nothing has been shared yet!
+                </div>
+            </div>
+            <div class="row" ng-if="assignments.length > 0" style="margin-top: 15px;">
+                <div class="col-md-4 list-items">
+                    <div class="list-group">
+                        <a class="list-group-item list-group-item-action" ng-class="{'item-selected': assignment.Id == selectedAssignment.Id}" ng-repeat="assignment in assignments" ng-click="assignmentSelected(assignment)">
+                            <b>{{assignment.Name}}</b><br>
+                            <span ng-if="loggedInUser.Role == 'ADMIN'">
+                                <small>{{assignment.Nickname}} <b>|</b> {{assignment.CreatedAt | date: 'dd/MMM'}} <b>|</b> {{assignment.UserName}}</small>
+                            </span>
+                            <span ng-if="loggedInUser.Role == 'FACULTY'"> 
+                                <small>{{assignment.CreatedAt | date: 'dd/MMM'}}</small>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-8" ng-if="selectedAssignment != null">
+                    <div class="row">
+                        <div class="col-md-12 detail-part">
+                            <div ng-if="!isEdit">
+                                <button class="btn btn-sm btn-danger pull-right" ng-click="deleteAssignment()">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                                <button class="btn btn-sm btn-primary pull-right" ng-click="toggleEditMode()" style="margin-right: 10px;">
+                                    <i class="fa fa-edit"></i>
+                                </button>
+                                <img ng-src="{{app_base}}img/doc.svg" alt="browser does not support images" class="doc-icon pull-right" ng-if="selectedAssignment.DocumentURL != null && selectedAssignment.DocumentURL != ''" ng-click="viewDocument()">
+                                <b>{{selectedAssignment.Name}}</b><br>
+                                <small>{{selectedAssignment.CreatedAt | date: 'dd/MMM'}}</small>
+                                <div class="description" ng-bind-html="descriptionToShow.text" ng-if="selectedAssignment.Description != null && selectedAssignment.Description != ''"></div>
+                                <iframe class="video-iframe" ng-if="selectedAssignment.VideoURL" width="60%" height="300px" src="{{selectedAssignment.VideoURL}}" frameborder="0" allowfullscreen></iframe>
+                                <div class="row" ng-if="selectedAssignment.Images.length > 0" style="margin-top: 15px;">
+                                    <div class="col-md-2" ng-repeat="image in selectedAssignment.Images">
+                                        <img class="image-in-gallery" ng-src="{{image.ImageURL}}" alt="browser does not support images" width="100%;">
+                                    </div>
+                                </div>
+                            </div>
+                            <div ng-if="isEdit">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <i class="fa fa-ticket text-primary"></i>Update Share
+                                    </div>
+                                    <div class="card-body">
+                                        <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
+                                            <div class="form-group row">
+                                                <label class="col-md-3 col-form-label" for="text-input">Title</label>
+                                                <div class="col-md-9">
+                                                    <input type="text" class="form-control" placeholder="Title" ng-model="editedAssignment.Name">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-md-3 col-form-label" for="textarea-input">Description</label>
+                                                <div class="col-md-9">
+                                                    <textarea rows="5" class="form-control" placeholder="Write Description, Add Links etc." ng-model="editedAssignment.Description"></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-md-3 col-form-label" for="text-input">Add Video</label>
+                                                <div class="col-md-9">
+                                                    <input type="text" class="form-control" placeholder="Video URL" ng-model="editedAssignment.VideoURL">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-md-3 col-form-label" for="text-input">Add Document</label>
+                                                <div class="col-md-9">
+                                                    <input type="text" class="form-control" placeholder="Document URL" ng-model="editedAssignment.DocumentURL">
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="card-footer text-right">
+                                        <button class="btn btn-danger" ng-click="deleteAssignment">
+                                            <i class="fa fa-trash"></i> Delete
+                                        </button>
+                                        <button class="btn btn-warning" ng-click="toggleEditMode()">
+                                            <i class="fa fa-close"></i> Discard
+                                        </button>
+                                        <button class="btn btn-primary" ng-click="update()">
+                                            <i class="fa fa-check"></i> Update
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

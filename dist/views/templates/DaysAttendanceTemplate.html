@@ -1,0 +1,22 @@
+<div class="modal-info modal-header">
+    <h3 class="modal-title">{{student.Name}}'s Attendance</h3>
+</div>
+<div class="modal-body">
+    <div class="form-group row" style="margin-top: 15px;">
+        <label class="col-md-3 col-form-label">Date</label>
+        <div class="col-md-9">
+            <input type="date" class="form-control" ng-model="attendanceObj.AttendanceDate" min="{{dateInput.min}}" max="{{dateInput.max}}" />
+        </div>
+    </div>
+    <div class="form-check checkbox">
+        <label class="form-check-label">
+            <input class="form-check-input" type="checkbox" ng-model="attendanceObj.IsPresent">
+            <span ng-if="attendanceObj.IsPresent">Present</span>
+            <span ng-if="!attendanceObj.IsPresent">Absent</span>
+        </label>
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-default" type="button" ng-click="cancel()">Cancel</button>
+    <button class="btn btn-primary" type="button" ng-click="submitAttendance()">Take Attendance</button>
+</div>

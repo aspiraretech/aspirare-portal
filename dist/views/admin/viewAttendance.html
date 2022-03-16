@@ -1,0 +1,62 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-filter text-primary"></i>View Attendance
+                </div>
+                <div class="card-body">
+                    <div class="row justify-content-center" ng-if="loggedInUser.Role == 'ADMIN'">
+                        <div class="col-md-2">
+                            <select class="form-control" ng-model="selected.user" ng-options="user.Name for user in usersToShow" ng-change="userSelected(selected.user)">
+                                <option value="">Choose a Faculty</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <select class="form-control" ng-model="selected.subject" ng-options="subject.Name for subject in subjects" ng-change="subjectSelected(selected.subject)">
+                                <option value="">Choose a {{keywords.SubjectKeyword}}</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <select class="form-control" ng-model="selected.class" ng-options="class.Name for class in classes">
+                                <option value="">Choose a {{keywords.ClassKeyword}}</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <button class="btn btn-primary btn-block" ng-click="checkAttendance()">
+                                Get Attendance
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row" ng-if="attendance.Students.length > 0" style="margin-top: 15px;">
+                        <div class="col-md-4" id="attendance-list">
+                            <table class="table table-responsive-sm table-outline mb-0">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>Student</th>
+                                        <th class="text-center">Attendance</th>
+                                        <th class="text-center">Percentage</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="student in attendance.Students | orderBy: 'Name'">
+                                        <td>{{$index+1}}</td>
+                                        <td>{{student.Name}}</td>
+                                        <td class="text-center">{{student.TotalPresent}}/{{attendance.TotalClasses}}</td>
+                                        <td class="text-center" ng-class="{'google-green':(student.TotalPresent / attendance.TotalClasses)>=0.75, 'google-yellow' :((student.TotalPresent / attendance.TotalClasses)<0.75 && (student.TotalPresent / attendance.TotalClasses)>=0.5), 'google-red': (student.TotalPresent / attendance.TotalClasses)<0.5}">{{(student.TotalPresent/attendance.TotalClasses)*100 | number:1}}%</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-md-2">
+                            <button class="btn btn-primary" ng-click="exportToXLS()">
+                               <i class="fa fa-file-excel-o"></i> Download
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

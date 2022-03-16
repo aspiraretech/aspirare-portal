@@ -1,0 +1,70 @@
+<div class="animated fadeIn">
+    <div class="col-md-4" style="float:left;">
+        <div class="card">
+            <div class="card-header">
+                <i class="fa fa-paper-plane-o text-primary"></i>Fees Reminder
+            </div>
+            <div class="card-body text-center">
+                <span>Send fees reminder to the students/parents who are yet to pay fees balance!</span>
+            </div>
+            <div class="card-footer text-right">
+                <button type="button" class="btn btn-primary" ng-click="sendFeesNotification()"><i class="fa fa-paper-plane-o"></i> Send Fees Reminder</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-8" style="float:right;">
+        <div class="card">
+            <div class="card-header">
+                <i class="fa fa-paper-plane-o text-primary"></i>Custom Notification
+            </div>
+            <div class="card-body">
+                <div class="row justify-content-end" style="margin-bottom: 15px;">
+                    <div class="col-md-3">
+                        <select class="form-control" ng-model="selected.courseId" ng-options="course.Id as course.Name for course in courses" ng-change="courseSelected(selected.courseId)">
+                            <option value="">Choose a {{keywords.CourseKeyword}}</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-control" ng-model="selected.branchId" ng-options="branch.Id as branch.Name for branch in branches" ng-change="branchSelected(selected.branchId)">
+                            <option value="">Choose a {{keywords.BranchKeyword}}</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-control" ng-model="selected.semesterId" ng-options="semester.Id as semester.SemesterNumber for semester in semesters" ng-change="semesterSelected(selected.semesterId)">
+                            <option value="">Choose a {{keywords.SemesterKeyword}}</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-control" ng-model="selected.classId" ng-options="class.Id as class.Name for class in classes" ng-change="getStudents()">
+                            <option value="">Choose a {{keywords.ClassKeyword}}</option>
+                        </select>
+                    </div>
+                </div>
+                <form action="" method="post" enctype="multipart/form-data" class="form-horizontal" style="margin-top: 30px;">
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label" for="text-input">Title</label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" placeholder="Title" ng-model="notification.Title">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label" for="textarea-input">Description</label>
+                        <div class="col-md-9">
+                            <textarea rows="4" class="form-control" placeholder="Description" ng-model="notification.Description"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer">
+                <div class="row justify-content-end">
+                    <div class="col-md-6 text-right">
+                        <button class="btn btn-primary" ng-click="sendCustomNotification()">
+                            <i class="fa fa-paper-plane-o"></i> Send
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

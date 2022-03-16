@@ -1,0 +1,76 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-star text-primary"></i>Assign Documents to Topics
+                </div>
+                <div class="card-body">
+                    <div class="row justify-content-end">
+                        <div class="col-md-6">
+                            <select class="form-control" ng-model="selected.chapter" ng-options="chapter.Name for chapter in chapters" ng-change="getAllTopicsWithPPTForChapter(selected.chapter)">
+                                <option value="">Select Chapter</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 20px;" ng-if="topicPresentationURLs.length == 0">
+                        <div class="col-md-12 text-center">
+                            There are no topics for this chapter!
+                        </div>
+                    </div>
+                    <div class="row" ng-if="topicPresentationURLs.length > 0" ng-repeat="topic in topicPresentationURLs" style="margin: 10px 0px;border-bottom: 1px solid;padding: 10px 0px;">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-12" style="line-height:34px;">
+                                    <!-- <input type="checkbox" ng-model="topic.TopicAttendance" ng-change="updateTopicAttendance(selected.chapter, topic)"> -->
+                                    <span style="font-weight:bolder; font-size: 1.2rem;">{{topic.Name}}&nbsp;</span>
+                                    <div class="dropdown" style="display: inline-block;">
+                                        <button class="btn btn-sm btn-primary dropdown-toggle" type="button" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Add
+                                        </button>
+                                        <div class="dropdown-menu dropdown-menu-left">
+                                            <a class="dropdown-item" href ng-click="addPresentation(topic)">Presentation</a>
+                                            <a class="dropdown-item" href ng-click="addVideo(topic)">Video</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div style="font-weight: bolder;text-decoration: underline;">Documents</div>
+                                    <div style="margin-top: 5px;" ng-if="topic.MediaURL">
+                                        <button class="btn btn-sm btn-primary" ng-click="open(topic.MediaURL)">Presentation</button>
+                                    </div>
+                                    <div style="margin-top: 5px;" ng-if="topic.QuestionsMediaURL">
+                                        <button class="btn btn-sm btn-primary" ng-click="open(topic.QuestionsMediaURL)">Question Papers</button>
+                                    </div>
+                                    <div class="row" ng-if="!topic.MediaURL && !topic.QuestionsMediaURL">
+                                        <div class="col">
+                                            No presentations added for this topic
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-9">
+                                    <div style="font-weight: bolder;text-decoration: underline;">Videos</div>
+                                    <div class="row" ng-repeat="subTopic in topic.SubTopics" style="margin-top: 5px;">
+                                        <div class="col-md-6" style="line-height:34px;">
+                                            <span editable-text="subTopic.Name" onaftersave="editSubTopic(subTopic)">{{subTopic.Name || 'null'}}</span>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <button class="btn btn-sm btn-primary" ng-click="open(subTopic.VideoURL)">
+                                                Play Video
+                                            </button>
+                                            <button class="btn btn-sm btn-danger" ng-click="deleteSubTopic(subTopic)" style="margin-left: 10px;" ng-if="subTopic.UserId != null">
+                                                Delete
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

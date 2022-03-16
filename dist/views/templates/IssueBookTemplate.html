@@ -1,0 +1,36 @@
+<div class="modal-header">
+    <h3 class="modal-title">Issue Book</h3>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group row">
+                <label class="col-md-4 col-form-label">Phone Number*</label>
+                <div class="col-md-6">
+                    <input type="text" ng-model="entered.phoneNumber" class="form-control" placeholder="Phone Number">
+                </div>
+                <div class="col-md-2" style="padding:0;">
+                    <button class="btn btn-primary" ng-click="searchStudent()">
+                        Search
+                    </button>
+                </div>
+            </div>
+            <div class="form-group row" ng-if="selected.student != null">
+                <label class="col-md-4 col-form-label">Student*</label>
+                <div class="col-md-8" style="display: flex;align-items: center;">
+                    {{selected.student.Name}}
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-4 col-form-label">Return Date*</label>
+                <div class="col-md-8">
+                    <input type="date" class="form-control" ng-model="selected.returnDate" min="{{dateInput.min}}" max="{{dateInput.max}}" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" type="button" ng-click="ok()">Issue</button>
+    <button class="btn btn-default" type="button" ng-click="cancel()">Cancel</button>
+</div>

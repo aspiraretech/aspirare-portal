@@ -1,0 +1,44 @@
+<div class="animated fadeIn">
+    <div class="card">
+        <div class="card-header">
+            <i class="fa fa-user text-primary"></i>Choose Class
+        </div>
+        <div class="card-body">
+            <div class="row" style="margin-bottom: 15px;">
+                <div class="col-md-2">
+                    <select class="form-control" ng-model="selected.courseId" ng-options="course.Id as course.Name for course in courses" ng-change="courseSelected(selected.courseId)">
+                        <option value="">Choose a {{keywords.CourseKeyword}}</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <select class="form-control" ng-model="selected.branchId" ng-options="branch.Id as branch.Name for branch in branches" ng-change="branchSelected(selected.branchId)">
+                        <option value="">Choose a {{keywords.BranchKeyword}}</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <select class="form-control" ng-model="selected.classId" ng-options="class.Id as class.Name for class in classes" ng-change="classSelected()">
+                        <option value="">Choose a {{keywords.ClassKeyword}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row" ng-if="subjects.length > 0">
+                <div class="col-md-12">
+                    <table class="table table-responsive-sm table-outline mb-0">
+                        <tr>
+                            <td></td>
+                            <td ng-repeat="period in periods" class="text-center">Period {{period.Name}}</td>
+                        </tr>
+                        <tr ng-repeat="day in days">
+                            <td>{{day.Name}}</td>
+                            <td ng-repeat="period in periods">
+                                <select class="form-control" ng-model="day.Subjects[$index]" ng-options="subject as subject.Name for subject in subjects" ng-change="subjectSelectedForDay(day, day.Subjects[$index])">
+                                    <option value="">Select</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

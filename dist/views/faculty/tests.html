@@ -1,0 +1,68 @@
+<div class="animated fadeIn">
+    <div class="card">
+        <div class="card-header">
+            <i class="fa fa-clipboard text-primary"></i>Assessments
+        </div>
+        <div class="card-body">
+            <div class="row justify-content-end" style="margin-bottom: 15px;">
+                <div class="col-md-2">
+                    <button class="btn btn-md btn-block btn-primary" ng-click="addAssessment()">
+                        <i class="fa fa-plus"></i> Add Assessment
+                    </button>
+                </div>
+            </div>
+            <div class="row" ng-if="tests.length == 0">
+                <div class="col-md-12 text-center">
+                    Nothing has been shared yet!
+                </div>
+            </div>
+            <div class="row" ng-if="tests.length > 0">
+                <div class="col-md-4 list-items">
+                    <div class="list-group">
+                        <a class="list-group-item list-group-item-action" ng-class="{'item-selected': test.Id == selectedTest.Id}" ng-repeat="test in tests" ng-click="testSelected(test)">
+                            <b>{{test.Name}}</b><br> {{test.TestDate | date: 'dd/MMM'}}
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-8" ng-if="selectedTest != null">
+                    <div class="row">
+                        <div class="col-md-12 detail-part">
+                            <button class="btn btn-sm btn-danger pull-right" ng-click="deleteTest()">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                            <img ng-src="{{app_base}}img/question-paper.svg" alt="browser does not support images" class="doc-icon pull-right" ng-click="questionPaper()">
+                            <b>{{selectedTest.Name}}</b><br>
+                            <small>{{selectedTest.TestDate | date: 'dd/MMM'}}</small>
+                            <div class="row" style="margin-top: 15px;" ng-if="students.length > 0">
+                                <div class="col-md-6">
+                                    <table class="table table-responsive-sm table-outline mb-0">
+                                        <thead class="thead-light">
+                                            <tr class="text-center">
+                                                <th>Name</th>
+                                                <th>Marks</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="student in students" class="text-center">
+                                                <td>{{student.Name}}</td>
+                                                <td>
+                                                    <span ng-if="student.Marks != 'Ab'">{{student.Marks}}/{{selectedTest.MaxMarks}}</span>
+                                                    <span class="text-danger" ng-if="student.Marks == 'Ab'">Ab</span>
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-primary" ng-click="openModal(student)">Update</button>
+                                                    <button class="btn btn-sm btn-danger" ng-click="markAbsent(student)">Absent</button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

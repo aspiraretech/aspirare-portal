@@ -1,0 +1,81 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-table text-primary"></i>Final Report
+                </div>
+                <div class="card-body">
+                    <div class="row justify-content-center" style="margin-bottom:15px;">
+                        <div class="col-md-2">
+                            <select class="form-control" ng-model="selected.courseId" ng-options="course.Id as course.Name for course in courses" ng-change="courseSelected(selected.courseId)">
+                                    <option value="">Choose a {{keywords.CourseKeyword}}</option>
+                                </select>
+                        </div>
+                        <div class="col-md-2">
+                            <select class="form-control" ng-model="selected.branchId" ng-options="branch.Id as branch.Name for branch in branches" ng-change="branchSelected(selected.branchId)">
+                                    <option value="">Choose a {{keywords.BranchKeyword}}</option>
+                                </select>
+                        </div>
+                        <div class="col-md-2">
+                            <select class="form-control" ng-model="selected.semesterId" ng-options="semester.Id as semester.SemesterNumber for semester in semesters" ng-change="semesterSelected(selected.semesterId)">
+                                    <option value="">Choose a {{keywords.SemesterKeyword}}</option>
+                                </select>
+                        </div>
+                        <div class="col-md-2">
+                            <select class="form-control" ng-model="selected.classId" ng-options="class.Id as class.Name for class in classes">
+                                    <option value="">Choose a {{keywords.ClassKeyword}}</option>
+                                </select>
+                        </div>
+                        <div class="col-md-2">
+                            <select class="form-control" ng-model="selected.subjectId" ng-options="subject.Id as subject.Name for subject in subjects" ng-change="getStudents()">
+                                    <option value="">Choose a {{keywords.SubjectKeyword}}</option>
+                                </select>
+                        </div>
+                    </div>
+                    <div class="row" ng-show="students.length > 0">
+                        <div class="col-md-2" style="padding-right:0">
+                            <table class="table table-responsive-sm table-bordered mb-0">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th class="text-center">
+                                            Students
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="student in students">
+                                        <td class="text-center">{{student.Name}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-md-10" style="padding-left:0; overflow-x: auto;">
+                            <table class="table table-responsive-sm table-bordered mb-0">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th ng-repeat="tag in tags" class="text-center" title={{tag.Name}}>
+                                            {{tag.Name | showFirstCharacter}}
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="student in students">
+                                        <td ng-repeat="tag in student.Tags" class="text-center">
+                                            {{(tag.Score * 3)/ 100 | number: 1}}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row" ng-hide="students.length > 0">
+                        <div class="col-md-12 text-center">
+                            Select a subject to see the report!
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

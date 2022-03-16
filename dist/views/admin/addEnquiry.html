@@ -1,0 +1,153 @@
+<div class="animated fadeIn">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <i class="fa fa-user-plus text-primary"></i>Enquiry - Add or Update
+            </div>
+            <div class="card-body col-md-12">
+                <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label" for="text-input">Application Form No.</label>
+                                <div class="col-md-9">
+                                    <input type="text" ng-model="newEnquiry.UniqueId" class="form-control" placeholder="Application Form No.">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label" for="text-input">Student Name*</label>
+                                <div class="col-md-9">
+                                    <input type="text" ng-model="newEnquiry.Name" class="form-control" placeholder="Student Name">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label" for="textarea-input">Gender*</label>
+                                <div class="col-md-9">
+                                    <label>
+                                        <input type="radio" name="gender" value="1" style="margin:10px 0 0 10px;" ng-model="newEnquiry.GenderId"> Male
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="gender" value="2" style="margin:10px 0 0 10px;" ng-model="newEnquiry.GenderId"> Female
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label" for="text-input">{{keywords.CourseKeyword}}*</label>
+                                <div class="col-md-9">
+                                    <select class="form-control" ng-model="newEnquiry.CourseId" ng-options="course.Id as course.Name for course in courses" ng-change="courseSelected(newEnquiry.CourseId)">
+                                        <option value="">Choose a {{keywords.CourseKeyword}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label" for="text-input">{{keywords.BranchKeyword}}*</label>
+                                <div class="col-md-9">
+                                    <select class="form-control" ng-model="newEnquiry.BranchId" ng-options="branch.Id as branch.Name for branch in branches" ng-change="branchSelected(newEnquiry.BranchId)">
+                                        <option value="">Choose a {{keywords.BranchKeyword}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label" for="text-input">{{keywords.SemesterKeyword}}*</label>
+                                <div class="col-md-9">
+                                    <select class="form-control" ng-model="newEnquiry.SemesterId" ng-options="semester.Id as semester.SemesterNumber for semester in semesters">
+                                        <option value="">Choose a {{keywords.SemesterKeyword}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label" for="text-input">Date Of Birth*</label>
+                                <div class="col-md-9">
+                                    <input type="date" class="form-control" ng-model="newEnquiry.DateOfBirth" min="{{dateInput.min}}" max="{{dateInput.max}}" />
+                                </div>
+                            </div>
+                            <div class="form-group row" ng-if="loggedInUser.PackageCode == 'LM' || loggedInUser.Type == 'LM'">
+                                <label class="col-md-3 col-form-label" for="text-input">Age</label>
+                                <div class="col-md-9">
+                                    <p style="margin-bottom:0;">{{age.Years}}&nbsp;year(s),&nbsp;{{age.Months}}&nbsp;month(s),&nbsp;{{age.Days}}&nbsp;day(s) as of Today</p>
+                                    <p style="margin-bottom:0;">{{ageAsOfJune.Years}}&nbsp;year(s),&nbsp;{{ageAsOfJune.Months}}&nbsp;month(s),&nbsp;{{ageAsOfJune.Days}}&nbsp;day(s) as of June 1st</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label" for="text-input">Father Name*</label>
+                                <div class="col-md-9">
+                                    <input type="text" ng-model="newEnquiry.FatherName" class="form-control" placeholder="Father/Guardian Name">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label" for="text-input">Mother Name</label>
+                                <div class="col-md-9">
+                                    <input type="text" ng-model="newEnquiry.MotherName" class="form-control" placeholder="Mother Name">
+                                </div>
+                            </div>
+                            <div class="form-group row" ng-if="loggedInUser.Type == 'LM'">
+                                <label class="col-md-3 col-form-label" for="text-input">Father Phone Number</label>
+                                <div class="col-md-9">
+                                    <input type="number" ng-model="newEnquiry.PhoneNumber" class="form-control" placeholder="Father Phone Number">
+                                </div>
+                            </div>
+                            <div class="form-group row" ng-if="loggedInUser.Type == 'LM'">
+                                <label class="col-md-3 col-form-label" for="text-input">Mother Phone Number</label>
+                                <div class="col-md-9">
+                                    <input type="number" ng-model="newEnquiry.MotherPhoneNumber" class="form-control" placeholder="Mother Phone Number">
+                                </div>
+                            </div>
+                            <div class="form-group row" ng-if="loggedInUser.Type != 'LM'">
+                                <label class="col-md-3 col-form-label" for="text-input">Contact No.*</label>
+                                <div class="col-md-9">
+                                    <input type="number" ng-model="newEnquiry.PhoneNumber" class="form-control" placeholder="Contact Number">
+                                </div>
+                            </div>
+                            <div class="form-group row" ng-if="loggedInUser.Type != 'LM'">
+                                <label class="col-md-3 col-form-label" for="text-input">Alternate No.</label>
+                                <div class="col-md-9">
+                                    <input type="number" ng-model="newEnquiry.MotherPhoneNumber" class="form-control" placeholder="Alternate No.">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label" for="text-input">Email-Id</label>
+                                <div class="col-md-9">
+                                    <input type="email" ng-model="newEnquiry.Email" class="form-control" placeholder="Email-Id">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label" for="text-input">Follow-up Date</label>
+                                <div class="col-md-9">
+                                    <input type="date" class="form-control" ng-model="newEnquiry.FollowUpDate" min="{{dateInput2.min}}" max="{{dateInput2.max}}" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label" for="text-input">Street/Apartment Name</label>
+                                <div class="col-md-9">
+                                    <input type="text" ng-model="newEnquiry.Searchterm" class="form-control" placeholder="Street/Apartment Name">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label" for="textarea-input">Note</label>
+                                <div class="col-md-9">
+                                    <textarea ng-model="newEnquiry.Note" rows="3" class="form-control" placeholder="Note"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer text-right">
+                <button class="btn btn-danger" ng-click="discardEnquiry()">
+                    <i class="fa fa-trash"></i> Discard
+                </button>
+                <button class="btn btn-primary" ng-click="addEnquiry()" ng-if="!isEdit">
+                    <i class="fa fa-user-plus"></i> Add Enquiry
+                </button>
+                <button class="btn btn-primary" ng-click="updateEnquiry()" ng-if="isEdit">
+                    <i class="fa fa-check"></i> Update Enquiry
+                </button>
+                <button class="btn btn-primary" ng-click="updateAndAdmitEnquiry()" ng-if="isEdit">
+                    <i class="fa fa-user-plus"></i> Update & Admit
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

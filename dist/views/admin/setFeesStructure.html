@@ -1,0 +1,163 @@
+<div class="animated fadeIn">
+    <div class="row justify-content-end" style="margin-bottom: 15px;">
+        <div class="col-md-3">
+            <select class="form-control" ng-model="selected.AcademicYear" ng-options="year.Name as year.Name for year in years">
+                <option value="">Choose an Academic Year</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <select class="form-control" ng-model="selected.courseId" ng-options="course.Id as course.Name for course in courses" ng-change="courseSelected(selected.courseId)">
+                <option value="">Choose a {{keywords.CourseKeyword}}</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <select class="form-control" ng-model="selected.branchId" ng-options="branch.Id as branch.Name for branch in branches" ng-change="branchSelected(selected.branchId)">
+                <option value="">Choose a {{keywords.BranchKeyword}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="card" ng-if="selected.branchId != null">
+        <div class="card-header">
+            <i class="fa fa-ticket text-primary"></i>Fees Structure
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group row">
+                        <label class="col-md-8 col-form-label">
+                            <a href="#" editable-text="feesKeywords.ApplicationFormFees" onaftersave="updateFeesKeywords()">{{ feesKeywords.ApplicationFormFees || "enter fees component" }}</a>
+                        </label>
+                        <div class="col-md-4">
+                            <input type="text" ng-model="feesStructure.ApplicationFormFees" class="form-control" placeholder="{{feesKeywords.ApplicationFormFees}}">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-8 col-form-label">
+                            <a href="#" editable-text="feesKeywords.TuitionFees">{{ feesKeywords.TuitionFees || "enter fees component" }}</a>(Monthly)
+                        </label>
+                        <div class="col-md-4">
+                            <input type="text" ng-model="feesStructure.TuitionFees" class="form-control" placeholder="{{feesKeywords.TuitionFees}}">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-8 col-form-label">
+                            <a href="#" editable-text="feesKeywords.OtherComponent1">{{ feesKeywords.OtherComponent1 || "enter fees component" }}</a>(New Student)
+                        </label>
+                        <div class="col-md-4">
+                            <input type="text" ng-model="feesStructure.OtherComponent1" class="form-control" placeholder="{{feesKeywords.OtherComponent1}}">
+                        </div>
+                    </div>
+                    <div class="form-group row" ng-if="loggedInUser.Type != 'LM'">
+                        <label class="col-md-8 col-form-label">
+                            <a href="#" editable-text="feesKeywords.OtherComponent2">{{ feesKeywords.OtherComponent2 || "enter fees component" }}</a>(Old Students)
+                        </label>
+                        <div class="col-md-4">
+                            <input type="text" ng-model="feesStructure.OtherComponent2" class="form-control" placeholder="{{feesKeywords.OtherComponent2}}">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-8 col-form-label">
+                            <a href="#" editable-text="feesKeywords.RegularComponent1">{{ feesKeywords.RegularComponent1 || "enter fees component" }}</a>
+                        </label>
+                        <div class="col-md-4">
+                            <input type="text" ng-model="feesStructure.RegularComponent1" class="form-control" placeholder="{{feesKeywords.RegularComponent1}}">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-8 col-form-label">
+                            <a href="#" editable-text="feesKeywords.RegularComponent2">{{ feesKeywords.RegularComponent2 || "enter fees component" }}</a>
+                        </label>
+                        <div class="col-md-4">
+                            <input type="text" ng-model="feesStructure.RegularComponent2" class="form-control" placeholder="{{feesKeywords.RegularComponent2}}">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-8 col-form-label">
+                            <a href="#" editable-text="feesKeywords.RegularComponent3">{{ feesKeywords.RegularComponent3 || "enter fees component" }}</a>
+                        </label>
+                        <div class="col-md-4">
+                            <input type="text" ng-model="feesStructure.RegularComponent3" class="form-control" placeholder="{{feesKeywords.RegularComponent3}}">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group row">
+                        <label class="col-md-8 col-form-label">
+                            <a href="#" editable-text="feesKeywords.RegularComponent4">{{ feesKeywords.RegularComponent4 || "enter fees component" }}</a>
+                        </label>
+                        <div class="col-md-4">
+                            <input type="text" ng-model="feesStructure.RegularComponent4" class="form-control" placeholder="{{feesKeywords.RegularComponent4}}">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-8 col-form-label">
+                            <a href="#" editable-text="feesKeywords.RegularComponent5">{{ feesKeywords.RegularComponent5 || "enter fees component" }}</a>
+                        </label>
+                        <div class="col-md-4">
+                            <input type="text" ng-model="feesStructure.RegularComponent5" class="form-control" placeholder="{{feesKeywords.RegularComponent5}}">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-8 col-form-label">
+                            <a href="#" editable-text="feesKeywords.RegularComponent6">{{ feesKeywords.RegularComponent6 || "enter fees component" }}</a>
+                        </label>
+                        <div class="col-md-4">
+                            <input type="text" ng-model="feesStructure.RegularComponent6" class="form-control" placeholder="{{feesKeywords.RegularComponent6}}">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-8 col-form-label">
+                            <a href="#" editable-text="feesKeywords.RegularComponent7">{{ feesKeywords.RegularComponent7 || "enter fees component" }}</a>
+                        </label>
+                        <div class="col-md-4">
+                            <input type="text" ng-model="feesStructure.RegularComponent7" class="form-control" placeholder="{{feesKeywords.RegularComponent7}}">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-8 col-form-label">
+                            <a href="#" editable-text="feesKeywords.RegularComponent8">{{ feesKeywords.RegularComponent8 || "enter fees component" }}</a>
+                        </label>
+                        <div class="col-md-4">
+                            <input type="text" ng-model="feesStructure.RegularComponent8" class="form-control" placeholder="{{feesKeywords.RegularComponent8}}">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-8 col-form-label">
+                            <a href="#" editable-text="feesKeywords.RegularComponent9">{{ feesKeywords.RegularComponent9 || "enter fees component" }}</a>
+                        </label>
+                        <div class="col-md-4">
+                            <input type="text" ng-model="feesStructure.RegularComponent9" class="form-control" placeholder="{{feesKeywords.RegularComponent9}}">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-8 col-form-label">
+                            <a href="#" editable-text="feesKeywords.RegularComponent10">{{ feesKeywords.RegularComponent10 || "enter fees component" }}</a>
+                        </label>
+                        <div class="col-md-4">
+                            <input type="text" ng-model="feesStructure.RegularComponent10" class="form-control" placeholder="{{feesKeywords.RegularComponent10}}">
+                        </div>
+                    </div>
+                    <div class="form-group row" ng-if="loggedInUser.Type != 'LM'">
+                        <label class="col-md-8 col-form-label">
+                            <a href="#" editable-text="feesKeywords.RegularComponent11">{{ feesKeywords.RegularComponent11 || "enter fees component" }}</a>
+                        </label>
+                        <div class="col-md-4">
+                            <input type="text" ng-model="feesStructure.RegularComponent11" class="form-control" placeholder="{{feesKeywords.RegularComponent11}}">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer text-right">
+            <button class="btn btn-danger" ng-click="discard()">
+                <i class="fa fa-trash"></i> Discard
+            </button>
+            <button class="btn btn-primary" ng-click="setFeesStructure()" ng-if="feesStructure.Id == null">
+                <i class="fa fa-check"></i> Set
+            </button>
+            <button class="btn btn-primary" ng-click="updateFeesStructure()" ng-if="feesStructure.Id != null">
+                <i class="fa fa-check"></i> Update
+            </button>
+        </div>
+    </div>
+</div>

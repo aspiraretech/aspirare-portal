@@ -1,0 +1,67 @@
+<div class="app flex-row align-items-center">
+    <div class="container">
+        <div class="card">
+            <div class="card-body">
+                <h1 class="text-center">Application Form</h1>
+                <p class="text-muted text-center" style="margin-bottom: 0px;">Do not refresh this page since the entered data will be lost!</p>
+                <p class="text-muted text-center">{{CollegeName}} - {{CourseName}} - {{BranchName}}</p>
+                <form role="form" name="applicationForm" novalidate>
+                    <div class="row justify-content-center">
+                        <div class="col-sm-8">
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label" for="text-input">Student Name*</label>
+                                <div class="col-md-9">
+                                    <input type="text" ng-model="newEnquiry.Name" class="form-control" placeholder="Student Name">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label" for="textarea-input">Gender*</label>
+                                <div class="col-md-9">
+                                    <label>
+                                        <input type="radio" name="gender" value="1" style="margin:10px 0 0 10px;" ng-model="newEnquiry.GenderId"> Male
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="gender" value="2" style="margin:10px 0 0 10px;" ng-model="newEnquiry.GenderId"> Female
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label" for="text-input">Date Of Birth*</label>
+                                <div class="col-md-9">
+                                    <input type="date" class="form-control" ng-model="newEnquiry.DateOfBirth" min="{{dateInput.min}}" max="{{dateInput.max}}" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label" for="text-input">Contact No.*</label>
+                                <div class="col-md-9">
+                                    <input type="number" ng-model="newEnquiry.PhoneNumber" class="form-control" placeholder="Contact Number">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label" for="text-input">Father Name*</label>
+                                <div class="col-md-9">
+                                    <input type="text" ng-model="newEnquiry.FatherName" class="form-control" placeholder="Father/Guardian Name">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label" for="text-input">Mother Name</label>
+                                <div class="col-md-9">
+                                    <input type="text" ng-model="newEnquiry.MotherName" class="form-control" placeholder="Mother Name">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label" for="text-input">Email-Id</label>
+                                <div class="col-md-9">
+                                    <input type="email" ng-model="newEnquiry.Email" class="form-control" placeholder="Email-Id">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer text-right">
+                <button class="btn btn-primary" ng-click="addEnquiry()">Submit Application</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,71 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <i class="fa fa-filter text-primary"></i>Filter
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <select class="form-control" ng-model="selected.courseId" ng-options="course.Id as course.Name for course in courses" ng-change="courseSelected(selected.courseId)">
+                            <option value="">All Selected</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-control" ng-model="selected.branchId" ng-options="branch.Id as branch.Name for branch in branches" ng-change="branchSelected(selected.branchId)">
+                            <option value="">All Selected</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-control" ng-model="selected.semesterId" ng-options="semester.Id as semester.SemesterNumber for semester in semesters" ng-change="semesterSelected(selected.semesterId)">
+                            <option value="">All Selected</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-control" ng-model="selected.classId" ng-options="class.Id as class.Name for class in classes" ng-change="getAllStatistics()">
+                            <option value="">All Selected</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6" ng-if="loggedInUser.PackageCode != 'LM' && loggedInUser.Type != 'LM'">
+        <div class="card">
+            <div class="card-header">
+                <i class="fa fa-pie-chart text-primary"></i>Academic Performance
+            </div>
+            <div class="card-body" style="height: 440px;">
+                <div class="row">
+                    <div class="col-md-12 text-center" ng-if="marksStatistics.Percentage != undefined">
+                        <div class="current" ng-style="{'color':graph.color}" style="position:relative; top: 170px; bottom: auto; left: 50%; transform: translateY(-50%) translateX(-50%);font-size: 35px;">{{marksStatistics.Percentage | number:1}}%</div>
+                        <round-progress max="100" current="marksStatistics.Percentage" color="{{graph.color}}" bgcolor="#eaeaea" radius="135" stroke="50" semi="false" rounded="false" clockwise="true" responsive="false" duration="1000" animation="easeInOutCirc" animation-delay="2">
+                        </round-progress>
+                    </div>
+                    <div class="col-md-12" ng-if="marksStatistics.Percentage == undefined">
+                        <div class="col-md-12 text-center">
+                            No assessments has been given yet!
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <i class="fa fa-line-chart text-primary"></i>Attendance (Last 15 Days)
+            </div>
+            <div class="card-body" style="height: 440px;">
+                <highchart ng-show="attendanceStatistics.Dates != undefined" id="attendanceChart" config="attendance.ChartConfig"></highchart>
+                <div class="row" ng-if="attendanceStatistics.Dates == undefined">
+                    <div class="col-md-12 text-center">
+                        No attendance has been marked yet!
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

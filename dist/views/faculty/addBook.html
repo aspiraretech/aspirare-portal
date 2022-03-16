@@ -1,0 +1,130 @@
+<div class="animated fadeIn">
+    <div class="card">
+        <div class="card-header">
+            <i class="fa text-primary" ng-class="{'fa-plus': !isEdit, 'fa-edit': isEdit}"></i>
+            <span ng-if="isEdit">Edit</span>
+            <span ng-if="!isEdit">Add</span> Book
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label">Title*</label>
+                        <div class="col-md-9">
+                            <input type="text" ng-model="newBook.Name" class="form-control" placeholder="Title">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label">Author*</label>
+                        <div class="col-md-9">
+                            <input type="text" ng-model="newBook.Author" class="form-control" placeholder="Author">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label">Second Author</label>
+                        <div class="col-md-9">
+                            <input type="text" ng-model="newBook.SecondAuthor" class="form-control" placeholder="Second Author">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label">Accession Number</label>
+                        <div class="col-md-9">
+                            <input type="text" ng-model="newBook.AccessionNumber" class="form-control" placeholder="Accession Number">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label">Call Number</label>
+                        <div class="col-md-9">
+                            <input type="text" ng-model="newBook.CallNo" class="form-control" placeholder="Call Number">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label">Issue/Reference</label>
+                        <div class="col-md-9">
+                            <input type="text" ng-model="newBook.IssueOrReference" class="form-control" placeholder="Issue/Reference">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label">Edition</label>
+                        <div class="col-md-9">
+                            <input type="text" ng-model="newBook.Edition" class="form-control" placeholder="Edition">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label">Publisher</label>
+                        <div class="col-md-9">
+                            <input type="text" ng-model="newBook.Publisher" class="form-control" placeholder="Publisher">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label">Place</label>
+                        <div class="col-md-9">
+                            <input type="text" ng-model="newBook.Place" class="form-control" placeholder="Place">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label">Year</label>
+                        <div class="col-md-9">
+                            <input type="text" ng-model="newBook.Year" class="form-control" placeholder="Year">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label">ISBN</label>
+                        <div class="col-md-9">
+                            <input type="text" ng-model="newBook.ISBN" class="form-control" placeholder="ISBN">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label">Suppliers</label>
+                        <div class="col-md-9">
+                            <input type="text" ng-model="newBook.Suppliers" class="form-control" placeholder="Suppliers">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label">Price</label>
+                        <div class="col-md-9">
+                            <input type="text" ng-model="newBook.Price" class="form-control" placeholder="Price">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label">Invoice Number</label>
+                        <div class="col-md-9">
+                            <input type="text" ng-model="newBook.InvoiceNumber" class="form-control" placeholder="Invoice Number">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label">Remarks</label>
+                        <div class="col-md-9">
+                            <input type="text" ng-model="newBook.Remarks" class="form-control" placeholder="Remarks">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label">Department</label>
+                        <div class="col-md-9">
+                            <input type="text" ng-model="newBook.Department" class="form-control" placeholder="Department">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label">Purchased/Gift</label>
+                        <div class="col-md-9">
+                            <input type="text" ng-model="newBook.PurchasedOrGift" class="form-control" placeholder="Purchased/Gift/Photocopy">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer text-right">
+            <button class="btn btn-primary" ng-click="addBook()" ng-if="!isEdit">
+                <i class="fa fa-check"></i> Add Book
+            </button>
+            <button class="btn btn-primary" ng-click="editBook()" ng-if="isEdit">
+                <i class="fa fa-edit"></i> Update Book
+            </button>
+            <button class="btn btn-danger" ng-click="discard()">
+                Discard
+            </button>
+        </div>
+    </div>
+</div>

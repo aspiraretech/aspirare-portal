@@ -1,0 +1,60 @@
+<div class="animated fadeIn">
+    <div class="card">
+        <div class="card-header">
+            <i class="fa fa-user text-primary"></i>Users
+        </div>
+        <div class="card-body">
+            <div class="row justify-content-end" style="margin-bottom: 15px;">
+                <div class="col-md-2">
+                    <input type="search" ng-model="search" class="form-control" placeholder="Search Users">
+                </div>
+                <div class="col-md-2">
+                    <button class="btn btn-md btn-block btn-primary" ng-click="addUser()">
+                        <i class="fa fa-user-plus"></i> Add User
+                    </button>
+                </div>
+            </div>
+            <div class="row" ng-if="users.length == 0" style="margin-top:15px;">
+                <div class="col-md-12 text-center">
+                    No users are added yet!
+                </div>
+            </div>
+            <table class="table table-responsive-sm table-outline mb-0" ng-if="users.length > 0">
+                <thead class="thead-light">
+                    <tr class="text-center">
+                        <th>No</th>
+                        <th>Name</th>
+                        <th>Role</th>
+                        <th>Contact Number</th>
+                        <th>Designation</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="text-center" ng-repeat="user in users | filter: search">
+                        <td>{{($index + 1)}}</td>
+                        <td>{{user.Name}}</td>
+                        <td ng-if="user.Role == 'ADMIN'">{{user.Role}}</td>
+                        <td ng-if="user.Role == 'FACULTY'">TEACHING STAFF</td>
+                        <td ng-if="user.Role != 'ADMIN' && user.Role != 'FACULTY'">NON-TEACHING STAFF</td>
+                        <td>{{user.PhoneNumber}}</td>
+                        <td>{{user.Designation}}</td>
+                        <td>
+                            <div class="dropdown">
+                                <button class="btn btn-sm btn-primary dropdown-toggle" type="button" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                  Actions
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a class="dropdown-item" href ng-click="updateUser(user)">Update</a>
+                                    <!-- <a class="dropdown-item" href ng-click="takeAttendance(user)">Take Attendance</a> -->
+                                    <!-- <a class="dropdown-item" href ng-click="checkPerformance(user)">Performance</a> -->
+                                    <a class="dropdown-item" href ng-click="resetPassword(user)">Reset Password</a>
+                                    <a class="dropdown-item" href ng-click="deleteUser(user)" ng-if="user.Id != loggedInUser.Id">Deactivate</a>
+                                </div>
+                            </div>
+                        </td>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

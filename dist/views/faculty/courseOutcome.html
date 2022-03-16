@@ -1,0 +1,96 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-list-ul text-primary"></i>Course Outcomes
+                </div>
+                <div class="card-body">
+                    <div class="row" ng-if="courseOutcomes.length == 0">
+                        <div class="col-md-12 text-center">
+                            No course outcomes have been entered yet!
+                        </div>
+                    </div>
+                    <table class="table table-responsive-sm table-outline mb-0" ng-if="courseOutcomes.length > 0">
+                        <thead class="thead-light">
+                            <tr class="text-center">
+                                <th>CO</th>
+                                <th>Description</th>
+                                <th>PO</th>
+                                <th>Weightage</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="text-center" ng-repeat="co in courseOutcomes">
+                                <td>{{co.Name}}</td>
+                                <td>{{co.Description}}</td>
+                                <td>{{co.POName}}</td>
+                                <td>{{co.Descriptor}}</td>
+                                <td>
+                                    <button class="btn btn-sm btn-danger" ng-click="removeCOPOMapping(co)">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-plus text-primary"></i>Add Course Outcome
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group row">
+                                            <label class="col-md-3 col-form-label">Course Outcome</label>
+                                            <div class="col-md-9">
+                                                <select class="form-control" ng-model="newCO.Name" ng-options="co.Name as co.Name for co in cos">
+                                                <option value="">Choose a CO</option>
+                                            </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-md-3 col-form-label">Description</label>
+                                            <div class="col-md-9">
+                                                <textarea ng-model="newCO.Description" rows="4" class="form-control" placeholder="Describe Course Outcome"></textarea>
+                                            </div>
+                                        </div>
+                                        <table class="table table-responsive-sm table-outline mb-0" ng-if="programOutcomes.length > 0">
+                                            <tbody>
+                                                <tr ng-repeat="po in programOutcomes">
+                                                    <td>
+                                                        <input type="checkbox" ng-model="po.isChecked">
+                                                    </td>
+                                                    <td>{{po.Name}}</td>
+                                                    <td>{{po.Description}}</td>
+                                                    <td>
+                                                        <select class="form-control" ng-model="po.Descriptor" ng-options="descriptor.Name as descriptor.Name for descriptor in descriptors">
+                                                            <option value="">Select Weightage</option>
+                                                        </select>
+                                                    </td>
+                                                </tr>
+                                                </thead>
+                                        </table>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button class="btn pull-right btn-primary" ng-click="createNewCo()">
+                        <i class="fa fa-plus"></i> Add Course Outcome
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,61 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-undo text-primary"></i>Return Book
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="row" ng-if="borrowedBooks.length == 0">
+                                <div class="col-md-12 text-center">
+                                    Nothing has been issued yet!
+                                </div>
+                            </div>
+                            <div class="row justify-content-end" ng-show="borrowedBooks.length > 0" style="margin-bottom:15px;">
+                                <div class="col-md-4 text-right">
+                                    <h4 style="line-height: 34px; margin:0">Total: {{booksToShow.length}}</h4>
+                                </div>
+                                <div class="col-md-4">
+                                    <input type="text" ng-model="searchText" class="form-control" placeholder="Search Student/Book" ng-change="searchBooks(searchText)">
+                                </div>
+                            </div>
+                            <table class="table table-responsive-sm table-outline mb-0" ng-if="borrowedBooks.length > 0">
+                                <thead class="thead-light">
+                                    <tr class="text-center">
+                                        <th>Book Name</th>
+                                        <th>Student</th>
+                                        <th>Return Date</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="text-center" ng-repeat="bb in booksToShow | orderBy: '-ReturnDate'">
+                                        <td>
+                                            {{bb.Name}}
+                                        </td>
+                                        <td>
+                                            {{bb.StudentName}}
+                                        </td>
+                                        <td>
+                                            {{bb.ReturnDate | date: 'dd/MMM'}}
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-primary" type="button" ng-click="returnBook(bb)">
+                                                Return Book
+                                            </button>
+                                            <button class="btn btn-primary" type="button" ng-click="sendNotification(bb)">
+                                                Send Notification
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

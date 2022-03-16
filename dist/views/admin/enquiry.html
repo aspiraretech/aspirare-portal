@@ -1,0 +1,152 @@
+<div class="animated fadeIn">
+    <div class="card">
+        <div class="card-header">
+            <i class="fa fa-money text-primary"></i>Enquiry Stats
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="callout callout-info">
+                        <small class="text-muted">Total Enquiries</small>
+                        <br>
+                        <strong class="h4">{{enquiryStats.Total | number}}</strong>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="callout callout-success">
+                        <small class="text-muted">Converted</small>
+                        <br>
+                        <strong class="h4">{{enquiryStats.Converted | number}}</strong>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="callout callout-warning">
+                        <small class="text-muted">Follow Ups(This Month)</small>
+                        <br>
+                        <strong class="h4">{{enquiryStats.FollowUpsCount | number}}</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header">
+            <i class="fa fa-list-alt text-primary"></i>Enquiries/Application
+        </div>
+        <div class="card-body">
+            <div class="row justify-content-end" style="margin-bottom:15px;">
+                <!-- <div class="col-md-3">
+                    <input type="search" class="form-control" ng-model="search" placeholder="Search">
+                </div> -->
+                <div class="col-md-2">
+                    <button class="btn btn-md btn-block btn-primary" ng-click="addEnquiry()">
+                        <i class="fa fa-user-plus"></i> Add Enquiry
+                    </button>
+                </div>
+                <div class="col-md-2" ng-if="enquiriesToDelete.length > 0">
+                    <div class="dropdown">
+                        <button style="width: 100%;" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Bulk Actions
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" href ng-click="sendSMS()">Send SMS</a>
+                            <a class="dropdown-item" href ng-click="deleteEnquiries()">Delete All</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 text-center" ng-if="enquiries.length == 0">
+                    There are no enquiries entered!
+                </div>
+                <div class="col-md-12 text-center" ng-if="enquiries.length > 0">
+                    <!-- <table class="table table-responsive-sm table-outline mb-0" ng-if="enquiries.length > 0">
+                        <thead class="thead-light">
+                            <tr class="text-center">
+                                <th>
+                                    <input type="checkbox" ng-model="selected.all" style="margin:0px;" ng-change="allEnquiriesSelected()">
+                                </th>
+                                <th>No.</th>
+                                <th>Created Date</th>
+                                <th>Student Name</th>
+                                <th>Father's Name</th>
+                                <th>Contact Number</th>
+                                <th>Interested in Joining</th>
+                                <th>Followup Date</th>
+                                <th>Application Form No.</th>
+                                <th>Status</th>
+                                <th>Street/Apartment Name</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="text-center" ng-repeat="enquiry in enquiriesToShow | orderBy: '-CreatedAt'">
+                                <td>
+                                    <input type="checkbox" ng-model="enquiry.isSelected" style="margin:0px;" ng-change="enquirySelected(enquiry)">
+                                </td>
+                                <td>{{$index + 1}}</td>
+                                <td>{{enquiry.CreatedAt | date: 'yyyy-MM-dd'}} </td>
+                                <td>{{enquiry.Name}}</td>
+                                <td>{{enquiry.FatherName}}</td>
+                                <td>{{enquiry.PhoneNumber}}</td>
+                                <td>{{enquiry.BranchName}}</td>
+                                <td>{{enquiry.FollowUpDate | date: 'yyyy-MM-dd'}} </td>
+                                <td>{{enquiry.UniqueId}}</td>
+                                <td>{{enquiry.Status}}</td>
+                                <td>{{enquiry.Searchterm}}</td>
+                                <td>
+                                    <div class="dropdown">
+                                        <button class="btn btn-sm btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                Actions
+                                            </button>
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            <a class="dropdown-item" href ng-click="changeEnquiryStatus(enquiry, 'ARCHIVED')" ng-if="enquiry.Status == 'ACTIVE'">Archive</a>
+                                            <a class="dropdown-item" href ng-click="admitStudent(enquiry)" ng-if="enquiry.Status == 'ACTIVE'">Admit Student</a>
+                                            <a class="dropdown-item" href ng-click="viewNotes(enquiry)" ng-if="enquiry.Status == 'ACTIVE'">Followup Comment</a>
+                                            <a class="dropdown-item" href ng-click="getFeesStructure(enquiry)" ng-if="enquiry.UniqueId != null && enquiry.Status == 'ACTIVE'">Print Receipt</a>
+                                            <a class="dropdown-item" href ng-click="edit(enquiry)" ng-if="enquiry.Status == 'ACTIVE'">Edit</a>
+                                            <a class="dropdown-item" href ng-click="changeEnquiryStatus(enquiry, 'ACTIVE')" ng-if="enquiry.Status == 'ARCHIVED'">Activate</a>
+                                            <a class="dropdown-item" href ng-click="delete(enquiry)" ng-if="enquiry.Status == 'ARCHIVED'">Delete</a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table> -->
+                    <table tr-ng-grid="" items="enquiries" page-items="10" fields="['CreatedAt','Name','FatherName','PhoneNumber','BranchName','FollowUpDate','UniqueId','Status','Searchterm']">
+                        <thead>
+                            <tr>
+                                <th field-name="CreatedAt" display-name="Created On" enable-sorting="true" display-format="date:'dd-MM-yyyy'"></th>
+                                <th field-name="Name" display-name="Name" enable-sorting="true" enable-filtering="false"></th>
+                                <th field-name="FatherName" display-name="Father's Name" enable-sorting="true" enable-filtering="false"></th>
+                                <th field-name="PhoneNumber" display-name="Phone Number" enable-sorting="true" enable-filtering="false"></th>
+                                <th field-name="BranchName" display-name="Branch Name" enable-sorting="true" enable-filtering="false"></th>
+                                <th field-name="FollowUpDate" display-format="date:'dd-MM-yyyy'" enable-sorting="true"></th>
+                                <th field-name="UniqueId" display-name="App From No." enable-sorting="true" enable-filtering="false"></th>
+                                <th field-name="Status" display-name="Status" enable-sorting="true" enable-filtering="true"></th>
+                                <th field-name="Searchterm" display-name="Street/Apartment No." enable-sorting="true" enable-filtering="false"></th>
+                                <th display-name="Actions" enable-filtering="false"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <td>
+                                <div class="dropdown">
+                                    <button class="btn btn-sm btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Actions
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href ng-click="admitStudent(gridItem)" ng-if="gridItem.Status == 'ACTIVE'">Admit Student</a>
+                                        <a class="dropdown-item" href ng-click="viewNotes(gridItem)" ng-if="gridItem.Status == 'ACTIVE'">Followup Comment</a>
+                                        <a class="dropdown-item" href ng-click="getFeesStructure(gridItem)" ng-if="gridItem.UniqueId != null && gridItem.Status == 'ACTIVE'">Print Receipt</a>
+                                        <a class="dropdown-item" href ng-click="edit(gridItem)" ng-if="gridItem.Status == 'ACTIVE'">Edit</a>
+                                        <a class="dropdown-item" href ng-click="delete(gridItem)" ng-if="gridItem.Status == 'ACTIVE'">Delete</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

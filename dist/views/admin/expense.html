@@ -1,0 +1,85 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-money text-primary"></i>Expenses - {{sumOfExpenses}}
+                </div>
+                <div class="card-body">
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label">Choose date range</label>
+                        <div class="col-md-9">
+                            <input date-range-picker class="form-control date-picker" type="text" ng-model="selected.DateRange" placeholder="Select Date Range" options="options" style="margin-bottom: 10px;" ng-change="getAllExpenses()" />
+                        </div>
+                    </div>
+                    <div class="row" ng-if="expenses.length == 0">
+                        <div class="col-md-12 text-center">
+                            No expenses have been entered yet!
+                        </div>
+                    </div>
+                    <table class="table table-responsive-sm table-outline mb-0" ng-if="expenses.length > 0">
+                        <thead class="thead-light">
+                            <tr class="text-center">
+                                <th>Reason</th>
+                                <th>Amount</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="expense in expenses | orderBy: '-ExpenseDate'" class="text-center">
+                                <td>
+                                    <b>{{expense.Particulars}}</b>
+                                    <div class="small text-muted">
+                                        {{expense.ExpenseDate | date: 'dd/MMM'}}
+                                    </div>
+                                </td>
+                                <td>
+                                    {{expense.Amount | number}}
+                                </td>
+                                <td>
+                                    <button class="btn btn-sm btn-danger" ng-click="deleteExpense(expense)">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-money text-primary"></i>Add Expense
+                </div>
+                <div class="card-body">
+                    <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">Reason</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" placeholder="Reason of expense" ng-model="newExpense.Particulars">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">Amount</label>
+                            <div class="col-md-9">
+                                <input type="number" class="form-control" placeholder="Amount" ng-model="newExpense.Amount">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">Expense Date</label>
+                            <div class="col-md-9">
+                                <input type="date" class="form-control" ng-model="newExpense.ExpenseDate" min="{{dateInput.min}}" max="{{dateInput.max}}" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer">
+                    <button class="btn pull-right btn-primary" ng-click="addExpense()">
+                        <i class="fa fa-check"></i> Add Expense
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

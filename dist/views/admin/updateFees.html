@@ -1,0 +1,231 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-md-8">
+            <button class="btn btn-primary" style="margin-right:10px;" ng-click="goBack();">
+                <i class="fa fa-arrow-left"></i>&nbsp;Back
+            </button>
+            <h3 style="display:inline;">{{student.Name}}</h3>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group row" style="margin-left:0px">
+                <label class="col-form-label">Academic Year</label>
+                <div class="col-md-9">
+                    <select class="form-control" ng-model="common.academicYear" ng-options="year.year as year.year for year in years" ng-change="academicYearChanged()">
+                        <option value="">Year</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4" ng-if="!student.IsRTE">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-usd text-primary"></i> Tuition Fees
+                </div>
+                <div class="card-body">
+                    <h4>Choose Months</h4>
+                    <label class="toggle toggle-assertive" ng-repeat="month in regularFees | orderBy: getMonthValue" style="display:block;">
+                        <input type="checkbox" class="switch-input" ng-model="month.Type1Status" ng-true-value="1" ng-false-value="0" ng-change="monthSelectedForRegularFees(month)" ng-disabled="month.disabled"> {{month.Month}}
+                        <span>&nbsp;({{month.FeesAfterAddOn | number:2}})</span>
+                        <input type="number" class="form-control" ng-model="month.AddOnFees" ng-change="addOnFeesEntered(month)" style="margin-left:10px; display:inline; width:100px;" placeholder="Add-on Fees" ng-if="month.Type1Status && !month.disabled">
+                    </label>
+                    <table class="table table-responsive-sm table-bordered mb-0" ng-if="showTuitionFeesCollectionTable">
+                        <tr ng-if="showDiscount">
+                            <td>Discount</td>
+                            <td class="text-center">
+                                <input type="number" class="form-control" ng-model="regular.discount" placeholder="Discount" ng-change="calculateRegularFees()">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Payable</td>
+                            <td class="text-center">{{regular.payable | number:2}}</td>
+                        </tr>
+                        <tr>
+                            <td>Payment Date</td>
+                            <th class="text-center">
+                                <input type="date" class="form-control" ng-model="regular.paymentDate" min="{{dateInput.min}}" max="{{dateInput.max}}">
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>Payment Mode</td>
+                            <th class="text-center">
+                                <input type="text" class="form-control" ng-model="regular.paymentMode" placeholder="Cash/Cheque/DD">
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>Notes</td>
+                            <th class="text-center">
+                                <input type="text" class="form-control" ng-model="regular.note" placeholder="Notes">
+                            </th>
+                        </tr>
+                    </table>
+                </div>
+                <div class="card-footer text-right" ng-if="showTuitionFeesCollectionTable">
+                    <button class="btn btn-primary" ng-click="updateTuitionFees()">
+                        <i class="fa fa-check"></i> Update
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4" ng-if="!student.IsRTE">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-usd text-primary"></i>&nbsp;
+                    <span ng-if="loggedInUser.Type != 'LM'">Development Fees</span>
+                    <span ng-if="loggedInUser.Type == 'LM'">Annual Fees</span>
+                </div>
+                <div class="card-body">
+                    <table class="table table-responsive-sm table-bordered mb-0" ng-if="developmentFees.length > 0">
+                        <thead class="thead-light">
+                            <tr class="text-center">
+                                <th>Fees Paid</th>
+                                <th>Date</th>
+                                <th>Payment Mode</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="text-center" ng-repeat="fees in developmentFees">
+                                <td>{{fees.Type4Fees}}</td>
+                                <td>{{fees.Type4PaymentDate | date: 'dd/MM/yyyy'}}</td>
+                                <td>{{fees.Type4PaymentMode}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-responsive-sm table-bordered mb-0" style="margin-top:20px;" ng-if="showDevelopmentFeesCollectionTable">
+                        <tr>
+                            <td>Total Fees</td>
+                            <td class="text-center">
+                                {{development.overall | number:2}}
+                            </td>
+                        </tr>
+                        <!-- <tr ng-if="development.alreadyPaid != 0">
+                            <td>Add On Fees</td>
+                            <td class="text-center">
+                                {{development.addOn | number:2}}
+                            </td>
+                        </tr> -->
+                        <tr>
+                            <td>Discount</td>
+                            <td class="text-center">
+                                <input type="number" class="form-control text-center" ng-model="development.discount" placeholder="Discount" ng-change="calculateDevelopmentFees()">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Already Paid</td>
+                            <td class="text-center">
+                                {{development.alreadyPaid | number:2}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Add On Fees</td>
+                            <td class="text-center">
+                                <input type="number" class="form-control text-center" ng-model="development.addOn" placeholder="Add On" ng-change="calculateDevelopmentFees()">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Balance</td>
+                            <td class="text-center">
+                                {{development.balance | number:2}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Payable</td>
+                            <td class="text-center">
+                                <input type="number" class="form-control text-center" ng-model="development.payable" ng-change="calculateDevelopmentFees()">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Payment Date</td>
+                            <th class="text-center">
+                                <input type="date" class="form-control" ng-model="development.paymentDate" min="{{dateInput.min}}" max="{{dateInput.max}}">
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>Payment Mode</td>
+                            <th class="text-center">
+                                <input type="text" class="form-control" ng-model="development.paymentMode" placeholder="Cash/Cheque/DD">
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>Notes</td>
+                            <th class="text-center">
+                                <input type="text" class="form-control" ng-model="development.note" placeholder="Notes">
+                            </th>
+                        </tr>
+                    </table>
+                </div>
+                <div class="card-footer text-right" ng-if="showDevelopmentFeesCollectionTable">
+                    <button class="btn btn-primary" ng-click="updateDevelopmentFees()">
+                        <i class="fa fa-check"></i> Update
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div ng-if="showCollectTransportFeesButtonForRTEStudents">
+                <div class="row" style="margin-bottom: 15px;">
+                    <label class="col-md-3 col-form-label">Distance</label>
+                    <div class="col-md-9">
+                        <select class="form-control" ng-model="transport.selectedFees" ng-options="tf.Fees as tf.StartKM + ' - ' + tf.EndKM + 'kms('+tf.Name+')' for tf in transportFeesArray">
+                        <option value="">Choose a variant</option>
+                    </select>
+                    </div>
+                </div>
+                <button class="btn btn-primary btn-block" ng-click="collectTransportFeesForRTEStudents()">Collect Transport Fees</button>
+            </div>
+            <div class="card" ng-if="!showCollectTransportFeesButtonForRTEStudents">
+                <div class="card-header">
+                    <i class="fa fa-usd text-primary"></i> Transport Fees
+                </div>
+                <div class="card-body">
+                    <div class="form-group row" ng-if="showTransportFeesCollectionTable">
+                        <label class="col-md-3 col-form-label">Distance</label>
+                        <div class="col-md-9">
+                            <select class="form-control" ng-model="transport.selectedFees" ng-options="tf.Fees as tf.StartKM + ' - ' + tf.EndKM + 'kms('+tf.Name+')' for tf in transportFeesArray" ng-change="calculateTransportFees()">
+                                <option value="">Choose a variant</option>
+                            </select>
+                        </div>
+                    </div>
+                    <h4>Choose Months</h4>
+                    <label class="toggle toggle-assertive" ng-repeat="month in transportFees | orderBy: getMonthValue" style="display:block;">
+                        <input type="checkbox" class="switch-input" ng-model="month.Type3Status" ng-true-value="1" ng-false-value="0" ng-change="calculateTransportFees(month)" ng-disabled="month.disabled"> {{month.Month}}
+                    </label>
+                    <table class="table table-responsive-sm table-bordered mb-0" ng-if="showTransportFeesCollectionTable">
+                        <tr>
+                            <td>Already Paid</td>
+                            <td class="text-center">{{transport.alreadyPaid | number:2}}</td>
+                        </tr>
+                        <tr>
+                            <td>Payable</td>
+                            <td class="text-center">{{transport.payable | number:2}}</td>
+                        </tr>
+                        <tr>
+                            <td>Payment Date</td>
+                            <th class="text-center">
+                                <input type="date" class="form-control" ng-model="transport.paymentDate" min="{{dateInput.min}}" max="{{dateInput.max}}">
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>Payment Mode</td>
+                            <th class="text-center">
+                                <input type="text" class="form-control" ng-model="transport.paymentMode" placeholder="Cash/Cheque/DD">
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>Notes</td>
+                            <th class="text-center">
+                                <input type="text" class="form-control" ng-model="transport.note" placeholder="Notes">
+                            </th>
+                        </tr>
+                    </table>
+                </div>
+                <div class="card-footer text-right" ng-if="showTransportFeesCollectionTable">
+                    <button class="btn btn-primary" ng-click="updateTransportFees()">
+                        <i class="fa fa-check"></i> Update
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

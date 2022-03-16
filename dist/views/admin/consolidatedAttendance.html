@@ -1,0 +1,66 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-check text-primary"></i>Consolidate Attendance
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="row justify-content-center">
+                                <div class="col-md-3">
+                                    <select class="form-control" ng-model="selected.course" ng-options="course.Name for course in courses" ng-change="courseSelected(selected.course)">
+                                        <option value="">Choose a {{keywords.CourseKeyword}}</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <select class="form-control" ng-model="selected.branch" ng-options="branch.Name for branch in branches" ng-change="branchSelected(selected.branch)">
+                                        <option value="">Choose a {{keywords.BranchKeyword}}</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <select class="form-control" ng-model="selected.semester" ng-options="semester.SemesterNumber for semester in semesters" ng-change="semesterSelected(selected.semester)">
+                                        <option value="">Choose a {{keywords.SemesterKeyword}}</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <select class="form-control" ng-model="selected.class" ng-options="class.Name for class in classes" ng-change="classSelected(selected.class)">
+                                        <option value="">Choose a {{keywords.ClassKeyword}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" ng-repeat="rows in chunkedSubjects" style="margin-top: 20px;">
+                        <div class="col-md-4" ng-repeat="subject in rows">
+                            <h3 class="text-center">{{subject.Nickname}}</h3>
+                            <div class="row" ng-if="subject.attendance.Students.length > 0" style="margin-top: 15px;">
+                                <div class="col-md-12" id="attendance-list">
+                                    <table class="table table-responsive-sm table-outline mb-0">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th>No.</th>
+                                                <th>Student</th>
+                                                <th class="text-center">Attendance</th>
+                                                <th class="text-center">Percentage</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="student in subject.attendance.Students | orderBy: 'Name'">
+                                                <td>{{$index+1}}</td>
+                                                <td>{{student.Name}}</td>
+                                                <td class="text-center">{{student.TotalPresent}}/{{subject.attendance.TotalClasses}}</td>
+                                                <td class="text-center" ng-class="{'google-green':(student.TotalPresent / subject.attendance.TotalClasses)>=0.75, 'google-yellow' :((student.TotalPresent / subject.attendance.TotalClasses)<0.75 && (student.TotalPresent / subject.attendance.TotalClasses)>=0.5), 'google-red': (student.TotalPresent / subject.attendance.TotalClasses)<0.5}">{{(student.TotalPresent/subject.attendance.TotalClasses)*100 | number:1}}%</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,45 @@
+<div class="animated fadeIn">
+    <div class="card">
+        <div class="card-header">
+            <i class="fa fa-bus text-primary"></i>Bus Routes
+        </div>
+        <div class="card-body">
+            <div class="row justify-content-end">
+                <div class="col-md-2">
+                    <button class="btn btn-primary pull-right" ng-click="createBusRoute()">
+                       <i class="fa fa-plus"></i> Add Route
+                    </button>
+                </div>
+            </div>
+            <div class="row" ng-if="routes.length == 0">
+                <div class="col-md-12 text-center">
+                    No routes are created yet!
+                </div>
+            </div>
+            <div class="row" ng-if="routes.length > 0" style="margin-top:15px;">
+                <div class="col-md-4 list-items">
+                    <div class="list-group">
+                        <a class="list-group-item list-group-item-action" ng-repeat="route in routes" ng-click="assignmentSelected(assignment)">
+                            <b>{{route.Name}}</b><br>
+                            <small>{{route.PhoneNumber}} | {{route.VehicleRegNumber}}</small>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-8" ng-if="selectedRoute != null">
+                    <div class="row">
+                        <div class="col-md-12 detail-part">
+                            <button class="btn btn-sm btn-danger pull-right" ng-click="deleteRoute()">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                            <b>{{selectedRoute.Name}}</b><br>
+                            <small>{{selectedRoute.PhoneNumber}}</small><br>
+                            <small>{{selectedRoute.VehicleRegNumber}}</small><br>
+                            <small>{{selectedRoute.AreasCovered}}</small><br>
+                            <div id="map"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

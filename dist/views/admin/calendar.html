@@ -1,0 +1,84 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-calendar text-primary"></i>Calendar Events
+                </div>
+                <div class="card-body">
+                    <div class="row" ng-if="calendarEvents.length == 0">
+                        <div class="col-md-12 text-center">
+                            Nothing has been shared yet!
+                        </div>
+                    </div>
+                    <table class="table table-responsive-sm table-outline mb-0" ng-if="calendarEvents.length > 0">
+                        <tbody>
+                            <tr ng-repeat="event in calendarEvents | orderBy: 'EventStartDate'">
+                                <td>
+                                    <b>{{event.EventName}}</b>
+                                    <div class="small text-muted">
+                                        {{event.EventStartDate | date: 'dd/MMM'}} <span ng-if="!isOneDayEvent(event)"> to  {{event.EventEndDate | date: 'dd/MMM'}}</span>
+                                    </div>
+                                </td>
+                                <td class="text-center" ng-if="loggedInUser.Role == 'ADMIN'">
+                                    <button class="btn btn-sm btn-danger pull-right" ng-click="delete(event)">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6" ng-if="loggedInUser.Role == 'ADMIN'">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-plus text-primary"></i>Create Event
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label" for="text-input">Event Type</label>
+                                    <div class="col-md-9">
+                                        <label style="margin:10px 0 0 10px;">
+                                            <input type="radio" name="eventType" ng-model="selected.eventType" ng-value="1" /> Single Day
+                                        </label>
+                                        <label style="margin:10px 0 0 10px;">
+                                            <input type="radio" name="eventType" ng-model="selected.eventType" ng-value="2" /> Multiple Days
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label" for="text-input">Title</label>
+                                    <div class="col-md-9">
+                                        <input type="text" class="form-control" placeholder="Title" ng-model="newEvent.EventName">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label" for="text-input">Event Start Date</label>
+                                    <div class="col-md-9">
+                                        <input type="date" class="form-control" ng-model="newEvent.EventStartDate" min="{{dateInput.min}}" max="{{dateInput.max}}" />
+                                    </div>
+                                </div>
+                                <div class="form-group row" ng-if="selected.eventType == 2">
+                                    <label class="col-md-3 col-form-label" for="text-input">Event End Date</label>
+                                    <div class="col-md-9">
+                                        <input type="date" class="form-control" ng-model="newEvent.EventEndDate" min="{{dateInput.min}}" max="{{dateInput.max}}" />
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-right">
+                    <button class="btn btn-primary" ng-click="create()">
+                        <i class="fa fa-trash"></i> Create
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

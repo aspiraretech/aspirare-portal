@@ -1,0 +1,31 @@
+<div class="modal-header">
+    <h3 class="modal-title" id="modal-title">Add Media</h3>
+</div>
+<div class="modal-body" id="modal-body">
+    <div class="form-group" ng-if="type == 'video'">
+        <div class="form-group row">
+            <label class="col-md-3 col-form-label">Video Name</label>
+            <div class="col-md-9">
+                <input type="text" class="form-control" placeholder="Video Name" ng-model="video.subTopicNames"></input>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-3 col-form-label">Video URL</label>
+            <div class="col-md-9">
+                <input type="text" class="form-control" placeholder="Video URL" ng-model="newSubTopic.VideoURL"></input>
+            </div>
+        </div>
+    </div>
+    <div class="form-group" ng-if="type == 'presentation'">
+        <div class="form-group row">
+            <label class="col-md-3 col-form-label">Presentation URL</label>
+            <div class="col-md-9">
+                <input type="text" class="form-control" placeholder="Presentation URL" ng-model="newPPT.mediaURL"></input>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" type="button" ng-click="ok()">Add</button>
+    <button class="btn btn-default" type="button" ng-click="cancel()">Cancel</button>
+</div>

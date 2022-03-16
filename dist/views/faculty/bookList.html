@@ -1,0 +1,95 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-plus text-primary"></i>Available Books
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="row" ng-if="books.length == 0">
+                                <div class="col-md-12 text-center">
+                                    Nothing has been added yet!
+                                </div>
+                            </div>
+                            <div ng-if="books.length > 0">
+                                <div class="row justify-content-end" style="margin-bottom:15px;">
+                                    <div class="col-md-4 text-right">
+                                        <h4 style="line-height: 34px; margin:0">Total: {{booksToShow.length}}</h4>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <input type="search" ng-model="searchText" class="form-control" placeholder="Search Book/Author/Department/Status/Call Number" ng-change="searchBooks(searchText)">
+                                    </div>
+                                </div>
+                                <table class="table table-responsive-sm table-outline mb-0">
+                                    <thead class="thead-light">
+                                        <tr class="text-center">
+                                            <th>Title</th>
+                                            <th>Accession Number</th>
+                                            <th>ISBN</th>
+                                            <th>Author</th>
+                                            <th>Second Author</th>
+                                            <th>Issue/Reference</th>
+                                            <th>Remarks</th>
+                                            <th>Department</th>
+                                            <th>Status</th>
+                                            <th>Call No.</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="text-center" ng-repeat="book in booksToShow | orderBy: 'Name'">
+                                            <td>
+                                                {{book.Name}}
+                                            </td>
+                                            <td>
+                                                {{book.AccessionNumber}}
+                                            </td>
+                                            <td>
+                                                {{book.ISBN}}
+                                            </td>
+                                            <td>
+                                                {{book.Author}}
+                                            </td>
+                                            <td>
+                                                {{book.SecondAuthor}}
+                                            </td>
+                                            <td>
+                                                {{book.IssueOrReference}}
+                                            </td>
+                                            <td>
+                                                {{book.Remarks}}
+                                            </td>
+                                            <td>
+                                                {{book.Department}}
+                                            </td>
+                                            <td>
+                                                {{book.PurchasedOrGift}}
+                                            </td>
+                                            <td>
+                                                {{book.CallNo}}
+                                            </td>
+                                            <td>
+                                                <div class="dropdown">
+                                                    <button class="btn btn-primary dropdown-toggle" style="width:100%" type="button" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        Actions
+                                                    </button>
+                                                    <div class="dropdown-menu dropdown-menu-right">
+                                                        <a class="dropdown-item" href ng-click="issueBook(book)">Issue Book</a>
+                                                        <a class="dropdown-item" href ng-click="editBook(book)">Edit Book</a>
+                                                        <a class="dropdown-item" href ng-click="deleteBook(book)">Delete Book</a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
