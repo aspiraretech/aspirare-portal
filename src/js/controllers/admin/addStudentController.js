@@ -1,5 +1,5 @@
 angular.module('app')
-    .controller('AddStudentController', function($scope, $state, $stateParams, LoginFactory, FeesStructureFactory, DashboardFactory, toastr, StudentsFactory, EnquiryFactory) {
+    .controller('AddStudentController', function ($scope, $state, $stateParams, LoginFactory, FeesStructureFactory, DashboardFactory, toastr, StudentsFactory, EnquiryFactory, $uibModal) {
 
         $scope.loggedInUser = LoginFactory.loggedInUser;
         $scope.feesKeywords = DashboardFactory.feesKeywords;
@@ -15,7 +15,8 @@ angular.module('app')
             $scope.feesKeywords.RegularComponent9,
             $scope.feesKeywords.RegularComponent10,
             $scope.feesKeywords.RegularComponent11,
-        ]
+        ];
+        $scope.app_base = LoginFactory.getAppBase();
         $scope.showApplicationFeesButton = false;
         $scope.selected = {
             receiptType: "",
@@ -174,22 +175,22 @@ angular.module('app')
         $scope.documents = [];
         $scope.selectedDocuments = [];
         $scope.genders = [{
-                Id: 1,
-                Name: "Male"
-            },
-            {
-                Id: 2,
-                Name: "Female"
-            }
+            Id: 1,
+            Name: "Male"
+        },
+        {
+            Id: 2,
+            Name: "Female"
+        }
         ];
         $scope.studentTypes = [{
-                Id: 1,
-                Name: "New"
-            },
-            {
-                Id: 2,
-                Name: "Old"
-            }
+            Id: 1,
+            Name: "New"
+        },
+        {
+            Id: 2,
+            Name: "Old"
+        }
         ];
         $scope.dateInput = {
             min: moment().subtract(30, 'years').format('YYYY-MM-DD'),
@@ -242,17 +243,17 @@ angular.module('app')
         $scope.semesters = [];
         $scope.classes = [];
 
-        $scope.getAllCourses = function() {
+        $scope.getAllCourses = function () {
             $scope.courses = [];
             DashboardFactory.getAllCourses(LoginFactory.loggedInUser.CollegeId)
-                .then(function(success) {
+                .then(function (success) {
                     if (success.data.Code != "S001") {
                         toastr.warning('There was a problem encountered with the server!');
                     } else {
                         $scope.courses = success.data.Data;
                         if ($stateParams.flag == 2) {
                             StudentsFactory.getStudentForApplicationVerification($scope.student.Id) // this api gets all the fields in admission. getstudentbyid gets old form values
-                                .then(function(success) {
+                                .then(function (success) {
                                     if (success.data.Code != "S001") {
                                         toastr.error(success.data.Message);
                                     } else {
@@ -268,13 +269,13 @@ angular.module('app')
                                         $scope.newPreviousMarks.StudentId = $scope.newAdmission.Id;
                                         $scope.getAllPreviousMarks($scope.newPreviousMarks.StudentId);
                                     }
-                                }, function(error) {
+                                }, function (error) {
                                     toastr.error(error);
                                 })
                         }
                         if ($stateParams.flag == 3) {
                             StudentsFactory.getEnquiryDetails($scope.enquiry.Id)
-                                .then(function(success) {
+                                .then(function (success) {
                                     if (success.data.Code != "S001") {
                                         toastr.error(success.data.Message);
                                     } else {
@@ -296,17 +297,17 @@ angular.module('app')
                                         $scope.getSemesters($scope.newAdmission.BranchId);
                                         $scope.getClasses($scope.newAdmission.SemesterId);
                                     }
-                                }, function(error) {
+                                }, function (error) {
                                     toastr.error(error);
                                 })
                         }
                     }
-                }, function(error) {
+                }, function (error) {
                     toastr.error(error);
                 });
         };
 
-        $scope.courseSelected = function(courseId) {
+        $scope.courseSelected = function (courseId) {
             $scope.branches = [];
             $scope.semesters = [];
             $scope.classes = [];
@@ -316,7 +317,7 @@ angular.module('app')
             $scope.getBranches(courseId);
         };
 
-        $scope.branchSelected = function(branchId) {
+        $scope.branchSelected = function (branchId) {
             $scope.semesters = [];
             $scope.classes = [];
             $scope.newAdmission.SemesterId = null;
@@ -324,55 +325,55 @@ angular.module('app')
             $scope.getSemesters(branchId);
         };
 
-        $scope.semesterSelected = function(semesterId) {
+        $scope.semesterSelected = function (semesterId) {
             $scope.classes = [];
             $scope.newAdmission.ClassId = null;
             $scope.getClasses(semesterId);
         };
 
-        $scope.getBranches = function(courseId) {
+        $scope.getBranches = function (courseId) {
             DashboardFactory.getAllBranches(courseId, LoginFactory.loggedInUser.CollegeId)
-                .then(function(success) {
+                .then(function (success) {
                     $scope.branches = [];
                     if (success.data.Code != "S001") {
                         toastr.warning('There was a problem encountered with the server!');
                     } else {
                         $scope.branches = success.data.Data;
                     }
-                }, function(error) {
+                }, function (error) {
                     toastr.error(error);
                 });
         };
 
-        $scope.getSemesters = function(branchId) {
+        $scope.getSemesters = function (branchId) {
             DashboardFactory.getAllSemesters(branchId, LoginFactory.loggedInUser.CollegeId, $scope.newAdmission.CourseId, LoginFactory.loggedInUser.UniversityId, LoginFactory.loggedInUser.StateId)
-                .then(function(success) {
+                .then(function (success) {
                     $scope.semesters = [];
                     if (success.data.Code != "S001") {
                         toastr.warning('There was a problem encountered with the server!');
                     } else {
                         $scope.semesters = success.data.Data;
                     }
-                }, function(error) {
+                }, function (error) {
                     toastr.error(error);
                 });
         };
 
-        $scope.getClasses = function(semesterId) {
+        $scope.getClasses = function (semesterId) {
             DashboardFactory.getAllClasses($scope.newAdmission.BranchId, semesterId, LoginFactory.loggedInUser.CollegeId, $scope.newAdmission.CourseId, LoginFactory.loggedInUser.UniversityId, LoginFactory.loggedInUser.StateId)
-                .then(function(success) {
+                .then(function (success) {
                     $scope.classes = [];
                     if (success.data.Code != "S001") {
                         toastr.warning('There was a problem encountered with the server!');
                     } else {
                         $scope.classes = success.data.Data;
                     }
-                }, function(error) {
+                }, function (error) {
                     toastr.error(error);
                 });
         };
 
-        $scope.addStudent = function() {
+        $scope.addStudent = function () {
             $scope.newAdmission.DateOfBirth = moment($scope.newAdmission.DateOfBirth).format("YYYY-MM-DD");
             if ($scope.newAdmission.Name == null ||
                 $scope.newAdmission.FatherName == null ||
@@ -392,7 +393,7 @@ angular.module('app')
         };
 
 
-        $scope.addStudentAndGoBack = function() {
+        $scope.addStudentAndGoBack = function () {
             $scope.newAdmission.DateOfBirth = moment($scope.newAdmission.DateOfBirth).format("YYYY-MM-DD");
             if ($scope.newAdmission.Name == null ||
                 $scope.newAdmission.FatherName == null ||
@@ -406,20 +407,20 @@ angular.module('app')
                 toastr.warning('Please add all the required information in this form');
             } else {
                 StudentsFactory.admitStudent($scope.newAdmission)
-                    .then(function(success) {
+                    .then(function (success) {
                         if (success.data.Code != "S001") {
                             toastr.warning('There was a problem encountered with the server!');
                         } else {
                             toastr.success('Admission was done Successfully');
                             $state.go('app.students.viewStudents');
                         }
-                    }, function(error) {
+                    }, function (error) {
                         toastr.error(error);
                     });
             }
         };
 
-        $scope.updateStudent = function() {
+        $scope.updateStudent = function () {
             if ($scope.newAdmission.Name == null ||
                 $scope.newAdmission.FatherName == null ||
                 $scope.newAdmission.GenderId == null ||
@@ -434,7 +435,7 @@ angular.module('app')
                 $scope.newAdmission.Payment = []; // update api expects payment array
                 $scope.newAdmission.DateOfBirth = moment($scope.newAdmission.DateOfBirth).format("YYYY-MM-DD");
                 StudentsFactory.updateStudent($scope.newAdmission)
-                    .then(function(success) {
+                    .then(function (success) {
                         if (success.data.Code != "S001") {
                             toastr.warning('There was a problem encountered with the server!');
                         } else {
@@ -452,13 +453,13 @@ angular.module('app')
                                 }
                             }
                         }
-                    }, function(error) {
+                    }, function (error) {
                         toastr.error(error);
                     });
             }
         };
 
-        $scope.updateAndGoBack = function() {
+        $scope.updateAndGoBack = function () {
             if ($scope.newAdmission.Name == null ||
                 $scope.newAdmission.FatherName == null ||
                 $scope.newAdmission.GenderId == null ||
@@ -473,20 +474,20 @@ angular.module('app')
                 $scope.newAdmission.Payment = []; // update api expects payment array
                 $scope.newAdmission.DateOfBirth = moment($scope.newAdmission.DateOfBirth).format("YYYY-MM-DD");
                 StudentsFactory.updateStudent($scope.newAdmission)
-                    .then(function(success) {
+                    .then(function (success) {
                         if (success.data.Code != "S001") {
                             toastr.warning('There was a problem encountered with the server!');
                         } else {
                             toastr.success('Updation was done Successfully');
                             $state.go('app.students.viewStudents');
                         }
-                    }, function(error) {
+                    }, function (error) {
                         toastr.error(error);
                     });
             }
         };
 
-        $scope.clearAllFields = function() {
+        $scope.clearAllFields = function () {
             $scope.newAdmission = {
                 Id: null,
                 CollegeId: LoginFactory.loggedInUser.CollegeId,
@@ -530,27 +531,27 @@ angular.module('app')
             $scope.classes = [];
         };
 
-        $scope.discardAdmission = function() {
+        $scope.discardAdmission = function () {
             $state.go('app.students.viewStudents');
         };
 
-        $scope.getAllDocumentsForCollege = function() {
+        $scope.getAllDocumentsForCollege = function () {
             StudentsFactory.getDocumentsForCollege(LoginFactory.loggedInUser.CollegeId)
-                .then(function(success) {
+                .then(function (success) {
                     if (success.data.Code != "S001") {
                         toastr.warning("There are no documents to collect!");
                     } else {
                         $scope.documents = success.data.Data;
                         $scope.getAllDocumentsForStudent();
                     }
-                }, function(error) {
+                }, function (error) {
                     toastr.error(error);
                 });
         };
 
-        $scope.getAllDocumentsForStudent = function() {
+        $scope.getAllDocumentsForStudent = function () {
             StudentsFactory.getDocumentsForStudent($scope.student.Id)
-                .then(function(success) {
+                .then(function (success) {
                     if (success.data.Code != "S001") {
                         toastr.warning("There are no documents submitted by this student!");
                     } else {
@@ -563,53 +564,53 @@ angular.module('app')
                             }
                         }
                     }
-                }, function(error) {
+                }, function (error) {
                     toastr.error(error);
                 });
         };
 
-        $scope.getAllReceiptsForStudent = function() {
+        $scope.getAllReceiptsForStudent = function () {
             $scope.receipts = [];
             $scope.receiptsToShow = [];
             $scope.showApplicationFeesButton = false;
             StudentsFactory.getAllReceiptsForStudent($scope.student.Id, $scope.selected.academicYear)
-                .then(function(success) {
+                .then(function (success) {
                     if (success.data.Code != "S001") {
                         toastr.warning("There are no receipts for this student!");
                     } else {
                         $scope.receipts = success.data.Data;
                         $scope.receiptsToShow = angular.copy($scope.receipts);
-                        $scope.totalInvoiceValue = $scope.receipts.reduce(function(prev, cur) { return prev + cur.InvoiceValue }, 0);
+                        $scope.totalInvoiceValue = $scope.receipts.reduce(function (prev, cur) { return prev + cur.InvoiceValue }, 0);
                         var applicationFees = $scope.receipts.filter(x => x.FeesType == "Type5");
                         if (applicationFees.length == 0) {
                             $scope.showApplicationFeesButton = true;
                         }
                     }
-                }, function(error) {
+                }, function (error) {
                     toastr.error(error);
                 });
         };
 
-        $scope.documentChecked = function(document) {
+        $scope.documentChecked = function (document) {
             var obj = {
                 StudentId: $scope.student.Id,
                 DocumentId: document.Id,
                 Type: document.isChecked ? 1 : 0
             }
             StudentsFactory.addDocumentForStudent(obj)
-                .then(function(success) {
+                .then(function (success) {
                     if (success.data.Code != "S001") {
                         toastr.error(success.data.Message);
                     } else {
                         toastr.success("Document added successfully");
                         $scope.getAllDocumentsForStudent();
                     }
-                }, function(error) {
+                }, function (error) {
                     toastr.error(error);
                 });
         };
 
-        $scope.printReceipt = function(receipt) {
+        $scope.printReceipt = function (receipt) {
             if (receipt.FeesType == 'Type1') {
                 $scope.getFeesStructure(receipt);
             } else if (receipt.FeesType == 'Type4') {
@@ -621,7 +622,7 @@ angular.module('app')
             }
         };
 
-        $scope.getFeesStructure = function(receipt) {
+        $scope.getFeesStructure = function (receipt) {
             var yearReceived = parseInt(moment().year());
             var today1 = new Date();
             var today2 = new Date();
@@ -641,7 +642,7 @@ angular.module('app')
             // let academicYear = moment(startYear).year() + '-' + moment(endYear).year();
             let academicYear = $scope.selected.academicYear;
             FeesStructureFactory.getFeesStructure(LoginFactory.loggedInUser.CollegeId, $scope.newAdmission.BranchId, academicYear)
-                .then(function(success) {
+                .then(function (success) {
                     if (success.data.Code != "S001") {
                         toastr.warning('Fees Structure has not been set yet!');
                     } else {
@@ -657,12 +658,12 @@ angular.module('app')
                         }
                         $scope.printTuitionReceipt(receipt);
                     }
-                }, function(error) {
+                }, function (error) {
                     toastr.success(error);
                 });
         };
 
-        var pickRegularComponents = function(feesStructure) {
+        var pickRegularComponents = function (feesStructure) {
             return {
                 RegularComponent1: feesStructure.RegularComponent1,
                 RegularComponent2: feesStructure.RegularComponent2,
@@ -678,7 +679,7 @@ angular.module('app')
             }
         };
 
-        $scope.printTuitionReceipt = function(receipt) {
+        $scope.printTuitionReceipt = function (receipt) {
             var name = $scope.newAdmission.Name;
             var today = moment(receipt.PaymentDate).format('DD/MM/YYYY');
             var branchName = $scope.branches.filter(x => x.Id == $scope.newAdmission.BranchId)[0].Name;
@@ -698,159 +699,159 @@ angular.module('app')
 
             var docDefinition = {
                 content: [{
-                        style: ['fontSize1', 'initialMargin'],
-                        table: {
-                            widths: [350, 100],
-                            body: [
-                                [{
-                                    text: 'Name: ' + name,
-                                    border: [false, false, false, false]
+                    style: ['fontSize1', 'initialMargin'],
+                    table: {
+                        widths: [350, 100],
+                        body: [
+                            [{
+                                text: 'Name: ' + name,
+                                border: [false, false, false, false]
+
+                            }, {
+                                text: 'Receipt No: ' + receiptNumber,
+                                border: [false, false, false, false],
+                                alignment: 'right'
+                            }],
+                            [{
+                                text: 'Standard: ' + branchName,
+                                border: [false, false, false, false]
+
+                            }, {
+                                text: 'Date: ' + today,
+                                border: [false, false, false, false],
+                                alignment: 'right'
+                            }],
+                            [{
+                                colSpan: 2,
+                                text: 'Academic Year: ' + academicYear,
+                                border: [false, false, false, false]
+
+                            }]
+                        ]
+                    }
+                },
+                {
+                    style: ['fontSize1', 'topMargin'],
+                    table: {
+                        widths: [175, 175, 100],
+                        body: [
+                            [{
+                                text: 'Particulars',
+                                colSpan: 2,
+                                alignment: 'center',
+                                bold: true,
+                                style: 'margins'
+
+                            }, {}, {
+                                text: 'Amount (IN Rs.)',
+                                alignment: 'center',
+                                bold: true,
+                                style: 'margins'
+
+                            }],
+                            [{
+                                stack: [{
+                                    text: 'TUITION FEE for the months of\n',
+                                    style: 'fontSize2'
 
                                 }, {
-                                    text: 'Receipt No: ' + receiptNumber,
-                                    border: [false, false, false, false],
-                                    alignment: 'right'
-                                }],
-                                [{
-                                    text: 'Standard: ' + branchName,
-                                    border: [false, false, false, false]
-
-                                }, {
-                                    text: 'Date: ' + today,
-                                    border: [false, false, false, false],
-                                    alignment: 'right'
-                                }],
-                                [{
-                                    colSpan: 2,
-                                    text: 'Academic Year: ' + academicYear,
-                                    border: [false, false, false, false]
-
-                                }]
-                            ]
-                        }
-                    },
-                    {
-                        style: ['fontSize1', 'topMargin'],
-                        table: {
-                            widths: [175, 175, 100],
-                            body: [
-                                [{
-                                    text: 'Particulars',
-                                    colSpan: 2,
-                                    alignment: 'center',
-                                    bold: true,
-                                    style: 'margins'
-
-                                }, {}, {
-                                    text: 'Amount (IN Rs.)',
-                                    alignment: 'center',
-                                    bold: true,
-                                    style: 'margins'
+                                    text: '(' + monthNames + ')',
+                                    style: 'fontSize3'
 
                                 }],
-                                [{
-                                    stack: [{
-                                        text: 'TUITION FEE for the months of\n',
-                                        style: 'fontSize2'
+                                style: 'margins',
+                                colSpan: 2,
+                                border: [true, true, true, false]
 
-                                    }, {
-                                        text: '(' + monthNames + ')',
-                                        style: 'fontSize3'
+                            }, {}, {
+                                text: tuitionFees,
+                                style: ['fontSize2', 'margins'],
+                                alignment: 'right',
+                                border: [true, true, true, false]
+                            }],
+                            [{
+                                stack: [{
+                                    text: feesComponents,
+                                    style: 'fontSize2'
+                                }],
+                                margin: [5, 0, 5, 5],
+                                colSpan: 2,
+                                border: [true, false, true, true]
 
-                                    }],
-                                    style: 'margins',
-                                    colSpan: 2,
-                                    border: [true, true, true, false]
-
-                                }, {}, {
-                                    text: tuitionFees,
+                            }, {}, {
+                                text: otherComponentsFees,
+                                style: ['fontSize2'],
+                                alignment: 'right',
+                                margin: [5, 0, 5, 5],
+                                border: [true, false, true, true]
+                            }],
+                            [{
+                                stack: [{
+                                    text: 'Waived Off: Rs.' + discount,
                                     style: ['fontSize2', 'margins'],
-                                    alignment: 'right',
-                                    border: [true, true, true, false]
-                                }],
-                                [{
-                                    stack: [{
-                                        text: feesComponents,
-                                        style: 'fontSize2'
-                                    }],
-                                    margin: [5, 0, 5, 5],
-                                    colSpan: 2,
-                                    border: [true, false, true, true]
-
-                                }, {}, {
-                                    text: otherComponentsFees,
-                                    style: ['fontSize2'],
-                                    alignment: 'right',
-                                    margin: [5, 0, 5, 5],
-                                    border: [true, false, true, true]
-                                }],
-                                [{
-                                    stack: [{
-                                        text: 'Waived Off: Rs.' + discount,
-                                        style: ['fontSize2', 'margins'],
-                                        alignment: 'center'
-                                    }]
-
-                                }, {
-                                    text: 'Total',
-                                    style: ['fontSize2', 'margins'],
-                                    alignment: 'right'
-
-                                }, {
-                                    text: invoiceValue,
-                                    style: ['fontSize2', 'margins'],
-                                    alignment: 'right'
-                                }],
-                                [{
-                                    stack: [{
-                                        text: 'Grand Total',
-                                        style: 'biggerFont'
-
-                                    }],
-                                    style: 'margins',
-                                    colSpan: 2,
-                                    alignment: 'right',
-                                    bold: true
-
-                                }, {}, {
-                                    text: amountInNumbers,
-                                    style: ['biggerFont', 'margins'],
-                                    alignment: 'right',
-                                    bold: true
-                                }]
-                            ]
-                        }
-                    },
-                    {
-                        style: ['fontSize1', 'topMargin'],
-                        table: {
-                            widths: [350, 100],
-                            body: [
-                                [{
-                                    text: 'Payment Mode: ' + paymentMode,
-                                    border: [false, false, false, false]
-                                }, {
-                                    text: '',
-                                    border: [false, false, false, false]
-                                }],
-                                [{
-                                    text: 'Rupees (In Words): ' + amountInWords,
-                                    border: [false, false, false, false]
-                                }, {
-                                    text: '',
-                                    border: [false, false, false, false]
-                                }],
-                                [{
-                                    text: 'Place: ' + place,
-                                    border: [false, false, false, false]
-                                }, {
-                                    text: 'Cashier',
-                                    border: [false, false, false, false],
                                     alignment: 'center'
                                 }]
-                            ]
-                        }
+
+                            }, {
+                                text: 'Total',
+                                style: ['fontSize2', 'margins'],
+                                alignment: 'right'
+
+                            }, {
+                                text: invoiceValue,
+                                style: ['fontSize2', 'margins'],
+                                alignment: 'right'
+                            }],
+                            [{
+                                stack: [{
+                                    text: 'Grand Total',
+                                    style: 'biggerFont'
+
+                                }],
+                                style: 'margins',
+                                colSpan: 2,
+                                alignment: 'right',
+                                bold: true
+
+                            }, {}, {
+                                text: amountInNumbers,
+                                style: ['biggerFont', 'margins'],
+                                alignment: 'right',
+                                bold: true
+                            }]
+                        ]
                     }
+                },
+                {
+                    style: ['fontSize1', 'topMargin'],
+                    table: {
+                        widths: [350, 100],
+                        body: [
+                            [{
+                                text: 'Payment Mode: ' + paymentMode,
+                                border: [false, false, false, false]
+                            }, {
+                                text: '',
+                                border: [false, false, false, false]
+                            }],
+                            [{
+                                text: 'Rupees (In Words): ' + amountInWords,
+                                border: [false, false, false, false]
+                            }, {
+                                text: '',
+                                border: [false, false, false, false]
+                            }],
+                            [{
+                                text: 'Place: ' + place,
+                                border: [false, false, false, false]
+                            }, {
+                                text: 'Cashier',
+                                border: [false, false, false, false],
+                                alignment: 'center'
+                            }]
+                        ]
+                    }
+                }
                 ],
                 styles: {
                     biggerFont: {
@@ -886,19 +887,28 @@ angular.module('app')
             pdfMake.createPdf(docDefinition).open();
         };
 
-        $scope.printDevelopmentReceipt = function(receipt) {
-            var name = $scope.newAdmission.Name;
-            var branchName = $scope.branches.filter(x => x.Id == $scope.newAdmission.BranchId)[0].Name;
-            var receiptNumber = receipt.Id;
-            var fatherName = $scope.newAdmission.FatherName;
-            var academicYear = receipt.AcademicYear;
-            var paymentMode = receipt.PaymentType;
-            var today = moment(receipt.PaymentDate).format('DD/MM/YYYY');
-            var amountInNumbers = receipt.InvoiceValue;
-            var amountInWords = amount_in_words(amountInNumbers);
-            var place = LoginFactory.loggedInUser.Address;
-            var docDefinition = {
-                content: [{
+        $scope.printDevelopmentReceipt = function (receipt) {
+            var modalInstance = $uibModal.open({
+                ariaLabelledBy: 'modal-title',
+                ariaDescribedBy: 'modal-body',
+                templateUrl: $scope.app_base + 'views/templates/SelectFeesTypeTemplate.html',
+                controller: 'SelectFeesTypeController'
+            });
+
+            modalInstance.result.then(function (response) {
+                // toastr.success(response.selected);
+                var name = $scope.newAdmission.Name;
+                var branchName = $scope.branches.filter(x => x.Id == $scope.newAdmission.BranchId)[0].Name;
+                var receiptNumber = receipt.Id;
+                var fatherName = $scope.newAdmission.FatherName;
+                var academicYear = receipt.AcademicYear;
+                var paymentMode = receipt.PaymentType;
+                var today = moment(receipt.PaymentDate).format('DD/MM/YYYY');
+                var amountInNumbers = receipt.InvoiceValue;
+                var amountInWords = amount_in_words(amountInNumbers);
+                var place = LoginFactory.loggedInUser.Address;
+                var docDefinition = {
+                    content: [{
                         style: ['fontSize1', 'initialMargin'],
                         table: {
                             widths: [350, 100],
@@ -933,8 +943,7 @@ angular.module('app')
                             bold: true
 
                         }, {
-                            text: ' Rupees Only towards the Annual Development Fees for the Academic Year ' + academicYear + '.'
-
+                            text: ' Rupees Only towards ' + response.selected + ' for the Academic Year ' + academicYear + '.'
                         }]
                     },
                     {
@@ -972,26 +981,29 @@ angular.module('app')
                             ]
                         }
                     }
-                ],
-                styles: {
-                    fontSize1: {
-                        fontSize: 10
-                    },
-                    topMargin: {
-                        margin: [20, 20, 0, 0]
-                    },
-                    contentMargin: {
-                        margin: [25, 20, 0, 0]
-                    },
-                    initialMargin: {
-                        margin: [20, 70, 0, 0]
+                    ],
+                    styles: {
+                        fontSize1: {
+                            fontSize: 10
+                        },
+                        topMargin: {
+                            margin: [20, 20, 0, 0]
+                        },
+                        contentMargin: {
+                            margin: [25, 20, 0, 0]
+                        },
+                        initialMargin: {
+                            margin: [20, 70, 0, 0]
+                        }
                     }
-                }
-            };
-            pdfMake.createPdf(docDefinition).open();
+                };
+                pdfMake.createPdf(docDefinition).open();
+            }, function () {
+                console.log('Cancelled');
+            });
         };
 
-        $scope.printTransportReceipt = function(receipt) {
+        $scope.printTransportReceipt = function (receipt) {
             var name = $scope.newAdmission.Name;
             var today = moment(receipt.PaymentDate).format('DD/MM/YYYY');
             var branchName = $scope.branches.filter(x => x.Id == $scope.newAdmission.BranchId)[0].Name;
@@ -1005,126 +1017,126 @@ angular.module('app')
             var place = LoginFactory.loggedInUser.Address;
             var docDefinition = {
                 content: [{
-                        style: ['fontSize1', 'initialMargin'],
-                        table: {
-                            widths: [350, 100],
-                            body: [
-                                [{
-                                    text: 'Name: ' + name,
-                                    border: [false, false, false, false]
+                    style: ['fontSize1', 'initialMargin'],
+                    table: {
+                        widths: [350, 100],
+                        body: [
+                            [{
+                                text: 'Name: ' + name,
+                                border: [false, false, false, false]
 
-                                }, {
-                                    text: 'Receipt No: ' + receiptNumber,
-                                    border: [false, false, false, false],
-                                    alignment: 'right'
-                                }],
-                                [{
-                                    text: 'Standard: ' + branchName,
-                                    border: [false, false, false, false]
+                            }, {
+                                text: 'Receipt No: ' + receiptNumber,
+                                border: [false, false, false, false],
+                                alignment: 'right'
+                            }],
+                            [{
+                                text: 'Standard: ' + branchName,
+                                border: [false, false, false, false]
 
-                                }, {
-                                    text: 'Date: ' + today,
-                                    border: [false, false, false, false],
-                                    alignment: 'right'
-                                }],
-                                [{
-                                    colSpan: 2,
-                                    text: 'Academic Year: ' + academicYear,
-                                    border: [false, false, false, false]
+                            }, {
+                                text: 'Date: ' + today,
+                                border: [false, false, false, false],
+                                alignment: 'right'
+                            }],
+                            [{
+                                colSpan: 2,
+                                text: 'Academic Year: ' + academicYear,
+                                border: [false, false, false, false]
 
-                                }]
-                            ]
-                        }
-                    },
-                    {
-                        style: ['fontSize1', 'topMargin'],
-                        table: {
-                            widths: [250, 100, 100],
-                            body: [
-                                [{
-                                    text: 'Particulars',
-                                    colSpan: 2,
-                                    alignment: 'center',
-                                    bold: true,
-                                    style: 'margins'
-
-                                }, {}, {
-                                    text: 'Amount (IN Rs.)',
-                                    alignment: 'center',
-                                    bold: true,
-                                    style: 'margins'
-
-                                }],
-                                [{
-                                    stack: [{
-                                        text: 'Bus Fees for the months of\n',
-                                        style: 'fontSize2'
-
-                                    }, {
-                                        text: '(' + monthNames + ')',
-                                        style: 'fontSize3'
-
-                                    }],
-                                    style: 'margins',
-                                    colSpan: 2,
-                                    border: [true, true, true, false]
-
-                                }, {}, {
-                                    text: amountInNumbers,
-                                    style: ['fontSize2', 'margins'],
-                                    alignment: 'right',
-                                    border: [true, true, true, false]
-                                }],
-                                [{
-                                    stack: [{
-                                        text: 'Grand Total',
-                                        style: 'biggerFont'
-
-                                    }],
-                                    style: 'margins',
-                                    colSpan: 2,
-                                    alignment: 'right',
-                                    bold: true
-
-                                }, {}, {
-                                    text: amountInNumbers,
-                                    style: ['biggerFont', 'margins'],
-                                    alignment: 'right',
-                                    bold: true
-                                }]
-                            ]
-                        }
-                    },
-                    {
-                        style: ['fontSize1', 'topMargin'],
-                        table: {
-                            widths: [350, 100],
-                            body: [
-                                [{
-                                    text: 'Payment Mode: ' + paymentMode,
-                                    border: [false, false, false, false]
-                                }, {
-                                    text: '',
-                                    border: [false, false, false, false]
-                                }],
-                                [{
-                                    text: 'Rupees (In Words): ' + amountInWords,
-                                    border: [false, false, false, false]
-                                }, {
-                                    text: '',
-                                    border: [false, false, false, false]
-                                }],
-                                [{
-                                    text: 'Place: ' + place,
-                                    border: [false, false, false, false]
-                                }, {
-                                    text: 'Cashier',
-                                    border: [false, false, false, false],
-                                    alignment: 'center'
-                                }]
-                            ]
-                        }
+                            }]
+                        ]
                     }
+                },
+                {
+                    style: ['fontSize1', 'topMargin'],
+                    table: {
+                        widths: [250, 100, 100],
+                        body: [
+                            [{
+                                text: 'Particulars',
+                                colSpan: 2,
+                                alignment: 'center',
+                                bold: true,
+                                style: 'margins'
+
+                            }, {}, {
+                                text: 'Amount (IN Rs.)',
+                                alignment: 'center',
+                                bold: true,
+                                style: 'margins'
+
+                            }],
+                            [{
+                                stack: [{
+                                    text: 'Bus Fees for the months of\n',
+                                    style: 'fontSize2'
+
+                                }, {
+                                    text: '(' + monthNames + ')',
+                                    style: 'fontSize3'
+
+                                }],
+                                style: 'margins',
+                                colSpan: 2,
+                                border: [true, true, true, false]
+
+                            }, {}, {
+                                text: amountInNumbers,
+                                style: ['fontSize2', 'margins'],
+                                alignment: 'right',
+                                border: [true, true, true, false]
+                            }],
+                            [{
+                                stack: [{
+                                    text: 'Grand Total',
+                                    style: 'biggerFont'
+
+                                }],
+                                style: 'margins',
+                                colSpan: 2,
+                                alignment: 'right',
+                                bold: true
+
+                            }, {}, {
+                                text: amountInNumbers,
+                                style: ['biggerFont', 'margins'],
+                                alignment: 'right',
+                                bold: true
+                            }]
+                        ]
+                    }
+                },
+                {
+                    style: ['fontSize1', 'topMargin'],
+                    table: {
+                        widths: [350, 100],
+                        body: [
+                            [{
+                                text: 'Payment Mode: ' + paymentMode,
+                                border: [false, false, false, false]
+                            }, {
+                                text: '',
+                                border: [false, false, false, false]
+                            }],
+                            [{
+                                text: 'Rupees (In Words): ' + amountInWords,
+                                border: [false, false, false, false]
+                            }, {
+                                text: '',
+                                border: [false, false, false, false]
+                            }],
+                            [{
+                                text: 'Place: ' + place,
+                                border: [false, false, false, false]
+                            }, {
+                                text: 'Cashier',
+                                border: [false, false, false, false],
+                                alignment: 'center'
+                            }]
+                        ]
+                    }
+                }
                 ],
                 styles: {
                     biggerFont: {
@@ -1153,7 +1165,7 @@ angular.module('app')
             pdfMake.createPdf(docDefinition).open();
         };
 
-        $scope.printApplicationFormReceipt = function(receipt) {
+        $scope.printApplicationFormReceipt = function (receipt) {
             var name = $scope.newAdmission.Name;
             var applicationFormNumber = $scope.newAdmission.ApplicationFormNumber;
             var receiptNumber = receipt.Id;
@@ -1166,116 +1178,116 @@ angular.module('app')
 
             var docDefinition = {
                 content: [{
-                        style: ['fontSize1', 'initialMargin'],
-                        table: {
-                            widths: [350, 100],
-                            body: [
-                                [{
-                                    text: 'Name: ' + name,
-                                    border: [false, false, false, false]
+                    style: ['fontSize1', 'initialMargin'],
+                    table: {
+                        widths: [350, 100],
+                        body: [
+                            [{
+                                text: 'Name: ' + name,
+                                border: [false, false, false, false]
 
-                                }, {
-                                    text: 'Receipt No: ' + receiptNumber,
-                                    border: [false, false, false, false],
-                                    alignment: 'right'
-                                }],
-                                [{
-                                    text: 'Application Form No: ' + applicationFormNumber,
-                                    border: [false, false, false, false]
+                            }, {
+                                text: 'Receipt No: ' + receiptNumber,
+                                border: [false, false, false, false],
+                                alignment: 'right'
+                            }],
+                            [{
+                                text: 'Application Form No: ' + applicationFormNumber,
+                                border: [false, false, false, false]
 
-                                }, {
-                                    text: 'Date: ' + today,
-                                    border: [false, false, false, false],
-                                    alignment: 'right'
-                                }]
-                            ]
-                        }
-                    },
-                    {
-                        style: ['fontSize1', 'topMargin'],
-                        table: {
-                            widths: [250, 100, 100],
-                            body: [
-                                [{
-                                    text: 'Particulars',
-                                    colSpan: 2,
-                                    alignment: 'center',
-                                    bold: true,
-                                    style: 'margins'
-
-                                }, {}, {
-                                    text: 'Amount (IN Rs.)',
-                                    alignment: 'center',
-                                    bold: true,
-                                    style: 'margins'
-
-                                }],
-                                [{
-                                    stack: [{
-                                        text: 'Application Fees for ' + branchName,
-                                        style: 'fontSize2'
-
-                                    }],
-                                    style: 'margins',
-                                    colSpan: 2,
-                                    border: [true, true, true, false]
-
-                                }, {}, {
-                                    text: amountInNumbers,
-                                    style: ['fontSize2', 'margins'],
-                                    alignment: 'right',
-                                    border: [true, true, true, false]
-                                }],
-                                [{
-                                    stack: [{
-                                        text: 'Grand Total',
-                                        style: 'biggerFont'
-
-                                    }],
-                                    style: 'margins',
-                                    colSpan: 2,
-                                    alignment: 'right',
-                                    bold: true
-
-                                }, {}, {
-                                    text: amountInNumbers,
-                                    style: ['biggerFont', 'margins'],
-                                    alignment: 'right',
-                                    bold: true
-                                }]
-                            ]
-                        }
-                    },
-                    {
-                        style: ['fontSize1', 'topMargin'],
-                        table: {
-                            widths: [350, 100],
-                            body: [
-                                [{
-                                    text: 'Payment Mode: ' + paymentMode,
-                                    border: [false, false, false, false]
-                                }, {
-                                    text: '',
-                                    border: [false, false, false, false]
-                                }],
-                                [{
-                                    text: 'Rupees (In Words): ' + amountInWords,
-                                    border: [false, false, false, false]
-                                }, {
-                                    text: '',
-                                    border: [false, false, false, false]
-                                }],
-                                [{
-                                    text: 'Place: ' + place,
-                                    border: [false, false, false, false]
-                                }, {
-                                    text: 'Cashier',
-                                    border: [false, false, false, false],
-                                    alignment: 'center'
-                                }]
-                            ]
-                        }
+                            }, {
+                                text: 'Date: ' + today,
+                                border: [false, false, false, false],
+                                alignment: 'right'
+                            }]
+                        ]
                     }
+                },
+                {
+                    style: ['fontSize1', 'topMargin'],
+                    table: {
+                        widths: [250, 100, 100],
+                        body: [
+                            [{
+                                text: 'Particulars',
+                                colSpan: 2,
+                                alignment: 'center',
+                                bold: true,
+                                style: 'margins'
+
+                            }, {}, {
+                                text: 'Amount (IN Rs.)',
+                                alignment: 'center',
+                                bold: true,
+                                style: 'margins'
+
+                            }],
+                            [{
+                                stack: [{
+                                    text: 'Application Fees for ' + branchName,
+                                    style: 'fontSize2'
+
+                                }],
+                                style: 'margins',
+                                colSpan: 2,
+                                border: [true, true, true, false]
+
+                            }, {}, {
+                                text: amountInNumbers,
+                                style: ['fontSize2', 'margins'],
+                                alignment: 'right',
+                                border: [true, true, true, false]
+                            }],
+                            [{
+                                stack: [{
+                                    text: 'Grand Total',
+                                    style: 'biggerFont'
+
+                                }],
+                                style: 'margins',
+                                colSpan: 2,
+                                alignment: 'right',
+                                bold: true
+
+                            }, {}, {
+                                text: amountInNumbers,
+                                style: ['biggerFont', 'margins'],
+                                alignment: 'right',
+                                bold: true
+                            }]
+                        ]
+                    }
+                },
+                {
+                    style: ['fontSize1', 'topMargin'],
+                    table: {
+                        widths: [350, 100],
+                        body: [
+                            [{
+                                text: 'Payment Mode: ' + paymentMode,
+                                border: [false, false, false, false]
+                            }, {
+                                text: '',
+                                border: [false, false, false, false]
+                            }],
+                            [{
+                                text: 'Rupees (In Words): ' + amountInWords,
+                                border: [false, false, false, false]
+                            }, {
+                                text: '',
+                                border: [false, false, false, false]
+                            }],
+                            [{
+                                text: 'Place: ' + place,
+                                border: [false, false, false, false]
+                            }, {
+                                text: 'Cashier',
+                                border: [false, false, false, false],
+                                alignment: 'center'
+                            }]
+                        ]
+                    }
+                }
                 ],
                 styles: {
                     biggerFont: {
@@ -1386,20 +1398,20 @@ angular.module('app')
             return words_string;
         };
 
-        $scope.receiptTypeChanged = function() {
+        $scope.receiptTypeChanged = function () {
             if ($scope.selected.receiptType == "") {
                 $scope.receiptsToShow = angular.copy($scope.receipts);
             } else {
                 $scope.receiptsToShow = $scope.receipts.filter(x => x.FeesType == $scope.selected.receiptType);
             }
-            $scope.totalInvoiceValue = $scope.receiptsToShow.reduce(function(prev, cur) { return prev + (cur.InvoiceValue - cur.Discount) }, 0);
+            $scope.totalInvoiceValue = $scope.receiptsToShow.reduce(function (prev, cur) { return prev + (cur.InvoiceValue - cur.Discount) }, 0);
         };
 
-        $scope.collectApplicationFees = function() {
+        $scope.collectApplicationFees = function () {
             var r = confirm("Confirm Application Fees Collection?");
             if (r == true) {
                 FeesStructureFactory.getFeesStructure(LoginFactory.loggedInUser.CollegeId, $scope.newAdmission.BranchId, $scope.selected.academicYear)
-                    .then(function(success) {
+                    .then(function (success) {
                         if (success.data.Code != "S001") {
                             toastr.warning('Application Fees has not been set for this academic year!');
                         } else {
@@ -1418,26 +1430,26 @@ angular.module('app')
                                 BranchId: $scope.newAdmission.BranchId
                             }
                             FeesStructureFactory.createReceipt(receipt)
-                                .then(function(success) {
+                                .then(function (success) {
                                     if (success.data.Code != "S001") {
                                         toastr.warning('There was a problem encountered with the server!');
                                     } else {
                                         toastr.success('Application Fees updated successfully!');
                                         $scope.getAllReceiptsForStudent();
                                     }
-                                }, function(error) {
+                                }, function (error) {
                                     toastr.success(error);
                                 });
                         }
-                    }, function(error) {
+                    }, function (error) {
                         toastr.success(error);
                     });
             }
         };
 
-        $scope.addPreviousMarks = function() {
+        $scope.addPreviousMarks = function () {
             StudentsFactory.addPreviousMarks($scope.newPreviousMarks)
-                .then(function(success) {
+                .then(function (success) {
                     if (success.data.Code != "S001") {
                         toastr.warning('There was a problem encountered with the server!');
                     } else {
@@ -1453,20 +1465,20 @@ angular.module('app')
                         toastr.success('Update Successful');
                         $scope.getAllPreviousMarks();
                     }
-                }, function(error) {
+                }, function (error) {
                     toastr.success(error);
                 });
         };
 
-        $scope.getAllPreviousMarks = function(studentId) {
+        $scope.getAllPreviousMarks = function (studentId) {
             StudentsFactory.getAllPreviousMarks(studentId)
-                .then(function(success) {
+                .then(function (success) {
                     if (success.data.Code != "S001") {
                         toastr.warning('There was a problem encountered with the server!');
                     } else {
                         $scope.previousMarks = success.data.Data;
                     }
-                }, function(error) {
+                }, function (error) {
                     toastr.success(error);
                 });
         };
@@ -1476,4 +1488,28 @@ angular.module('app')
             $scope.getAllDocumentsForCollege();
             $scope.getAllReceiptsForStudent();
         }
+    })
+    .controller('SelectFeesTypeController', function ($scope, $uibModalInstance) {
+
+        $scope.feesTypes = [
+            {
+                id: 1,
+                type: 'Tuition Fees'
+            },
+            {
+                id: 2,
+                type: 'Annual Development Fees'
+            }];
+        $scope.feesType = {
+            selected: $scope.feesTypes[0]
+        };
+
+        $scope.ok = function () {
+            $uibModalInstance.close($scope.feesType);
+        };
+
+        $scope.cancel = function () {
+            $uibModalInstance.dismiss('cancel');
+        };
+
     });
