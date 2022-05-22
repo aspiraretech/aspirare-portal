@@ -10,7 +10,7 @@ angular.module('app').factory('LoginFactory', function($q, $http, $state) {
     var app_base = "../";
     // var app_base = "../app/";
 
-    var website = 'https://aspirare-api.herokuapp.com';
+    var website = 'https://aspirare-smart-api.herokuapp.com';
     var URL = website;
 
     factory.login = function(obj) {
