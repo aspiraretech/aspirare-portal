@@ -74,7 +74,7 @@ angular.module('app')
         };
 
         $scope.addImages = function() {
-            cloudinary.openUploadWidget({ cloud_name: 'dzerq05zm', upload_preset: 'findinbox' },
+            cloudinary.createUploadWidget({ cloud_name: 'diyrbgmir', upload_preset: 'aspirare' },
                 function(error, result) {
                     console.log(error, result)
                 });
